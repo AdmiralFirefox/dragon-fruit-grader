@@ -5,15 +5,15 @@ import { useMutation } from "@tanstack/react-query";
 import Axios from "axios";
 
 interface InputProps {
-  user_input_image: string;
+  user_input_images: string[];
 }
 
 // Define the mutation function
-const sendUserInput = async (file: File | null) => {
-  if (!file) return;
-
+const sendUserInput = async (files: File[]) => {
   const formData = new FormData();
-  formData.append("inputImage", file);
+  files.forEach((file) => {
+    formData.append("inputImage", file);
+  });
 
   const response = await Axios.post(
     "http://localhost:8080/api/home",
@@ -30,30 +30,33 @@ const sendUserInput = async (file: File | null) => {
 
 export default function Home() {
   // Use the useMutation hook
-  const mutation = useMutation<InputProps, Error, File | null>({
+  const mutation = useMutation<InputProps, Error, File[]>({
     mutationFn: sendUserInput,
   });
 
   const handleFileInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    mutation.mutate(file);
+    const files = event.target.files ? Array.from(event.target.files) : [];
+    mutation.mutate(files);
   };
 
   return (
     <main>
       <h1>Upload Image</h1>
-      <input type="file" accept="image/*" onChange={handleFileInput} />
+      <input type="file" accept="image/*" onChange={handleFileInput} multiple />
 
       {mutation.isPending && <p>Loading...</p>}
       {mutation.isError && <p>An error occurred.</p>}
       {mutation.isSuccess && mutation.data !== undefined && (
         <div>
-          <Image
-            src={`http://localhost:8080/get-image/${mutation.data.user_input_image}`}
-            alt="Image"
-            width={300}
-            height={300}
-          />
+          {mutation.data.user_input_images.map((filename, index) => (
+            <Image
+              key={index}
+              src={`http://localhost:8080/get-image/${filename}`}
+              alt={`Uploaded Image ${index + 1}`}
+              width={300}
+              height={300}
+            />
+          ))}
         </div>
       )}
     </main>
