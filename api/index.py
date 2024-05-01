@@ -42,7 +42,7 @@ def return_home():
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             image.save(file_path)
             uploaded_filenames.append(filename)
-            print(f"Input image: {filename}")
+            # print(f"Input image: {filename}")
         
         return jsonify({"user_input_images": uploaded_filenames})
     else:
