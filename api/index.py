@@ -7,15 +7,19 @@ import shutil
 app = Flask(__name__)
 CORS(app)
 
-UPLOAD_FOLDER = 'uploads'
+# Get the current script's directory
+parent_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Define the upload folder path as a subdirectory in the grandparent directory
+UPLOAD_FOLDER = os.path.join(parent_dir, 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Check if the upload folder exists and create it if it doesn't
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
-    # print("Created folder: ", UPLOAD_FOLDER)
+    # print(f"Created folder: {UPLOAD_FOLDER}")
 else:
-    print(UPLOAD_FOLDER, "folder already exists.")
+    print(f"{UPLOAD_FOLDER} folder already exists.")
 
 @app.route("/api/home", methods=["POST"])
 def return_home():
@@ -41,13 +45,13 @@ def return_home():
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             image.save(file_path)
             uploaded_filenames.append(filename)
-            # print(f"Input image: {filename}")
+            print(f"Input image: {filename}")
         
         return jsonify({"user_input_images": uploaded_filenames})
     else:
         return jsonify({"error": "No files uploaded"}), 400
 
-@app.route('/get-image/<filename>', methods=["GET"])
+@app.route('/api/get-image/<filename>', methods=["GET"])
 def get_image(filename):
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     return send_file(file_path, mimetype='image/png')

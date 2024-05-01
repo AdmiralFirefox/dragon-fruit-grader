@@ -34,3 +34,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Virtual environments
+/grader-env
+
+# Pycache
+/api/__pycache__
+
+# Image Folders
+/api/uploads

@@ -15,15 +15,11 @@ const sendUserInput = async (files: File[]) => {
     formData.append("inputImage", file);
   });
 
-  const response = await Axios.post(
-    "http://localhost:8080/api/home",
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
+  const response = await Axios.post("/api/home", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 
   return response.data;
 };
@@ -51,7 +47,7 @@ export default function Home() {
           {mutation.data.user_input_images.map((filename, index) => (
             <Image
               key={index}
-              src={`http://localhost:8080/get-image/${filename}`}
+              src={`/api/get-image/${filename}`}
               alt={`Uploaded Image ${index + 1}`}
               width={300}
               height={300}
