@@ -54,4 +54,4 @@ def get_image(filename):
     return send_file(file_path, mimetype='image/png')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    app.run(port=8080)
