@@ -51,6 +51,7 @@ export default function Home() {
                 alt={`Uploaded Image ${index + 1}`}
                 width={300}
                 height={300}
+                unoptimized
               />
             </li>
           ))}
