@@ -7,14 +7,11 @@ import shutil
 app = Flask(__name__)
 CORS(app)
 
-# Get the current script's directory
-parent_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Define the upload folder path as a subdirectory in the grandparent directory
-UPLOAD_FOLDER = os.path.join(parent_dir, 'uploads')
+# Define the upload folder path in the /tmp directory
+UPLOAD_FOLDER = '/tmp/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Check if the upload folder exists and create it if it doesn't
+# Check if the upload folder exists in /tmp and create it if it doesn't
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
     # print(f"Created folder: {UPLOAD_FOLDER}")
@@ -39,7 +36,7 @@ def return_home():
     uploaded_filenames = []
 
     if input_images:
-        # Save Images in the uploads folder
+        # Save Images in the /tmp/uploads folder
         for image in input_images:
             filename = secure_filename(image.filename)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
