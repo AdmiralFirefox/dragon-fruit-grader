@@ -8,10 +8,6 @@ interface InputProps {
   user_input_images: string[];
 }
 
-const URL = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api`
-  : "http://localhost:3000/api";
-
 // Define the mutation function
 const sendUserInput = async (files: File[]) => {
   const formData = new FormData();
@@ -19,7 +15,7 @@ const sendUserInput = async (files: File[]) => {
     formData.append("inputImage", file);
   });
 
-  const response = await Axios.post(`${URL}/home`, formData, {
+  const response = await Axios.post(`/api/home`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -51,7 +47,7 @@ export default function Home() {
           {mutation.data.user_input_images.map((filename, index) => (
             <Image
               key={index}
-              src={`${URL}/get-image/${filename}`}
+              src={`/api/get-image/${filename}`}
               alt={`Uploaded Image ${index + 1}`}
               width={300}
               height={300}
