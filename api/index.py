@@ -1,30 +1,48 @@
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
-import io
+import os
+import shutil
 
 app = Flask(__name__)
 CORS(app)
 
-# Store images in memory
-uploaded_images = {}
+# Define the upload folder path in the /tmp directory
+UPLOAD_FOLDER = '/tmp/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Check if the upload folder exists in /tmp and create it if it doesn't
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+    # print(f"Created folder: {UPLOAD_FOLDER}")
+else:
+    print(f"{UPLOAD_FOLDER} folder already exists.")
 
 @app.route("/api/home", methods=["POST"])
 def return_home():
-    # Clear old images and log the action
-    uploaded_images.clear()
+    # Delete all old images
+    for filename in os.listdir(UPLOAD_FOLDER):
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')
     
     # Get Images from the client
     input_images = request.files.getlist("inputImage")
     uploaded_filenames = []
 
     if input_images:
-        # Store Images in memory
+        # Save Images in the /tmp/uploads folder
         for image in input_images:
             filename = secure_filename(image.filename)
-            image_data = io.BytesIO(image.read())
-            uploaded_images[filename] = image_data
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image.save(file_path)
             uploaded_filenames.append(filename)
+            # print(f"Input image: {filename}")
         
         return jsonify({"user_input_images": uploaded_filenames})
     else:
@@ -32,12 +50,8 @@ def return_home():
 
 @app.route('/api/get-image/<filename>', methods=["GET"])
 def get_image(filename):
-    if filename in uploaded_images:
-        image_data = uploaded_images[filename]
-        image_data.seek(0) # Reset the file pointer to the beginning
-        return send_file(image_data, mimetype='image/png', as_attachment=True, download_name=filename)
-    else:
-        return jsonify({"error": "Image not found"}), 404
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    return send_file(file_path, mimetype='image/png')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8080)
+    app.run(port=8080)
