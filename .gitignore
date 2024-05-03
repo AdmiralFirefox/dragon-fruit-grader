@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Image Folders
 /api/uploads
+
+# Large Models
+/saved_models/resnet50_model

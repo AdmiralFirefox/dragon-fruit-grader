@@ -6,6 +6,7 @@ import Axios from "axios";
 
 interface InputProps {
   user_input_images: string[];
+  yolo_filenames: string[];
 }
 
 // Define the mutation function
@@ -49,6 +50,17 @@ export default function Home() {
               <Image
                 src={`/api/get-image/${filename}`}
                 alt={`Uploaded Image ${index + 1}`}
+                width={300}
+                height={300}
+                unoptimized
+              />
+            </li>
+          ))}
+          {mutation.data.yolo_filenames.map((filename, index) => (
+            <li key={index}>
+              <Image
+                src={`/api/yolo-results/${filename}`}
+                alt={`YOLO Image Result ${index + 1}`}
                 width={300}
                 height={300}
                 unoptimized
