@@ -5,8 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 import Axios from "axios";
 
 interface InputProps {
-  user_input_images: string[];
-  yolo_filenames: string[];
+  input_images: string[];
+  yolo_images: string[];
+  cropped_images: string[];
 }
 
 // Define the mutation function
@@ -45,7 +46,8 @@ export default function Home() {
       {mutation.isError && <p>An error occurred.</p>}
       {mutation.isSuccess && mutation.data !== undefined && (
         <ul>
-          {mutation.data.user_input_images.map((filename, index) => (
+          <h1>Uploaded Images</h1>
+          {mutation.data.input_images.map((filename, index) => (
             <li key={index}>
               <Image
                 src={`/api/get-image/${filename}`}
@@ -56,10 +58,23 @@ export default function Home() {
               />
             </li>
           ))}
-          {mutation.data.yolo_filenames.map((filename, index) => (
+          <h1>Detected Imges</h1>
+          {mutation.data.yolo_images.map((filename, index) => (
             <li key={index}>
               <Image
                 src={`/api/yolo-results/${filename}`}
+                alt={`YOLO Image Result ${index + 1}`}
+                width={300}
+                height={300}
+                unoptimized
+              />
+            </li>
+          ))}
+          <h1>Cropped Imges</h1>
+          {mutation.data.cropped_images.map((filename, index) => (
+            <li key={index}>
+              <Image
+                src={`/api/yolo-cropped-images/${filename}`}
                 alt={`YOLO Image Result ${index + 1}`}
                 width={300}
                 height={300}
