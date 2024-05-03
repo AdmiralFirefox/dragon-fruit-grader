@@ -30,6 +30,41 @@ else:
 
 @app.route("/api/home", methods=["POST"])
 def return_home():
+    clear_old_images()
+    
+    # Get Images from the client
+    input_images = request.files.getlist("inputImage")
+    uploaded_filenames = []
+    uploaded_image_paths = []
+
+    yolo_images = []
+
+    if input_images:
+        # Save Images in the /tmp/uploads folder
+        for image in input_images:
+            filename = secure_filename(image.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            image.save(file_path)
+            uploaded_filenames.append(filename)
+            uploaded_image_paths.append(file_path)
+
+        object_detection(uploaded_image_paths, uploaded_filenames, yolo_images)
+        
+        return jsonify({"user_input_images": uploaded_filenames, "yolo_filenames": yolo_images})
+    else:
+        return jsonify({"error": "No files uploaded"}), 400
+
+@app.route('/api/get-image/<filename>', methods=["GET"])
+def get_image(filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    return send_file(file_path, mimetype='image/png')
+
+@app.route('/api/yolo-results/<filename>', methods=["GET"])
+def yolo_results(filename):
+    file_path = os.path.join(app.config['RESULTS_FOLDER'], filename)
+    return send_file(file_path, mimetype='image/png')
+
+def clear_old_images():
     # Delete all old uploaded images
     for filename in os.listdir(UPLOAD_FOLDER):
         file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -51,57 +86,30 @@ def return_home():
                 shutil.rmtree(file_path)
         except Exception as e:
             print(f'Failed to delete {file_path}. Reason: {e}')
-    
-    # Get Images from the client
-    input_images = request.files.getlist("inputImage")
-    uploaded_filenames = []
 
-    file_paths = []
-    yolo_filenames = []
+def object_detection(uploaded_image_paths, uploaded_filenames, yolo_images):
+    # Load Pre-trained YOLOv8 Model
+    saved_model = 'saved_models/best.pt'
+    model = YOLO(saved_model)
 
-    if input_images:
-        # Load Pre-trained YOLOv8 Model
-        saved_model = 'saved_models/best.pt'
-        model = YOLO(saved_model)
+    # Detect objects
+    results = model(uploaded_image_paths)
 
-        # Save Images in the /tmp/uploads folder
-        for image in input_images:
-            filename = secure_filename(image.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            image.save(file_path)
-            uploaded_filenames.append(filename)
-            file_paths.append(file_path)
-            # print(f"File Path: {file_path}")
+    # Iterate through the Detected Objects
+    for i, result in enumerate(results):
+        boxes = result.boxes 
+        masks = result.masks  
+        keypoints = result.keypoints
+        probs = result.probs  
         
-        # YOLOv8 Object Detection
-        results = model(file_paths)
+        # Get the file name of the uploaded images
+        uploaded_filenames_noextension = os.path.splitext(uploaded_filenames[i])[0]
+        secured_filename = secure_filename(f'{uploaded_filenames_noextension}.jpg')
 
-        # Iterate through the Detected Objects
-        for i, result in enumerate(results):
-            boxes = result.boxes 
-            masks = result.masks  
-            keypoints = result.keypoints  
-            probs = result.probs  
-            
-            uploaded_filenames_noextension = os.path.splitext(uploaded_filenames[i])[0]
-            secured_filename = secure_filename(f'{uploaded_filenames_noextension}.jpg')
-            filename = os.path.join(app.config['RESULTS_FOLDER'], secured_filename)
-            result.save(filename=filename) 
-            yolo_filenames.append(secured_filename)
-        
-        return jsonify({"user_input_images": uploaded_filenames, "yolo_filenames": yolo_filenames})
-    else:
-        return jsonify({"error": "No files uploaded"}), 400
-
-@app.route('/api/get-image/<filename>', methods=["GET"])
-def get_image(filename):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    return send_file(file_path, mimetype='image/png')
-
-@app.route('/api/yolo-results/<filename>', methods=["GET"])
-def yolo_results(filename):
-    file_path = os.path.join(app.config['RESULTS_FOLDER'], filename)
-    return send_file(file_path, mimetype='image/png')
+        # Save detected images to the results directory
+        filename = os.path.join(app.config['RESULTS_FOLDER'], secured_filename)
+        result.save(filename=filename) 
+        yolo_images.append(secured_filename)
 
 if __name__ == "__main__":
-    app.run(port=8080)
+    app.run(host="0.0.0.0")
