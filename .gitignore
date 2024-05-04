@@ -45,4 +45,4 @@ next-env.d.ts
 /api/uploads
 
 # Large Models
-/saved_models/resnet50_model
+/saved_models/resnet50_model.pth

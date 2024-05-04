@@ -8,6 +8,7 @@ interface InputProps {
   input_images: string[];
   yolo_images: string[];
   cropped_images: string[];
+  grading_results: string[];
 }
 
 // Define the mutation function
@@ -80,6 +81,11 @@ export default function Home() {
                 height={300}
                 unoptimized
               />
+            </li>
+          ))}
+          {mutation.data.grading_results.map((results, index) => (
+            <li key={index}>
+              <h1>The predicted classs is: {results}</h1>
             </li>
           ))}
         </ul>

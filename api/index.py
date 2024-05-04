@@ -1,3 +1,7 @@
+import torch
+from torchvision import models, transforms
+from torch import nn
+from PIL import Image
 from ultralytics import YOLO
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
@@ -50,6 +54,8 @@ def return_home():
     uploaded_images = []
     yolo_images = []
     cropped_images = []
+    cropped_images_full_path = []
+    grading_results = []
 
     if input_images:
         # Save Images in the /tmp/uploads folder
@@ -60,9 +66,10 @@ def return_home():
             uploaded_filenames.append(filename)
             uploaded_images.append(file_path)
 
-        object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images)
+        object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
+        image_classification(cropped_images_full_path, grading_results)
         
-        return jsonify({"input_images": uploaded_filenames, "yolo_images": yolo_images, "cropped_images": cropped_images})
+        return jsonify({"input_images": uploaded_filenames, "yolo_images": yolo_images, "cropped_images": cropped_images, "grading_results": grading_results})
     else:
         return jsonify({"error": "No files uploaded"}), 400
 
@@ -115,7 +122,7 @@ def clear_old_images():
         except Exception as e:
             print(f'Failed to delete {file_path}. Reason: {e}')
 
-def object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images):
+def object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path):
     # Load Pre-trained YOLOv8 Model
     saved_model = 'saved_models/best.pt'
     model = YOLO(saved_model)
@@ -165,6 +172,42 @@ def object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_i
             # Save the cropped object as an image in the 'cropped_images' folder
             cv2.imwrite(filename, ultralytics_crop_object)
             cropped_images.append(cropped_image_name)
+            cropped_images_full_path.append(filename)
+
+def image_classification(cropped_images_full_path, grading_results):
+    # Define class names
+    class_names = ['defect', 'fresh', 'immature', 'mature']
+
+    # Load the model architecture
+    model = models.resnet50(pretrained=False)
+    model.fc = nn.Linear(model.fc.in_features, 4) # Assuming 4 classes: 'defect', 'fresh', 'immature', 'mature'
+    model.load_state_dict(torch.load("saved_models/resnet50_model.pth"))
+    model.eval()
+
+    # Define image transformation
+    preprocess = transforms.Compose([
+        transforms.Resize(256), # Resize the image to 256x256 pixels
+        transforms.CenterCrop(224), # Crop the center of the image to 224x224 pixels
+        transforms.ToTensor(), # Convert the image to a PyTorch tensor
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # Normalize the image
+    ])
+
+    # Predicting multiple images
+    for image_path in cropped_images_full_path:
+        # Load and preprocess the image
+        img = Image.open(image_path)
+        img_t = preprocess(img)
+        batch_t = torch.unsqueeze(img_t, 0)
+        
+        # Make predictions
+        with torch.no_grad():
+            out = model(batch_t)
+        
+        _, predicted = torch.max(out, 1)
+        predicted_class = class_names[predicted]
+        
+        # print("The predicted class is", predicted_class)
+        grading_results.append(predicted_class)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
