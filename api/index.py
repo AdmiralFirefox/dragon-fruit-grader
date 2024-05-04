@@ -181,7 +181,7 @@ def image_classification(cropped_images_full_path, grading_results):
     # Load the model architecture
     model = models.resnet50(pretrained=False)
     model.fc = nn.Linear(model.fc.in_features, 4) # Assuming 4 classes: 'defect', 'fresh', 'immature', 'mature'
-    model.load_state_dict(torch.load("saved_models/resnet50_model.pth"))
+    model.load_state_dict(torch.load("saved_models/resnet50_model.pth", map_location=torch.device("cpu")))
     model.eval()
 
     # Define image transformation
