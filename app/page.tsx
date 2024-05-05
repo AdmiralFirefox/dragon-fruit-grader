@@ -11,6 +11,8 @@ interface InputProps {
   grading_results: string[];
 }
 
+const backend_url = "http://localhost:8000";
+
 // Define the mutation function
 const sendUserInput = async (files: File[]) => {
   const formData = new FormData();
@@ -18,7 +20,7 @@ const sendUserInput = async (files: File[]) => {
     formData.append("inputImage", file);
   });
 
-  const response = await Axios.post(`/api/home`, formData, {
+  const response = await Axios.post(`${backend_url}/api/home`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -51,7 +53,7 @@ export default function Home() {
           {mutation.data.input_images.map((filename, index) => (
             <li key={index}>
               <Image
-                src={`/api/get-image/${filename}`}
+                src={`${backend_url}/api/get-image/${filename}`}
                 alt={`Uploaded Image ${index + 1}`}
                 width={300}
                 height={300}
@@ -59,11 +61,11 @@ export default function Home() {
               />
             </li>
           ))}
-          <h1>Detected Imges</h1>
+          <h1>Detected Images</h1>
           {mutation.data.yolo_images.map((filename, index) => (
             <li key={index}>
               <Image
-                src={`/api/yolo-results/${filename}`}
+                src={`${backend_url}/api/yolo-results/${filename}`}
                 alt={`YOLO Image Result ${index + 1}`}
                 width={300}
                 height={300}
@@ -71,11 +73,11 @@ export default function Home() {
               />
             </li>
           ))}
-          <h1>Cropped Imges</h1>
+          <h1>Cropped Images</h1>
           {mutation.data.cropped_images.map((filename, index) => (
             <li key={index}>
               <Image
-                src={`/api/yolo-cropped-images/${filename}`}
+                src={`${backend_url}/api/yolo-cropped-images/${filename}`}
                 alt={`YOLO Image Result ${index + 1}`}
                 width={300}
                 height={300}
