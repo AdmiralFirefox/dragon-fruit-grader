@@ -62,8 +62,68 @@ Go to `package.json` and change the `"flask-dev"` under `"scripts"` accordingly
 
 <br />
 
-Run the project
+Run the project locally
 ```bash
 npm run dev
 ```
+
+<br />
+
+## Running on Docker
+
+
+### Running on Development and Production mode
+
+Add this to `next.Dockerfile`
+```bash
+FROM base AS dev
+
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+```
+
+<br />
+
+Comment out the `ENV NODE_ENV production` and put the `ENV NODE_ENV development`
+```bash
+# ENV NODE_ENV production
+ENV NODE_ENV development
+```
+
+<br />
+
+Add the following to the `docker-compose.yml`
+
+```bash
+#nextjs service
+nextapp:
+container_name: nextapp
+image: dragonfruit-grader/nextapp:1.0.0
+build:
+    context: .
+    dockerfile: dockerfiles/next.Dockerfile
+    target: dev
+restart: always
+command: npm run dev
+environment:
+    - NODE_ENV=development
+    - WATCHPACK_POLLING=true
+volumes:
+    - .:/app
+    - /app/node_modules
+    - /app/.next
+ports:
+    - 3000:3000
+depends_on:
+    - flaskapp
+```
+
+<br />
+
+Run docker
+```bash
+docker compose up --bulid
+```
+
 
