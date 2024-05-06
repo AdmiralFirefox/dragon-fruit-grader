@@ -72,10 +72,10 @@ npm run dev
 ## Running on Docker
 
 
-### Running on Development and Production mode
+### Running Next JS on Development and Production mode
 
 Add this to `next.Dockerfile`
-```bash
+```Docker
 FROM base AS dev
 
 WORKDIR /app
@@ -86,7 +86,7 @@ COPY . .
 <br />
 
 Comment out the `ENV NODE_ENV production` and put the `ENV NODE_ENV development`
-```bash
+```Docker
 # ENV NODE_ENV production
 ENV NODE_ENV development
 ```
@@ -95,28 +95,60 @@ ENV NODE_ENV development
 
 Add the following to the `docker-compose.yml`
 
-```bash
+```yaml
 #nextjs service
 nextapp:
-container_name: nextapp
-image: dragonfruit-grader/nextapp:1.0.0
+    container_name: nextapp
+    image: dragonfruit-grader/nextapp:1.0.0
+    build:
+        context: .
+        dockerfile: dockerfiles/next.Dockerfile
+        target: dev
+    restart: always
+    command: npm run dev
+    environment:
+        - NODE_ENV=development
+        - WATCHPACK_POLLING=true
+    volumes:
+        - .:/app
+        - /app/node_modules
+        - /app/.next
+    ports:
+        - 3000:3000
+    depends_on:
+        - flaskapp
+```
+
+<br />
+
+### Running Flask on Development and Production mode
+
+Add the following `volumes` in your `docker-compose.yml`
+
+```yaml
 build:
     context: .
-    dockerfile: dockerfiles/next.Dockerfile
-    target: dev
-restart: always
-command: npm run dev
-environment:
-    - NODE_ENV=development
-    - WATCHPACK_POLLING=true
+    dockerfile: dockerfiles/flask.Dockerfile
 volumes:
-    - .:/app
-    - /app/node_modules
-    - /app/.next
+    - ./api:/app
 ports:
-    - 3000:3000
-depends_on:
-    - flaskapp
+    - 8000:8000
+```
+
+<br />
+
+Add `ENV FLASK_ENV=development` on your `flask.Dockerfile`
+
+```Docker
+ENV FLASK_ENV=development 
+```
+
+<br />
+
+Also, add the `"--reload"`
+
+```Docker
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=8000", "--reload"]
 ```
 
 <br />
