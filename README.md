@@ -123,7 +123,7 @@ depends_on:
 
 Run docker
 ```bash
-docker compose up --bulid
+docker compose up --build
 ```
 
 
