@@ -2,7 +2,7 @@ services:
   #nextjs service
   nextapp:
     container_name: nextapp
-    image: dragonfruit-grader/nextapp:1.0.0
+    image: dragonfruit-grader-nextapp:1.0.0
     build:
       context: .
       dockerfile: dockerfiles/next.Dockerfile
@@ -14,7 +14,7 @@ services:
   # flask service
   flaskapp:
     container_name: flaskapp
-    image: dragonfruit-grader/flaskapp:1.0.0
+    image: dragonfruit-grader-flaskapp:1.0.0
     build:
       context: .
       dockerfile: dockerfiles/flask.Dockerfile
