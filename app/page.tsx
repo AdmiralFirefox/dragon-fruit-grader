@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import Axios from "axios";
 import Hero from "./components/Hero";
+import InfoCards from "./components/InfoCards";
 
 interface InputProps {
   input_images: string[];
@@ -44,6 +45,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <InfoCards />
 
       <h1>Upload Image</h1>
       <input type="file" accept="image/*" onChange={handleFileInput} multiple />

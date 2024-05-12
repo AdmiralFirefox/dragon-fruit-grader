@@ -1,0 +1,26 @@
+[
+  {
+    "class_number": 1,
+    "class_image": "/dragon-fruit-classes/extra_class.jpg",
+    "class": "Extra Class",
+    "description": "Extra Class classification refers to dragon fruits that have perfect skin and are of superior quality. They are free of defects, with the exception of very slight superficial defects, provided these do not affect the general appearance of the produce, its quality, its keeping quality, and its presentation in the package."
+  },
+  {
+    "class_number": 2,
+    "class_image": "/dragon-fruit-classes/class_1.jpg",
+    "class": "Class I",
+    "description": "Class I refers to dragon fruits that have imperfect skin that have many bracts surrounding the skin. Dragon fruits have slight defects in shape, provided these do not affect the general appearance of the produce, its quality, its keeping quality, and its presentation in the package. Slight defects of the skin must not exceed 5 % of the total surface area of the fruit. The defects must not, in any case, affect the flesh of the fruit."
+  },
+  {
+    "class_number": 3,
+    "class_image": "/dragon-fruit-classes/class_2.jpg",
+    "class": "Class II",
+    "description": "Class II refers to dragon fruits that do not qualify for inclusion in the higher classes but satisfy the minimum requirements. They have defects in shape, provided the dragon fruits retain their essential characteristics as regards the quality, the keeping quality, and presentation. Defects of the skin must not exceed 10 % of the total surface area of the fruit. The defects must not, in any case, affect the flesh of the fruit."
+  },
+  {
+    "class_number": 4,
+    "class_image": "/dragon-fruit-classes/reject.jpg",
+    "class": "Reject",
+    "description": "Reject Class refers to the dragon fruits that have significant defects that affect their quality, presentation, or safety. These defects range from physical damage, such as bruises, cuts, or molds, to issues with physical appearance, such as its skin that does not align with the grading standards."
+  }
+]

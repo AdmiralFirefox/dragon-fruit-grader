@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { QueryProvider } from "@/providers/QueryProvider";
-import "./globals.scss";
+import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
   title: "Dragon Fruit Grader",
