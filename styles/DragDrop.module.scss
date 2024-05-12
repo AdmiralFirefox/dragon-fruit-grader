@@ -1,0 +1,30 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+.container {
+  width: 100%;
+  margin-top: 2em;
+
+  form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    label {
+      width: min(45em, 100%);
+      border: 50px solid theme.$light-green-color;
+      border-radius: 20px;
+      padding: 5em;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    label h1 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    input {
+      display: none;
+    }
+  }
+}

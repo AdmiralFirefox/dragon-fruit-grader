@@ -1,0 +1,19 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+.scan-card-title {
+  margin-top: 3.5em;
+
+  h1 {
+    color: theme.$light-brown-color;
+    text-align: center;
+    font-size: clamp(2.3rem, 3.5vw, 2.7rem);
+  }
+}
+
+.scan-card-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 4em;
+}
