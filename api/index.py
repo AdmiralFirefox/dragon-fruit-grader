@@ -176,12 +176,32 @@ def object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_i
 
 def image_classification(cropped_images_full_path, grading_results):
     # Define class names
-    class_names = ['defect', 'fresh', 'immature', 'mature']
+    class_names = ['Class 1', 'Class 2', 'Extra Class', 'Reject', 'Reject (Unripe)']
 
-    # Load the model architecture
-    model = models.resnet50(pretrained=False)
-    model.fc = nn.Linear(model.fc.in_features, 4) # Assuming 4 classes: 'defect', 'fresh', 'immature', 'mature'
-    model.load_state_dict(torch.load("saved_models/resnet50_model.pth", map_location=torch.device("cpu")))
+    # Load the pre-trained ResNet model
+    model = models.resnet50(weights=None)  
+    num_ftrs = model.fc.in_features
+
+    # Replace the fully connected layer
+    num_classes = 5  # Number of Classes
+    model.fc = torch.nn.Linear(num_ftrs, num_classes)
+
+    # Load the state dictionary
+    state_dict = torch.load("saved_models/resnet50_model.pth", map_location=torch.device("cpu"))
+
+    # Rename keys in the state dictionary
+    new_state_dict = {}
+    for key, value in state_dict.items():
+        if key.startswith('fc.1.'):
+            new_key = key.replace('fc.1.', 'fc.')
+            new_state_dict[new_key] = value
+        else:
+            new_state_dict[key] = value
+
+    # Load the modified state dictionary into the model
+    model.load_state_dict(new_state_dict)
+
+    # Set the model to evaluation mode
     model.eval()
 
     # Define image transformation
