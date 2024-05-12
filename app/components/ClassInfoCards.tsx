@@ -25,7 +25,7 @@ const ClassCard = ({
   );
 };
 
-const InfoCards = () => {
+const ClassInfoCards = () => {
   return (
     <div>
       <section className={styles["card-title"]}>
@@ -52,4 +52,4 @@ const InfoCards = () => {
   );
 };
 
-export default InfoCards;
+export default ClassInfoCards;
