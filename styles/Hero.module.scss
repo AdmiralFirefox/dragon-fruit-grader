@@ -1,0 +1,115 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+$hero-height: 33em;
+
+@mixin index-on-top() {
+  position: relative;
+  z-index: 2;
+}
+
+.wrapper {
+  background: theme.$hero-background-color;
+  height: $hero-height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: center;
+  padding: 4em 2em 0em 2em;
+  position: relative;
+  z-index: 2;
+
+  .logo-wrapper {
+    width: clamp(6em, 8vw, 7em);
+    @include index-on-top();
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  h1 {
+    color: theme.$white-color;
+    font-size: clamp(2.5rem, 3.5vw, 3rem);
+    text-align: center;
+    margin-top: 0.2em;
+    @include index-on-top();
+  }
+
+  p {
+    color: theme.$white-color;
+    font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    line-height: 1.5em;
+    margin-top: 0.5em;
+    text-align: center;
+    @include index-on-top();
+  }
+
+  .button-wrapper {
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    @include index-on-top();
+
+    button:first-of-type {
+      background: theme.$white-color;
+      color: theme.$light-brown-color;
+      font-size: 1rem;
+      border: none;
+      outline: none;
+      padding: 1em;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+
+      &:hover {
+        background: theme.$white-color-hover;
+      }
+    }
+
+    button:last-of-type {
+      background: transparent;
+      color: theme.$white-color;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: color 0.3s ease-in-out;
+
+      &:hover {
+        color: theme.$white-color-hover;
+      }
+    }
+  }
+
+  &::before {
+    content: "";
+    background: url("/background/hero-bg.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: $hero-height;
+    position: absolute;
+    top: 0em;
+    opacity: 0.08;
+    z-index: 1;
+  }
+}
+
+@media (min-width: theme.$media-query-normal-value) {
+  .wrapper {
+    justify-content: center;
+    padding: 0em 2em 0em 2em;
+  }
+}
+
+@media (min-width: theme.$media-query-small-value) {
+  .wrapper {
+    .button-wrapper {
+      flex-direction: row;
+    }
+  }
+}
