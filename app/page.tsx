@@ -18,8 +18,8 @@ interface InputProps {
     results: {
       cropped_images: string;
       grading_result: string;
-    }[]
-  }[]
+    }[];
+  }[];
 }
 
 const backend_url = "http://localhost:8000";
@@ -78,8 +78,8 @@ export default function Home() {
         <h1 className={koho_bold.className}>Dragon Fruit Scanning</h1>
       </div>
 
-      <div className={styles["scan-card-wrapper"]}>
-        {inputMode ? (
+      {inputMode ? (
+        <div className={styles["scan-card-wrapper"]}>
           <DragDrop
             dragOver={dragOver}
             onDragOver={onDragOver}
@@ -87,8 +87,8 @@ export default function Home() {
             onDrop={onDrop}
             fileSelect={fileSelect}
           />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
 
       {mutation.isPending && <p>Loading...</p>}
       {mutation.isError && <p>An error occurred.</p>}
@@ -164,9 +164,6 @@ export default function Home() {
                                 <p className={monserrat_medium.className}>
                                   {result.grading_result}
                                 </p>
-                                <button className={monserrat_medium.className}>
-                                  Product Recommendations
-                                </button>
                               </div>
                             ))}
                         </div>

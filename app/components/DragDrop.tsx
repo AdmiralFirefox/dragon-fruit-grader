@@ -1,6 +1,5 @@
 import { ChangeEvent, SyntheticEvent } from "react";
-import useDragAndDrop from "@/hooks/useDragAndDrop";
-import { koho_bold, monserrat_medium, monserrat_bold } from "../fonts";
+import { koho_bold } from "../fonts";
 import styles from "@/styles/DragDrop.module.scss";
 
 interface DragDropProps {

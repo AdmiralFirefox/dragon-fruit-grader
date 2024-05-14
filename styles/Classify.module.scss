@@ -1,7 +1,7 @@
 @use "../styles/themeprovider/themeprovider" as theme;
 
 .scan-card-title {
-  margin-top: 3.5em;
+  margin: 3.5em 1.5em 0em 1.5em;
 
   h1 {
     color: theme.$light-brown-color;
@@ -16,11 +16,13 @@
   align-items: center;
   width: 100%;
   margin-bottom: 4em;
+  margin-top: 2em;
 }
 
 .classify-button {
   display: flex;
   justify-content: center;
+  margin-top: 2em;
 
   button {
     background: none;
@@ -48,25 +50,26 @@
   .result-container {
     border: 10px solid theme.$light-green-color;
     border-radius: 20px;
-    width: min(60em, 90%);
+    width: min(45em, 90%);
     padding: 2em;
     margin-bottom: 4em;
 
     .first-section {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       gap: 2em;
-      flex-wrap: wrap;
 
-      .uploaded-image {
+      .uploaded-image,
+      .detected-image {
         p {
-          font-size: 1.4rem;
+          font-size: 1.35rem;
           margin-bottom: 0.7em;
           color: theme.$light-brown-color;
         }
 
         .image-wrapper {
-          width: 15em;
+          width: 100%;
 
           img {
             object-fit: cover;
@@ -74,22 +77,10 @@
             height: 100%;
           }
         }
-      }
 
-      .detected-image {
-        p {
-          font-size: 1.4rem;
-          margin-bottom: 0.7em;
-          color: theme.$light-brown-color;
-        }
-
-        .image-wrapper {
-          width: 15em;
-
-          img {
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
+        @media (min-width: theme.$media-query-very-small-value) {
+          .image-wrapper {
+            width: 17em;
           }
         }
       }
@@ -99,8 +90,8 @@
       margin-top: 3em;
 
       p:first-child {
-        font-size: 1.4rem;
-        margin-bottom: 0.7em;
+        font-size: 1.35rem;
+        margin-bottom: 1em;
         color: theme.$light-brown-color;
         text-align: center;
       }
@@ -112,8 +103,13 @@
         justify-content: center;
 
         .results-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+
           .image-wrapper {
-            width: 10em;
+            width: 11em;
 
             img {
               object-fit: cover;
@@ -122,28 +118,12 @@
             }
           }
 
-          p {
-            font-size: 1.1rem;
-            margin-bottom: 0.7em;
-            color: theme.$light-brown-color;
-            margin-top: 0.5em;
-          }
-
           p:last-child {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 0.7em;
             color: theme.$light-brown-color;
             margin-top: 0.5em;
             width: 7em;
-          }
-
-          button {
-            cursor: pointer;
-            font-size: 0.9rem;
-            background: none;
-            outline: none;
-            border: none;
-            text-decoration: underline;
           }
         }
       }
@@ -152,7 +132,7 @@
     .save-results-button {
       display: flex;
       justify-content: center;
-      margin-top: 3em;
+      margin-top: 2.3em;
 
       button {
         background: none;

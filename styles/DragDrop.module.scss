@@ -1,8 +1,7 @@
 @use "../styles/themeprovider/themeprovider" as theme;
 
 .container {
-  width: 100%;
-  margin-top: 2em;
+  width: min(60em, 90%);
 
   form {
     width: 100%;
@@ -11,20 +10,31 @@
 
     label {
       width: min(45em, 100%);
-      border: 50px solid theme.$light-green-color;
+      border: 30px solid theme.$light-green-color;
       border-radius: 20px;
-      padding: 5em;
+      padding: 2.5em;
       display: inline-block;
       cursor: pointer;
     }
 
     label h1 {
-      font-size: 1.5rem;
+      font-size: clamp(1.3rem, 2vw, 1.5rem);
       text-align: center;
     }
 
     input {
       display: none;
+    }
+  }
+}
+
+@media (min-width: theme.$media-query-normal-value) {
+  .container {
+    form {
+      label {
+        border: 50px solid theme.$light-green-color;
+        padding: 5em;
+      }
     }
   }
 }
