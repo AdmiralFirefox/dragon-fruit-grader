@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 import os
 import shutil
 import cv2
+from collections import defaultdict
 
 app = Flask(__name__)
 CORS(app)
@@ -69,7 +70,27 @@ def return_home():
         object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
         image_classification(cropped_images_full_path, grading_results)
         
-        return jsonify({"input_images": uploaded_filenames, "yolo_images": yolo_images, "cropped_images": cropped_images, "grading_results": grading_results})
+        # Combining Cropped Images and Grading Results
+        combine_info = [{"cropped_images": cropped, "grading_result": result} for cropped, result in zip(cropped_images, grading_results)]
+
+        # Group similar filenames
+        grouped_dict = defaultdict(list)
+
+        for item in combine_info:
+            filename = item['cropped_images']
+            prefix = '_'.join(filename.split('_')[:-1])
+            grouped_dict[prefix].append(item)
+
+        # Convert grouped items back to list format
+        grouped_list = list(grouped_dict.values())
+
+        cropped_images = []
+        cropped_images.append(grouped_list)
+
+        structured_info = [{"input_image": input_image, "yolo_images": detected_object, "results": results}
+                        for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
+        
+        return jsonify({ "structured_info":  structured_info})
     else:
         return jsonify({"error": "No files uploaded"}), 400
 

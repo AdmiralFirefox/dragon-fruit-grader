@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import Axios from "axios";
-import { koho_bold, monserrat_medium, monserrat_bold } from "./fonts";
+import { koho_bold, monserrat_medium } from "./fonts";
 import useDragAndDrop from "@/hooks/useDragAndDrop";
 import Hero from "./components/Hero";
 import ClassInfoCards from "./components/ClassInfoCards";
@@ -12,10 +12,14 @@ import styles from "@/styles/Classify.module.scss";
 import DragDrop from "./components/DragDrop";
 
 interface InputProps {
-  input_images: string[];
-  yolo_images: string[];
-  cropped_images: string[];
-  grading_results: string[];
+  structured_info: {
+    input_image: string;
+    yolo_images: string;
+    results: {
+      cropped_images: string;
+      grading_result: string;
+    }[]
+  }[]
 }
 
 const backend_url = "http://localhost:8000";
@@ -91,56 +95,93 @@ export default function Home() {
       {mutation.isSuccess && mutation.data !== undefined && (
         <ul>
           {!inputMode ? (
-            <button onClick={() => setInputMode(true)}>
-              Classify Another Set
-            </button>
+            <div className={styles["classify-button"]}>
+              <button
+                onClick={() => setInputMode(true)}
+                className={koho_bold.className}
+              >
+                Classify Another Set
+              </button>
+            </div>
           ) : null}
           {!inputMode ? (
-            <>
-              <>
-                <h1>Uploaded Images</h1>
-                {mutation.data.input_images.map((filename, index) => (
-                  <li key={index}>
-                    <Image
-                      src={`${backend_url}/api/get-image/${filename}`}
-                      alt={`Uploaded Image ${index + 1}`}
-                      width={300}
-                      height={300}
-                      unoptimized
-                    />
+            <ul>
+              {mutation.data.structured_info.map((info, index) => {
+                return (
+                  <li key={index} className={styles["result-wrapper"]}>
+                    <div className={styles["result-container"]}>
+                      <div className={styles["first-section"]}>
+                        <div className={styles["uploaded-image"]}>
+                          <p className={monserrat_medium.className}>
+                            Uploaded Image
+                          </p>
+                          <div className={styles["image-wrapper"]}>
+                            <Image
+                              src={`${backend_url}/api/get-image/${info.input_image}`}
+                              alt={`Uploaded Image ${index + 1}`}
+                              width={300}
+                              height={300}
+                              unoptimized
+                            />
+                          </div>
+                        </div>
+
+                        <div className={styles["detected-image"]}>
+                          <p className={monserrat_medium.className}>
+                            Detected Dragon Fruits
+                          </p>
+                          <div className={styles["image-wrapper"]}>
+                            <Image
+                              src={`${backend_url}/api/yolo-results/${info.yolo_images}`}
+                              alt={`Uploaded Image ${index + 1}`}
+                              width={300}
+                              height={300}
+                              unoptimized
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={styles["second-section"]}>
+                        <p className={monserrat_medium.className}>Results</p>
+                        <div className={styles["grading-results"]}>
+                          {info.results != null &&
+                            info.results.map((result, index) => (
+                              <div
+                                key={index}
+                                className={styles["results-card"]}
+                              >
+                                <div className={styles["image-wrapper"]}>
+                                  <Image
+                                    key={index}
+                                    src={`${backend_url}/api/yolo-cropped-images/${result.cropped_images}`}
+                                    alt={`Uploaded Image ${index + 1}`}
+                                    width={250}
+                                    height={250}
+                                    unoptimized
+                                  />
+                                </div>
+                                <p className={monserrat_medium.className}>
+                                  {result.grading_result}
+                                </p>
+                                <button className={monserrat_medium.className}>
+                                  Product Recommendations
+                                </button>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+
+                      <div className={styles["save-results-button"]}>
+                        <button className={koho_bold.className}>
+                          Save Results
+                        </button>
+                      </div>
+                    </div>
                   </li>
-                ))}
-                <h1>Detected Images</h1>
-                {mutation.data.yolo_images.map((filename, index) => (
-                  <li key={index}>
-                    <Image
-                      src={`${backend_url}/api/yolo-results/${filename}`}
-                      alt={`YOLO Image Result ${index + 1}`}
-                      width={300}
-                      height={300}
-                      unoptimized
-                    />
-                  </li>
-                ))}
-                <h1>Cropped Images</h1>
-                {mutation.data.cropped_images.map((filename, index) => (
-                  <li key={index}>
-                    <Image
-                      src={`${backend_url}/api/yolo-cropped-images/${filename}`}
-                      alt={`YOLO Image Result ${index + 1}`}
-                      width={300}
-                      height={300}
-                      unoptimized
-                    />
-                  </li>
-                ))}
-                {mutation.data.grading_results.map((results, index) => (
-                  <li key={index}>
-                    <h1>The predicted classs is: {results}</h1>
-                  </li>
-                ))}
-              </>
-            </>
+                );
+              })}
+            </ul>
           ) : null}
         </ul>
       )}
