@@ -8,8 +8,9 @@ import { koho_bold, monserrat_medium } from "./fonts";
 import useDragAndDrop from "@/hooks/useDragAndDrop";
 import Hero from "./components/Hero";
 import ClassInfoCards from "./components/ClassInfoCards";
-import styles from "@/styles/Classify.module.scss";
 import DragDrop from "./components/DragDrop";
+import InfoIcon from "./components/Icons/InfoIcon";
+import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
   structured_info: {
@@ -18,6 +19,7 @@ interface InputProps {
     results: {
       cropped_images: string;
       grading_result: string;
+      products: string[];
     }[];
   }[];
 }
@@ -161,9 +163,17 @@ export default function Home() {
                                     unoptimized
                                   />
                                 </div>
-                                <p className={monserrat_medium.className}>
-                                  {result.grading_result}
-                                </p>
+                                <div className={styles["result-info"]}>
+                                  <p className={monserrat_medium.className}>
+                                    {result.grading_result}
+                                  </p>
+                                  <button>
+                                    <InfoIcon width="2em" height="2em" />
+                                  </button>
+                                </div>
+                                {/* {result.products.map((result, index) => (
+                                  <p key={index}>{result}</p>
+                                ))} */}
                               </div>
                             ))}
                         </div>

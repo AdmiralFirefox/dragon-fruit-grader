@@ -23,6 +23,7 @@
   display: flex;
   justify-content: center;
   margin-top: 2em;
+  margin-bottom: 3em;
 
   button {
     background: none;
@@ -42,7 +43,7 @@
 }
 
 .result-wrapper {
-  margin-top: 2em;
+  margin-bottom: 2.5em;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -52,7 +53,6 @@
     border-radius: 20px;
     width: min(45em, 90%);
     padding: 2em;
-    margin-bottom: 4em;
 
     .first-section {
       display: flex;
@@ -89,7 +89,7 @@
     .second-section {
       margin-top: 3em;
 
-      p:first-child {
+      p:first-of-type {
         font-size: 1.35rem;
         margin-bottom: 1em;
         color: theme.$light-brown-color;
@@ -109,7 +109,7 @@
           justify-content: center;
 
           .image-wrapper {
-            width: 11em;
+            width: 10.5em;
 
             img {
               object-fit: cover;
@@ -118,12 +118,26 @@
             }
           }
 
-          p:last-child {
-            font-size: 1.2rem;
-            margin-bottom: 0.7em;
-            color: theme.$light-brown-color;
-            margin-top: 0.5em;
-            width: 7em;
+          .result-info {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            margin-top: 0.7em;
+
+            p {
+              margin-bottom: 0em;
+              margin-top: 0.1em;
+              font-size: 1.05rem;
+              color: theme.$light-brown-color;
+              text-align: left;
+            }
+
+            button {
+              background: none;
+              border: none;
+              cursor: pointer;
+              margin-right: 0.4em;
+            }
           }
         }
       }

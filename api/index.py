@@ -57,6 +57,7 @@ def return_home():
     cropped_images = []
     cropped_images_full_path = []
     grading_results = []
+    product_suggestions = []
 
     if input_images:
         # Save Images in the /tmp/uploads folder
@@ -68,10 +69,10 @@ def return_home():
             uploaded_images.append(file_path)
 
         object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
-        image_classification(cropped_images_full_path, grading_results)
+        image_classification(cropped_images_full_path, grading_results, product_suggestions)
         
         # Combining Cropped Images and Grading Results
-        combine_info = [{"cropped_images": cropped, "grading_result": result} for cropped, result in zip(cropped_images, grading_results)]
+        combine_info = [{"cropped_images": cropped, "grading_result": result, "products": products} for cropped, result, products in zip(cropped_images, grading_results, product_suggestions)]
 
         # Group similar filenames
         grouped_dict = defaultdict(list)
@@ -195,7 +196,34 @@ def object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_i
             cropped_images.append(cropped_image_name)
             cropped_images_full_path.append(filename)
 
-def image_classification(cropped_images_full_path, grading_results):
+def product_suggestion(grading_result):
+    products = {
+        "extra class": [
+            "Cooked vegetable meals", "Dragon fruit skin with caramelized sugar",
+            "Dragon fruit jam", "Dragon fruit gummies", "Dragon Fruit Juice",
+            "Dragon Fruit Smoothie", "Dragon Fruit rice cakes", "Dragon Fruit Cookies"
+        ],
+        "class 1": [
+            "Dragon Fruit Noodles", "Dragon Fruit Marinating Sauce", "Dragon Fruit Juice",
+            "Dragon Fruit Smoothie", "Dragon Fruit Chips", "Dragon Fruit rice cakes",
+            "Dragon Fruit Cookies", "Dragon Fruit Ketchup"
+        ],
+        "class 2": [
+            "Dragon Fruit Noodles", "Wine", "Soap"
+        ]
+    }
+    
+    # Normalize the input to lower case to ensure case-insensitive comparison
+    grading_result = grading_result.lower()
+    
+    # Check if the class exists in the dictionary
+    if grading_result in products:
+        return products[grading_result]
+    else:
+        return ["No products available for this class."]
+
+
+def image_classification(cropped_images_full_path, grading_results, product_suggestions):
     # Define class names
     class_names = ['Class 1', 'Class 2', 'Extra Class', 'Reject', 'Reject (Unripe)']
 
@@ -249,6 +277,8 @@ def image_classification(cropped_images_full_path, grading_results):
         
         # print("The predicted class is", predicted_class)
         grading_results.append(predicted_class)
+
+        product_suggestions.append(product_suggestion(predicted_class))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
