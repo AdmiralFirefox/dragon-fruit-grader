@@ -1,6 +1,5 @@
 import torch
 from torchvision import models, transforms
-from torch import nn
 from PIL import Image
 from ultralytics import YOLO
 from flask import Flask, jsonify, request, send_file
@@ -10,6 +9,7 @@ import os
 import shutil
 import cv2
 from collections import defaultdict
+import uuid
 
 app = Flask(__name__)
 CORS(app)
@@ -72,7 +72,7 @@ def return_home():
         image_classification(cropped_images_full_path, grading_results, product_suggestions)
         
         # Combining Cropped Images and Grading Results
-        combine_info = [{"cropped_images": cropped, "grading_result": result, "products": products} for cropped, result, products in zip(cropped_images, grading_results, product_suggestions)]
+        combine_info = [{"id": str(uuid.uuid4()), "cropped_images": cropped, "grading_result": result, "products": products} for cropped, result, products in zip(cropped_images, grading_results, product_suggestions)]
 
         # Group similar filenames
         grouped_dict = defaultdict(list)
@@ -88,9 +88,8 @@ def return_home():
         cropped_images = []
         cropped_images.append(grouped_list)
 
-        structured_info = [{"input_image": input_image, "yolo_images": detected_object, "results": results}
-                        for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
-        
+        structured_info = [{"id": str(uuid.uuid4()), "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
+
         return jsonify({ "structured_info":  structured_info})
     else:
         return jsonify({"error": "No files uploaded"}), 400

@@ -89,7 +89,7 @@
     .second-section {
       margin-top: 3em;
 
-      p:first-of-type {
+      p:first-child {
         font-size: 1.35rem;
         margin-bottom: 1em;
         color: theme.$light-brown-color;

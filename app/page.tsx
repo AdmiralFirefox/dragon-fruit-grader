@@ -3,20 +3,24 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import Axios from "axios";
-import { koho_bold, monserrat_medium } from "./fonts";
 import useDragAndDrop from "@/hooks/useDragAndDrop";
 import Hero from "./components/Hero";
 import ClassInfoCards from "./components/ClassInfoCards";
 import DragDrop from "./components/DragDrop";
 import InfoIcon from "./components/Icons/InfoIcon";
+import InfoModal from "./components/Modals/InfoModal";
+import { koho_bold, monserrat_medium } from "./fonts";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
   structured_info: {
+    id: string;
     input_image: string;
     yolo_images: string;
     results: {
+      id: string;
       cropped_images: string;
       grading_result: string;
       products: string[];
@@ -44,6 +48,12 @@ const sendUserInput = async (files: File[]) => {
 
 export default function Home() {
   const [inputMode, setInputMode] = useState(true);
+  const [infoModal, setInfoModal] = useState<number | string>(0);
+
+  const { lock, unlock } = useScrollLock({
+    autoLock: false,
+    lockTarget: "#scrollable",
+  });
 
   const { dragOver, setDragOver, onDragOver, onDragLeave } = useDragAndDrop();
 
@@ -52,6 +62,7 @@ export default function Home() {
     mutationFn: sendUserInput,
   });
 
+  // Uploading Files to the server
   const onDrop = (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
 
@@ -69,6 +80,23 @@ export default function Home() {
     setInputMode(false);
     const files = event.target.files ? Array.from(event.target.files) : [];
     mutation.mutate(files);
+  };
+
+  // Info Modal
+  const openModal = (id: string) => {
+    lock();
+    if (infoModal === id) {
+      return setInfoModal(0);
+    }
+
+    setInfoModal(id);
+  };
+
+  const closeModal = (id: string) => {
+    unlock();
+    if (infoModal === id) {
+      return setInfoModal(0);
+    }
   };
 
   return (
@@ -108,9 +136,9 @@ export default function Home() {
           ) : null}
           {!inputMode ? (
             <ul>
-              {mutation.data.structured_info.map((info, index) => {
+              {mutation.data.structured_info.map((info) => {
                 return (
-                  <li key={index} className={styles["result-wrapper"]}>
+                  <li key={info.id} className={styles["result-wrapper"]}>
                     <div className={styles["result-container"]}>
                       <div className={styles["first-section"]}>
                         <div className={styles["uploaded-image"]}>
@@ -120,7 +148,7 @@ export default function Home() {
                           <div className={styles["image-wrapper"]}>
                             <Image
                               src={`${backend_url}/api/get-image/${info.input_image}`}
-                              alt={`Uploaded Image ${index + 1}`}
+                              alt={info.input_image}
                               width={300}
                               height={300}
                               unoptimized
@@ -135,7 +163,7 @@ export default function Home() {
                           <div className={styles["image-wrapper"]}>
                             <Image
                               src={`${backend_url}/api/yolo-results/${info.yolo_images}`}
-                              alt={`Uploaded Image ${index + 1}`}
+                              alt={info.yolo_images}
                               width={300}
                               height={300}
                               unoptimized
@@ -148,16 +176,15 @@ export default function Home() {
                         <p className={monserrat_medium.className}>Results</p>
                         <div className={styles["grading-results"]}>
                           {info.results != null &&
-                            info.results.map((result, index) => (
+                            info.results.map((result) => (
                               <div
-                                key={index}
+                                key={result.id}
                                 className={styles["results-card"]}
                               >
                                 <div className={styles["image-wrapper"]}>
                                   <Image
-                                    key={index}
                                     src={`${backend_url}/api/yolo-cropped-images/${result.cropped_images}`}
-                                    alt={`Uploaded Image ${index + 1}`}
+                                    alt={result.cropped_images}
                                     width={250}
                                     height={250}
                                     unoptimized
@@ -167,13 +194,17 @@ export default function Home() {
                                   <p className={monserrat_medium.className}>
                                     {result.grading_result}
                                   </p>
-                                  <button>
+                                  <button onClick={() => openModal(result.id)}>
                                     <InfoIcon width="2em" height="2em" />
                                   </button>
                                 </div>
-                                {/* {result.products.map((result, index) => (
-                                  <p key={index}>{result}</p>
-                                ))} */}
+                                <InfoModal
+                                  active={infoModal === result.id}
+                                  closeModal={() => closeModal(result.id)}
+                                  products={result.products}
+                                  grading_result={result.grading_result}
+                                  id={result.id}
+                                />
                               </div>
                             ))}
                         </div>

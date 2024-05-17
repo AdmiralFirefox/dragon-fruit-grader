@@ -1,0 +1,29 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+$modal-width: min(40em, 90%);
+
+.backdrop {
+  position: fixed;
+  width: 100%;
+  background: theme.$black-color-transparent;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
+.modal-wrapper {
+  position: fixed;
+  width: $modal-width;
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  z-index: 4;
+
+  .modal-content {
+    width: $modal-width;
+    background: theme.$white-color;
+    padding: 2em;
+    border-radius: 20px;
+    overflow: auto;
+  }
+}
