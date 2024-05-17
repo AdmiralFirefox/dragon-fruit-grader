@@ -1,5 +1,6 @@
 import torch
 from torchvision import models, transforms
+import torch.nn.functional as F
 from PIL import Image
 from ultralytics import YOLO
 from flask import Flask, jsonify, request, send_file
@@ -59,6 +60,9 @@ def return_home():
     grading_results = []
     product_suggestions = []
 
+    class_lists = []
+    class_probabilities = []
+
     if input_images:
         # Save Images in the /tmp/uploads folder
         for image in input_images:
@@ -69,10 +73,13 @@ def return_home():
             uploaded_images.append(file_path)
 
         object_detection(uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
-        image_classification(cropped_images_full_path, grading_results, product_suggestions)
+        image_classification(cropped_images_full_path, grading_results, product_suggestions, class_lists, class_probabilities)
+
+        # Combining Class Lists and Class Probabilities
+        combine_probabilities = [[{"id": str(uuid.uuid4()), "class": class_name, "probability": probability} for class_name, probability in zip(classes, probabilities)] for classes, probabilities in zip(class_lists, class_probabilities)]
         
-        # Combining Cropped Images and Grading Results
-        combine_info = [{"id": str(uuid.uuid4()), "cropped_images": cropped, "grading_result": result, "products": products} for cropped, result, products in zip(cropped_images, grading_results, product_suggestions)]
+        # Combining Cropped Images, Grading Results and Class Probabilities
+        combine_info = [{"id": str(uuid.uuid4()), "cropped_images": cropped, "grading_result": result, "products": products, "probabilities":  probabilities} for cropped, result, products, probabilities in zip(cropped_images, grading_results, product_suggestions, combine_probabilities)]
 
         # Group similar filenames
         grouped_dict = defaultdict(list)
@@ -85,9 +92,7 @@ def return_home():
         # Convert grouped items back to list format
         grouped_list = list(grouped_dict.values())
 
-        cropped_images = []
-        cropped_images.append(grouped_list)
-
+        # Structure all Information
         structured_info = [{"id": str(uuid.uuid4()), "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
 
         return jsonify({ "structured_info":  structured_info})
@@ -222,7 +227,7 @@ def product_suggestion(grading_result):
         return ["No products available for this class."]
 
 
-def image_classification(cropped_images_full_path, grading_results, product_suggestions):
+def image_classification(cropped_images_full_path, grading_results, product_suggestions, class_lists, class_probabilities):
     # Define class names
     class_names = ['Class 1', 'Class 2', 'Extra Class', 'Reject', 'Reject (Unripe)']
 
@@ -271,6 +276,9 @@ def image_classification(cropped_images_full_path, grading_results, product_sugg
         with torch.no_grad():
             out = model(batch_t)
         
+        # Apply softmax to get probabilities
+        probabilities = F.softmax(out, dim=1)
+        
         _, predicted = torch.max(out, 1)
         predicted_class = class_names[predicted]
         
@@ -278,6 +286,30 @@ def image_classification(cropped_images_full_path, grading_results, product_sugg
         grading_results.append(predicted_class)
 
         product_suggestions.append(product_suggestion(predicted_class))
+
+        # Probabilities of all classes
+        current_class_lists_batch = []
+        current_class_probabilities_batch = []
+
+        for i, class_name in enumerate(class_names):
+            class_prob = probabilities[0][i].item() * 100
+
+            current_class_lists_batch.append(class_name)
+            current_class_probabilities_batch.append(class_prob)
+
+            if len(current_class_lists_batch) == len(class_names):
+                class_lists.append(current_class_lists_batch)
+                current_class_lists_batch  = []
+
+            if len(current_class_probabilities_batch) == len(class_names):
+                class_probabilities.append(current_class_probabilities_batch)
+                current_class_probabilities_batch = []
+        
+        if current_class_lists_batch:
+             class_lists.append(current_class_lists_batch)
+        
+        if current_class_probabilities_batch:
+             class_probabilities.append(current_class_probabilities_batch)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
