@@ -1,7 +1,6 @@
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { motion, AnimatePresence } from "framer-motion";
 import DonutChart from "../Charts/DonutChart";
-import { monserrat_medium, monserrat_bold } from "../../fonts";
 import styles from "@/styles/InfoModal.module.scss";
 
 interface InfoModalProps {
@@ -73,25 +72,23 @@ const InfoModal = ({
               <div className={styles["chart-content"]}>
                 {probabilities.map((result) => (
                   <div key={result.id} className={styles["content"]}>
-                    <p className={monserrat_bold.className}>{result.class}</p>
+                    <p className={styles["class-result"]}>{result.class}</p>
                     <div className={styles["chart-container"]}>
                       <DonutChart
                         probability={Math.round(result.probability * 100) / 100}
                       />
                     </div>
-                    <p className={monserrat_medium.className}>
+                    <p className={styles["class-probability"]}>
                       {Math.round(result.probability * 100) / 100}%
                     </p>
                   </div>
                 ))}
               </div>
               <div className={styles["products-content"]}>
-                <p className={`${monserrat_bold.className} title`}>Products:</p>
+                <p className={styles["products-title"]}>Products:</p>
                 <ul className={styles["products"]}>
                   {products.map((product, index) => (
-                    <li key={index + 1} className={monserrat_medium.className}>
-                      {product}
-                    </li>
+                    <li key={index + 1}>{product}</li>
                   ))}
                 </ul>
               </div>

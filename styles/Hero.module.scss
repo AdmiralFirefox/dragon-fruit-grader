@@ -30,6 +30,7 @@ $hero-height: 33em;
   h1 {
     color: theme.$white-color;
     font-size: clamp(2.5rem, 3.5vw, 3rem);
+    font-family: var(--koho-bold);
     text-align: center;
     margin-top: 0.2em;
     @include index-on-top();
@@ -38,6 +39,7 @@ $hero-height: 33em;
   p {
     color: theme.$white-color;
     font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+    font-family: var(--monserrat-medium);
     line-height: 1.5em;
     margin-top: 0.5em;
     text-align: center;
@@ -56,6 +58,7 @@ $hero-height: 33em;
       background: theme.$white-color;
       color: theme.$light-brown-color;
       font-size: 1rem;
+      font-family: var(--monserrat-bold);
       border: none;
       outline: none;
       padding: 1em;
@@ -74,6 +77,7 @@ $hero-height: 33em;
       border: none;
       outline: none;
       font-size: 1rem;
+      font-family: var(--monserrat-bold);
       cursor: pointer;
       transition: color 0.3s ease-in-out;
 

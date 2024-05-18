@@ -1,5 +1,4 @@
 import { ChangeEvent, SyntheticEvent } from "react";
-import { koho_bold } from "../fonts";
 import styles from "@/styles/DragDrop.module.scss";
 
 interface DragDropProps {
@@ -26,10 +25,7 @@ const DragDrop = ({
           onDragLeave={onDragLeave}
           onDrop={onDrop}
         >
-          <h1
-            style={{ color: `${dragOver ? "#d0d6b5" : "#987284"}` }}
-            className={koho_bold.className}
-          >
+          <h1 style={{ color: `${dragOver ? "#d0d6b5" : "#987284"}` }}>
             {!dragOver
               ? "Upload a dragon fruit picture to classify and see the results and product suggestions."
               : "Drop here..."}

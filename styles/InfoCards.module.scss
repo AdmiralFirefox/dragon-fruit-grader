@@ -7,6 +7,7 @@
   h1 {
     text-align: center;
     font-size: clamp(2.3rem, 3.5vw, 2.7rem);
+    font-family: var(--koho-bold);
     color: theme.$light-brown-color;
     line-height: 1.1em;
   }
@@ -14,6 +15,7 @@
   p {
     text-align: center;
     font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-family: var(--monserrat-medium);
     color: theme.$orange-color;
     line-height: 1.5em;
     margin-top: 1em;
@@ -52,12 +54,14 @@
         margin-top: 1em;
         color: theme.$orange-color;
         font-size: 1.05rem;
+        font-family: var(--monserrat-bold);
       }
 
       p:last-of-type {
         margin-top: 1em;
         color: theme.$light-brown-color;
         font-size: 1.05rem;
+        font-family: var(--monserrat-medium);
         line-height: 1.5em;
       }
     }

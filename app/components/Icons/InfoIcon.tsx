@@ -1,5 +1,3 @@
-import React from "react";
-
 interface InfoIconProps {
   width: string;
   height: string;

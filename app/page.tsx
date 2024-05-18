@@ -11,7 +11,6 @@ import ClassInfoCards from "./components/ClassInfoCards";
 import DragDrop from "./components/DragDrop";
 import InfoIcon from "./components/Icons/InfoIcon";
 import InfoModal from "./components/Modals/InfoModal";
-import { koho_bold, monserrat_medium } from "./fonts";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
@@ -28,7 +27,7 @@ interface InputProps {
         id: string;
         class: string;
         probability: number;
-      }[]
+      }[];
     }[];
   }[];
 }
@@ -110,7 +109,7 @@ export default function Home() {
       <ClassInfoCards />
 
       <div className={styles["scan-card-title"]}>
-        <h1 className={koho_bold.className}>Dragon Fruit Scanning</h1>
+        <h1>Dragon Fruit Scanning</h1>
       </div>
 
       {inputMode ? (
@@ -131,10 +130,7 @@ export default function Home() {
         <ul>
           {!inputMode ? (
             <div className={styles["classify-button"]}>
-              <button
-                onClick={() => setInputMode(true)}
-                className={koho_bold.className}
-              >
+              <button onClick={() => setInputMode(true)}>
                 Classify Another Set
               </button>
             </div>
@@ -147,9 +143,7 @@ export default function Home() {
                     <div className={styles["result-container"]}>
                       <div className={styles["first-section"]}>
                         <div className={styles["uploaded-image"]}>
-                          <p className={monserrat_medium.className}>
-                            Uploaded Image
-                          </p>
+                          <p>Uploaded Image</p>
                           <div className={styles["image-wrapper"]}>
                             <Image
                               src={`${backend_url}/api/get-image/${info.input_image}`}
@@ -162,9 +156,7 @@ export default function Home() {
                         </div>
 
                         <div className={styles["detected-image"]}>
-                          <p className={monserrat_medium.className}>
-                            Detected Dragon Fruits
-                          </p>
+                          <p>Detected Dragon Fruits</p>
                           <div className={styles["image-wrapper"]}>
                             <Image
                               src={`${backend_url}/api/yolo-results/${info.yolo_images}`}
@@ -178,7 +170,7 @@ export default function Home() {
                       </div>
 
                       <div className={styles["second-section"]}>
-                        <p className={monserrat_medium.className}>Results</p>
+                        <p className={styles["result-title"]}>Results</p>
                         <div className={styles["grading-results"]}>
                           {info.results != null &&
                             info.results.map((result) => (
@@ -196,7 +188,7 @@ export default function Home() {
                                   />
                                 </div>
                                 <div className={styles["result-info"]}>
-                                  <p className={monserrat_medium.className}>
+                                  <p className={styles["grading-result"]}>
                                     {result.grading_result}
                                   </p>
                                   <button onClick={() => openModal(result.id)}>
@@ -216,9 +208,7 @@ export default function Home() {
                       </div>
 
                       <div className={styles["save-results-button"]}>
-                        <button className={koho_bold.className}>
-                          Save Results
-                        </button>
+                        <button>Save Results</button>
                       </div>
                     </div>
                   </li>

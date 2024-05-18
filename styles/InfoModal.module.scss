@@ -39,9 +39,10 @@ $modal-width: 40em;
         align-items: center;
         gap: 0.7em;
 
-        p:first-of-type {
+        .class-result {
           color: theme.$light-brown-color;
           font-size: 1.2rem;
+          font-family: var(--monserrat-bold);
           margin-bottom: 0;
         }
 
@@ -49,9 +50,10 @@ $modal-width: 40em;
           width: min(7em, 100%);
         }
 
-        p:last-of-type {
+        .class-probability {
           color: theme.$light-brown-color;
           font-size: 1rem;
+          font-family: var(--monserrat-medium);
         }
       }
     }
@@ -59,11 +61,12 @@ $modal-width: 40em;
     .products-content {
       margin-top: 1.5em;
 
-      p:first-of-type {
+      .products-title {
         color: theme.$light-brown-color;
-        margin-bottom: 0 !important;
-        font-size: 1.4rem !important;
-        text-align: left !important;
+        margin-bottom: 0;
+        font-size: 1.4rem;
+        font-family: var(--monserrat-bold);
+        text-align: left;
       }
 
       .products {
@@ -73,6 +76,11 @@ $modal-width: 40em;
         flex-direction: column;
         align-items: flex-start;
         line-height: 1.5em;
+
+        li {
+          font-family: var(--monserrat-medium);
+          font-size: 1rem;
+        }
       }
     }
   }
