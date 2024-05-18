@@ -1,6 +1,6 @@
 @use "../styles/themeprovider/themeprovider" as theme;
 
-$modal-width: min(40em, 90%);
+$modal-width: 40em;
 
 .backdrop {
   position: fixed;
@@ -13,17 +13,67 @@ $modal-width: min(40em, 90%);
 
 .modal-wrapper {
   position: fixed;
-  width: $modal-width;
+  width: min($modal-width, 90%);
   left: 50%;
   display: flex;
   justify-content: center;
+  margin-top: 1em;
   z-index: 4;
 
   .modal-content {
-    width: $modal-width;
+    width: min($modal-width, 100%);
     background: theme.$white-color;
     padding: 2em;
     border-radius: 20px;
     overflow: auto;
+
+    .chart-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2.7em;
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.7em;
+
+        p:first-of-type {
+          color: theme.$light-brown-color;
+          font-size: 1.2rem;
+          margin-bottom: 0;
+        }
+
+        .chart-container {
+          width: min(7em, 100%);
+        }
+
+        p:last-of-type {
+          color: theme.$light-brown-color;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .products-content {
+      margin-top: 1.5em;
+
+      p:first-of-type {
+        color: theme.$light-brown-color;
+        margin-bottom: 0 !important;
+        font-size: 1.4rem !important;
+        text-align: left !important;
+      }
+
+      .products {
+        margin-top: 0.8em;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.5em;
+      }
+    }
   }
 }

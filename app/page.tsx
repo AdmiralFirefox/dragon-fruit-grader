@@ -24,6 +24,11 @@ interface InputProps {
       cropped_images: string;
       grading_result: string;
       products: string[];
+      probabilities: {
+        id: string;
+        class: string;
+        probability: number;
+      }[]
     }[];
   }[];
 }
@@ -202,7 +207,7 @@ export default function Home() {
                                   active={infoModal === result.id}
                                   closeModal={() => closeModal(result.id)}
                                   products={result.products}
-                                  grading_result={result.grading_result}
+                                  probabilities={result.probabilities}
                                   id={result.id}
                                 />
                               </div>
