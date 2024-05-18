@@ -86,7 +86,13 @@ const InfoModal = ({
               </div>
               <div className={styles["products-content"]}>
                 <p className={styles["products-title"]}>Products:</p>
-                <ul className={styles["products"]}>
+                <ul
+                  className={
+                    products.length <= 1
+                      ? styles["products-none"]
+                      : styles["products"]
+                  }
+                >
                   {products.map((product, index) => (
                     <li key={index + 1}>{product}</li>
                   ))}
