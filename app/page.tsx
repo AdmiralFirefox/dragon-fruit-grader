@@ -18,6 +18,7 @@ interface InputProps {
     id: string;
     input_image: string;
     yolo_images: string;
+    timestamp: string;
     results: {
       id: string;
       cropped_images: string;
@@ -127,7 +128,7 @@ export default function Home() {
       {mutation.isPending && <p>Loading...</p>}
       {mutation.isError && <p>An error occurred.</p>}
       {mutation.isSuccess && mutation.data !== undefined && (
-        <ul>
+        <>
           {!inputMode ? (
             <div className={styles["classify-button"]}>
               <button onClick={() => setInputMode(true)}>
@@ -207,6 +208,10 @@ export default function Home() {
                         </div>
                       </div>
 
+                      <div className={styles["timestamp"]}>
+                        <p>Time Graded: {info.timestamp}</p>
+                      </div>
+
                       <div className={styles["save-results-button"]}>
                         <button>Save Results</button>
                       </div>
@@ -216,7 +221,7 @@ export default function Home() {
               })}
             </ul>
           ) : null}
-        </ul>
+        </>
       )}
     </main>
   );

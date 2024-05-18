@@ -148,6 +148,17 @@
       }
     }
 
+    .timestamp {
+      margin-top: 2em;
+
+      p {
+        color: theme.$light-brown-color;
+        font-size: 1.05rem;
+        font-family: var(--monserrat-medium);
+        text-align: center;
+      }
+    }
+
     .save-results-button {
       display: flex;
       justify-content: center;

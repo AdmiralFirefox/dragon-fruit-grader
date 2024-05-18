@@ -11,6 +11,7 @@ import shutil
 import cv2
 from collections import defaultdict
 import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -92,10 +93,14 @@ def return_home():
         # Convert grouped items back to list format
         grouped_list = list(grouped_dict.values())
 
-        # Structure all Information
-        structured_info = [{"id": str(uuid.uuid4()), "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
+        # Get Current Date and Time
+        now = datetime.now()
+        dt_string = now.strftime("%B %d, %Y, %I:%M %p")
 
-        return jsonify({ "structured_info":  structured_info})
+        # Structure all Information
+        structured_info = [{"id": str(uuid.uuid4()), "timestamp": dt_string, "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
+
+        return jsonify({ "structured_info":  structured_info })
     else:
         return jsonify({"error": "No files uploaded"}), 400
 
