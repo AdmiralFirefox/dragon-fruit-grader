@@ -11,6 +11,8 @@ import ClassInfoCards from "./components/ClassInfoCards";
 import DragDrop from "./components/DragDrop";
 import InfoIcon from "./components/Icons/InfoIcon";
 import InfoModal from "./components/Modals/InfoModal";
+import Loading from "./components/States/Loading";
+import Error from "./components/States/Error";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
@@ -125,8 +127,8 @@ export default function Home() {
         </div>
       ) : null}
 
-      {mutation.isPending && <p>Loading...</p>}
-      {mutation.isError && <p>An error occurred.</p>}
+      {mutation.isPending && <Loading />}
+      {mutation.isError && <Error />}
       {mutation.isSuccess && mutation.data !== undefined && (
         <>
           {!inputMode ? (
@@ -136,6 +138,7 @@ export default function Home() {
               </button>
             </div>
           ) : null}
+
           {!inputMode ? (
             <ul>
               {mutation.data.structured_info.map((info) => {
