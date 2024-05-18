@@ -13,6 +13,7 @@ import InfoIcon from "./components/Icons/InfoIcon";
 import InfoModal from "./components/Modals/InfoModal";
 import Loading from "./components/States/Loading";
 import Error from "./components/States/Error";
+import { db, GradingInfo } from "./db";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
@@ -88,6 +89,26 @@ export default function Home() {
     const files = event.target.files ? Array.from(event.target.files) : [];
     mutation.mutate(files);
   };
+
+  // Uploading to Grading Results Database
+  async function addGradingInfo(info: GradingInfo) {
+    await db.transaction(
+      "rw",
+      db.grading_info,
+      db.results,
+      db.probabilities,
+      async () => {
+        await db.grading_info.add(info);
+
+        for (const result of info.results) {
+          await db.results.add(result);
+          for (const probability of result.probabilities) {
+            await db.probabilities.add(probability);
+          }
+        }
+      }
+    );
+  }
 
   // Info Modal
   const openModal = (id: string) => {
@@ -216,7 +237,9 @@ export default function Home() {
                       </div>
 
                       <div className={styles["save-results-button"]}>
-                        <button>Save Results</button>
+                        <button onClick={() => addGradingInfo(info)}>
+                          Save Results
+                        </button>
                       </div>
                     </div>
                   </li>
