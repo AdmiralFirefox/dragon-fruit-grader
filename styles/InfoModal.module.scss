@@ -101,5 +101,27 @@ $modal-width: 40em;
         }
       }
     }
+
+    .close-button {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 1.3em;
+
+      button {
+        border: none;
+        font-size: 1.1rem;
+        font-family: var(--koho-bold);
+        background: theme.$orange-color;
+        color: theme.$white-color;
+        padding: 0.5em 1em;
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background: theme.$orange-color-hover;
+        }
+      }
+    }
   }
 }

@@ -98,6 +98,9 @@ const InfoModal = ({
                   ))}
                 </ul>
               </div>
+              <div className={styles["close-button"]}>
+                <button onClick={() => closeModal(id)}>Close</button>
+              </div>
             </div>
           </motion.div>
         ) : null}
