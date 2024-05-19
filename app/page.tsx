@@ -14,6 +14,7 @@ import InfoModal from "./components/Modals/InfoModal";
 import Loading from "./components/States/Loading";
 import Error from "./components/States/Error";
 import { db, GradingInfo } from "./db";
+import { toBase64FromUrl } from "@/utils/toBase64FromUrl";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
@@ -92,6 +93,20 @@ export default function Home() {
 
   // Uploading to Grading Results Database
   async function addGradingInfo(info: GradingInfo) {
+    // Convert string to file images
+    info.input_image = await toBase64FromUrl(
+      `${backend_url}/api/get-image/${info.input_image}`
+    );
+    info.yolo_images = await toBase64FromUrl(
+      `${backend_url}/api/yolo-results/${info.yolo_images}`
+    );
+
+    for (const result of info.results) {
+      result.cropped_images = await toBase64FromUrl(
+        `${backend_url}/api/yolo-cropped-images/${result.cropped_images}`
+      );
+    }
+
     await db.transaction(
       "rw",
       db.grading_info,
