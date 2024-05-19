@@ -1,5 +1,15 @@
 @use "../styles/themeprovider/themeprovider" as theme;
 
+.saved-results-title {
+  margin: 5em 1em 2em 1em;
+
+  h1 {
+    font-size: clamp(2.3rem, 3.5vw, 2.7rem);
+    font-family: var(--koho-bold);
+    text-align: center;
+  }
+}
+
 .result-wrapper {
   margin-bottom: 2.5em;
   width: 100%;

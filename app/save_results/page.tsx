@@ -10,7 +10,9 @@ import InfoIcon from "../components/Icons/InfoIcon";
 import styles from "@/styles/SaveResults.module.scss";
 
 export default function SaveResults() {
-  const grading_info = useLiveQuery(() => db.grading_info.toArray());
+  const grading_info = useLiveQuery(() =>
+    db.grading_info.orderBy("timestamp").reverse().toArray()
+  );
 
   const [infoModal, setInfoModal] = useState<number | string>(0);
 
@@ -38,6 +40,9 @@ export default function SaveResults() {
 
   return (
     <main>
+      <div className={styles["saved-results-title"]}>
+        <h1>Saved Results</h1>
+      </div>
       {grading_info !== undefined
         ? grading_info.map((info) => (
             <li key={info.id} className={styles["result-wrapper"]}>
