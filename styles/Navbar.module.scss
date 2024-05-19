@@ -1,0 +1,47 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+.navbar {
+  background: theme.$orange-color;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35em 1em;
+
+  .web-title {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    .web-logo {
+      width: 2.5em;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    h1 {
+      display: none;
+      color: theme.$white-color;
+      font-family: var(--koho-bold);
+      font-size: 1.4rem;
+      margin-left: 0.2em;
+    }
+  }
+}
+
+@media (min-width: theme.$media-query-very-small-value) {
+  .navbar {
+    .web-title {
+      h1 {
+        display: block;
+      }
+    }
+  }
+}

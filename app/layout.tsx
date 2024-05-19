@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { koho_bold, monserrat_medium, monserrat_bold } from "./fonts";
+import Navbar from "./components/Navbar";
 import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
@@ -14,8 +15,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${koho_bold.variable} ${monserrat_medium.variable} ${monserrat_bold.variable}`}>
+    <html
+      lang="en"
+      className={`${koho_bold.variable} ${monserrat_medium.variable} ${monserrat_bold.variable}`}
+    >
       <body>
+        <Navbar />
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
