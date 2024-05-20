@@ -15,6 +15,7 @@ import Loading from "./components/States/Loading";
 import Error from "./components/States/Error";
 import { db, GradingInfo } from "./db";
 import { toBase64FromUrl } from "@/utils/toBase64FromUrl";
+import SyncLoader from "react-spinners/SyncLoader";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
@@ -35,6 +36,10 @@ interface InputProps {
       }[];
     }[];
   }[];
+}
+
+interface LoadingSave {
+  [key: string]: boolean;
 }
 
 const backend_url = "http://localhost:8000";
@@ -58,6 +63,7 @@ const sendUserInput = async (files: File[]) => {
 export default function Home() {
   const [inputMode, setInputMode] = useState(true);
   const [infoModal, setInfoModal] = useState<number | string>(0);
+  const [loadingSave, setLoadingSave] = useState<LoadingSave>({});
 
   const { lock, unlock } = useScrollLock({
     autoLock: false,
@@ -93,6 +99,8 @@ export default function Home() {
 
   // Uploading to Grading Results Database
   async function addGradingInfo(info: GradingInfo) {
+    setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
+
     // Convert string to file images
     info.input_image = await toBase64FromUrl(
       `${backend_url}/api/get-image/${info.input_image}`
@@ -123,7 +131,14 @@ export default function Home() {
         }
       }
     );
+
+    setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: false }));
   }
+
+  // Check if the format is in Base64
+  const isBase64 = (str: string) => {
+    return str.startsWith("data:");
+  };
 
   // Info Modal
   const openModal = (id: string) => {
@@ -186,8 +201,12 @@ export default function Home() {
                           <p>Uploaded Image</p>
                           <div className={styles["image-wrapper"]}>
                             <Image
-                              src={`${backend_url}/api/get-image/${info.input_image}`}
-                              alt={info.input_image}
+                              src={
+                                isBase64(info.input_image)
+                                  ? info.input_image
+                                  : `${backend_url}/api/get-image/${info.input_image}`
+                              }
+                              alt="Uploaded Image"
                               width={300}
                               height={300}
                               unoptimized
@@ -199,8 +218,12 @@ export default function Home() {
                           <p>Detected Dragon Fruits</p>
                           <div className={styles["image-wrapper"]}>
                             <Image
-                              src={`${backend_url}/api/yolo-results/${info.yolo_images}`}
-                              alt={info.yolo_images}
+                              src={
+                                isBase64(info.yolo_images)
+                                  ? info.yolo_images
+                                  : `${backend_url}/api/yolo-results/${info.yolo_images}`
+                              }
+                              alt="Detected Dragon Fruits"
                               width={300}
                               height={300}
                               unoptimized
@@ -220,8 +243,12 @@ export default function Home() {
                               >
                                 <div className={styles["image-wrapper"]}>
                                   <Image
-                                    src={`${backend_url}/api/yolo-cropped-images/${result.cropped_images}`}
-                                    alt={result.cropped_images}
+                                    src={
+                                      isBase64(result.cropped_images)
+                                        ? result.cropped_images
+                                        : `${backend_url}/api/yolo-cropped-images/${result.cropped_images}`
+                                    }
+                                    alt="Dragon Fruit"
                                     width={250}
                                     height={250}
                                     unoptimized
@@ -252,9 +279,18 @@ export default function Home() {
                       </div>
 
                       <div className={styles["save-results-button"]}>
-                        <button onClick={() => addGradingInfo(info)}>
-                          Save Results
-                        </button>
+                        {loadingSave[info.id] ? (
+                          <button className={styles["loading-button"]}>
+                            <SyncLoader color="#f7fff9" size={10} />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => addGradingInfo(info)}
+                            className={styles["save-button"]}
+                          >
+                            Save Results
+                          </button>
+                        )}
                       </div>
                     </div>
                   </li>

@@ -164,7 +164,7 @@
       justify-content: center;
       margin-top: 2.3em;
 
-      button {
+      .save-button {
         background: none;
         border: none;
         font-size: 1.1rem;
@@ -179,6 +179,16 @@
         &:hover {
           background: theme.$light-green-color-hover;
         }
+      }
+
+      .loading-button {
+        background: none;
+        border: none;
+        font-size: 1.1rem;
+        background: theme.$gray-color;
+        padding: 1em 2em;
+        border-radius: 40px;
+        cursor: not-allowed;
       }
     }
   }
