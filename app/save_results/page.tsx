@@ -21,6 +21,15 @@ export default function SaveResults() {
     lockTarget: "#scrollable",
   });
 
+  // Delete Result
+  const deleteResult = async (id: string) => {
+    try {
+      await db.grading_info.delete(id);
+    } catch (error) {
+      console.error("Failed to delete friend:", error);
+    }
+  };
+
   // Info Modal
   const openModal = (id: string) => {
     lock();
@@ -108,6 +117,12 @@ export default function SaveResults() {
                         </div>
                       ))}
                   </div>
+                </div>
+
+                <div className={styles["delete-results-button"]}>
+                  <button onClick={() => deleteResult(info.id)}>
+                    Delete Result
+                  </button>
                 </div>
 
                 <div className={styles["timestamp"]}>

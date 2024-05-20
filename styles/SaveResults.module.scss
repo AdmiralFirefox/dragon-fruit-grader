@@ -114,6 +114,29 @@
       }
     }
 
+    .delete-results-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.3em;
+
+      button {
+        background: none;
+        border: none;
+        font-size: 1.1rem;
+        font-family: var(--koho-bold);
+        background: theme.$orange-color;
+        color: theme.$white-color;
+        padding: 1em;
+        border-radius: 40px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background: theme.$orange-color-hover;
+        }
+      }
+    }
+
     .timestamp {
       margin-top: 2em;
 
