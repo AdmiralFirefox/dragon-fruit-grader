@@ -8,13 +8,30 @@ import InfoModal from "../components/Modals/InfoModal";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import InfoIcon from "../components/Icons/InfoIcon";
 import styles from "@/styles/SaveResults.module.scss";
+import PaginationControls from "../components/PaginationControls";
 
-export default function SaveResults() {
+export default function SaveResults({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const [infoModal, setInfoModal] = useState<number | string>(0);
+
+  // Define Parameters for Pagination
+  const page = searchParams["page"] ?? "1";
+  const per_page = searchParams["per_page"] ?? "5";
+
+  const start = (Number(page) - 1) * Number(per_page);
+  const end = start + Number(per_page);
+
+  // Fetch Data from database
   const grading_info = useLiveQuery(() =>
     db.grading_info.orderBy("timestamp").reverse().toArray()
   );
 
-  const [infoModal, setInfoModal] = useState<number | string>(0);
+  // Slice the data
+  const grading_data = grading_info !== undefined ? grading_info : [];
+  const entries = grading_data.slice(start, end);
 
   const { lock, unlock } = useScrollLock({
     autoLock: false,
@@ -53,7 +70,7 @@ export default function SaveResults() {
         <h1>Saved Results</h1>
       </div>
       {grading_info !== undefined
-        ? grading_info.map((info) => (
+        ? entries!.map((info) => (
             <li key={info.id} className={styles["result-wrapper"]}>
               <div className={styles["result-container"]}>
                 <div className={styles["first-section"]}>
@@ -132,6 +149,14 @@ export default function SaveResults() {
             </li>
           ))
         : null}
+
+      {grading_data.length <= 0 ? null : (
+        <PaginationControls
+          hasNextPage={end < grading_data!.length}
+          hasPrevPage={start > 0}
+          dataLength={grading_data.length}
+        />
+      )}
     </main>
   );
 }

@@ -1,0 +1,87 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3em;
+
+  .content {
+    margin-top: 1em;
+
+    .first-section {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+
+      button {
+        background: none;
+        border: none;
+        font-size: 1.1rem;
+        font-family: var(--koho-bold);
+        background: theme.$orange-color;
+        color: theme.$white-color;
+        padding: 0.5em 1em;
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background: theme.$orange-color-hover;
+        }
+
+        &[disabled] {
+          background: theme.$gray-color;
+          cursor: not-allowed;
+        }
+      }
+
+      p {
+        font-size: 1.1rem;
+        font-family: var(--monserrat-medium);
+      }
+    }
+
+    .page-form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1em;
+
+      input {
+        padding: 0.8em;
+        font-size: 1.05rem;
+        font-family: var(--monserrat-medium);
+        border-radius: 10px;
+        border: 4px solid theme.$light-brown-color;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        &:focus {
+          outline: none;
+          border: 4px solid theme.$orange-color;
+        }
+      }
+
+      button {
+        background: none;
+        border: none;
+        font-size: 1.1rem;
+        font-family: var(--koho-bold);
+        background: theme.$orange-color;
+        color: theme.$white-color;
+        padding: 0.9em;
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background: theme.$orange-color-hover;
+        }
+      }
+    }
+  }
+}

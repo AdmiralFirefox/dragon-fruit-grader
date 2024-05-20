@@ -18,7 +18,7 @@ const Navbar = () => {
         <h1>Dragon Fruit Grader</h1>
       </Link>
 
-      <Link href="/save_results">
+      <Link href="/save_results?page=1">
         <ResultIcon width="2.8em" height="2.8em" />
       </Link>
     </header>
