@@ -150,7 +150,7 @@ export default function SaveResults({
           ))
         : null}
 
-      {grading_data.length <= 0 ? null : (
+      {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
         <PaginationControls
           hasNextPage={end < grading_data!.length}
           hasPrevPage={start > 0}
