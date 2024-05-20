@@ -42,6 +42,10 @@ interface LoadingSave {
   [key: string]: boolean;
 }
 
+interface DataSaved {
+  [key: string]: boolean;
+}
+
 const backend_url = "http://localhost:8000";
 
 // Define the mutation function
@@ -64,6 +68,7 @@ export default function Home() {
   const [inputMode, setInputMode] = useState(true);
   const [infoModal, setInfoModal] = useState<number | string>(0);
   const [loadingSave, setLoadingSave] = useState<LoadingSave>({});
+  const [dataSaved, setDataSaved] = useState<DataSaved>({});
 
   const { lock, unlock } = useScrollLock({
     autoLock: false,
@@ -99,6 +104,7 @@ export default function Home() {
 
   // Uploading to Grading Results Database
   async function addGradingInfo(info: GradingInfo) {
+    setDataSaved((prevStates) => ({ ...prevStates, [info.id]: false }));
     setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
 
     // Convert string to file images
@@ -132,6 +138,7 @@ export default function Home() {
       }
     );
 
+    setDataSaved((prevStates) => ({ ...prevStates, [info.id]: true }));
     setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: false }));
   }
 
@@ -287,8 +294,11 @@ export default function Home() {
                           <button
                             onClick={() => addGradingInfo(info)}
                             className={styles["save-button"]}
+                            disabled={dataSaved[info.id]}
                           >
-                            Save Results
+                            {dataSaved[info.id]
+                              ? "Results Saved"
+                              : "Save Results"}
                           </button>
                         )}
                       </div>
