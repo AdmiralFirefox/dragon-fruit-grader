@@ -85,7 +85,7 @@ The `"scripts"` of `package.json` is set-up to build locally to concurrently run
 
 <br />
 
-When running `docker compose build`, sometimes there will be an error in installing dependencies, so change the contents of the `requirements.txt` to the following:
+When running `docker compose build`, sometimes there will be an error in installing dependencies. So, change the contents of the `requirements.txt` to the following:
 ```bash
 flask 
 flask-cors
