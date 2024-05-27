@@ -73,7 +73,7 @@ npm run dev
 
 ### Building the Docker Image
 
-The `scripts` of `package.json` is set-up to build locally to concurrently run the Next JS and Flask development mode with the `npm run` and `python -m` command. But, it is not the case for docker since both the Next JS and Flask have their own seperate images. So, change the `scripts` of your `package.json` to this:
+The `"scripts"` of `package.json` is set-up to build locally to concurrently run the Next JS and Flask development mode with the `npm run` and `python -m` command. But, it is not the case for docker since both the Next JS and Flask have their own seperate images. So, change the `"scripts"` of your `package.json` to this:
 ```JSON
 "scripts": {
     "dev": "next dev",
