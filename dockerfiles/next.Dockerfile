@@ -20,7 +20,19 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# COPY . .
+COPY app /app/app
+COPY data /app/data
+COPY hooks /app/hooks
+COPY providers /app/providers
+COPY public /app/public
+COPY styles /app/styles
+COPY utils /app/utils
+COPY .eslintrc.json ./
+COPY next.config.mjs ./
+COPY package-lock.json ./
+COPY package.json ./
+COPY tsconfig.json ./
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
