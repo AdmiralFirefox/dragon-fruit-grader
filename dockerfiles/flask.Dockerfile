@@ -9,13 +9,13 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Api Directory
-COPY api/ .
+COPY api /app/api
 
 # Include saved_models directory
-COPY saved_models/ saved_models/
+COPY saved_models /app/saved_models
 
 # Set the Flask application entry point
-ENV FLASK_APP=index.py
+ENV FLASK_APP=api/index.py
 
 EXPOSE 8000
 
