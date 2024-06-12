@@ -46,3 +46,6 @@ next-env.d.ts
 
 # Large Models
 /saved_models/resnet50_model.pth
+
+# Output Folders
+/outputs
