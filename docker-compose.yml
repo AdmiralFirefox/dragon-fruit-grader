@@ -1,20 +1,20 @@
 services:
   #nextjs service
-  nextapp:
-    container_name: nextapp
-    image: dragonfruit-grader-nextapp:1.0.0
+  frontend:
+    container_name: dragonfruit-grader-frontend
+    image: dragonfruit-grader-frontend:1.0.0
     build:
       context: .
       dockerfile: dockerfiles/next.Dockerfile
     ports:
       - 3000:3000
     depends_on:
-      - flaskapp
+      - backend
 
   # flask service
-  flaskapp:
-    container_name: flaskapp
-    image: dragonfruit-grader-flaskapp:1.0.0
+  backend:
+    container_name: dragonfruit-grader-backend
+    image: dragonfruit-grader-backend:1.0.0
     build:
       context: .
       dockerfile: dockerfiles/flask.Dockerfile
