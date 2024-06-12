@@ -1,5 +1,5 @@
 services:
-  #nextjs service
+  # nextjs service
   frontend:
     container_name: dragonfruit-grader-frontend
     image: dragonfruit-grader-frontend:1.0.0
