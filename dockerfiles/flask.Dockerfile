@@ -1,8 +1,6 @@
 # Python requirements
 FROM python:3.10.11-slim AS flask
 
-RUN apt-get update && apt-get install -y libgl1-mesa-glx
-
 WORKDIR /app
 
 COPY requirements.txt ./
