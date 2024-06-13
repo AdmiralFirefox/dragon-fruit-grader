@@ -12,7 +12,7 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Define the upload folder path 
+# Define directories
 UPLOAD_FOLDER = '/outputs/uploads'
 RESULTS_FOLDER = '/outputs/results'
 CROPPED_IMAGES_FOLDER = '/outputs/cropped_images'
