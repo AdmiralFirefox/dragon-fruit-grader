@@ -89,6 +89,7 @@ When running `docker compose build`, sometimes there will be an error in install
 ```bash
 flask 
 flask-cors
+gunicorn
 --extra-index-url https://download.pytorch.org/whl/cpu
 ultralytics
 ```
