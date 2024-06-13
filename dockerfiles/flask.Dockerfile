@@ -19,5 +19,5 @@ ENV FLASK_APP=api/index.py
 
 EXPOSE 8000
 
-# Command to start the Flask server
-CMD [ "flask", "run", "--host=0.0.0.0", "--port=8000"]
+# Command to start the Flask server using Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "api.index:app"]
