@@ -55,7 +55,7 @@ const sendUserInput = async (files: File[]) => {
     formData.append("inputImage", file);
   });
 
-  const response = await Axios.post(`${backend_url}/api/home`, formData, {
+  const response = await Axios.post(`${backend_url}/api/analyze-images`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

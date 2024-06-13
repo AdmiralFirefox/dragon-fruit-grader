@@ -32,8 +32,8 @@ def ensure_folder_exists(folder_path):
 for folder in [UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER]:
     ensure_folder_exists(folder)
 
-@app.route("/api/home", methods=["POST"])
-def return_home():
+@app.route("/api/analyze-images", methods=["POST"])
+def analyze_images():
     clear_old_images(UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER)
     
     # Get Images from the client
