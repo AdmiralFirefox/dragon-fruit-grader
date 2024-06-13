@@ -12,16 +12,14 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Define the upload folder path in the /tmp directory
+# Define the upload folder path 
 UPLOAD_FOLDER = '/outputs/uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# Define the results folder path in the /tmp directory
 RESULTS_FOLDER = '/outputs/results'
-app.config['RESULTS_FOLDER'] = RESULTS_FOLDER
-
-# Define the cropped images folder path in the /tmp directory
 CROPPED_IMAGES_FOLDER = '/outputs/cropped_images'
+
+# Define configurations for directories
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['RESULTS_FOLDER'] = RESULTS_FOLDER
 app.config['CROPPED_IMAGES_FOLDER'] = CROPPED_IMAGES_FOLDER
 
 def ensure_folder_exists(folder_path):
