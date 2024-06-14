@@ -7,8 +7,8 @@ import Image from "next/image";
 import InfoModal from "../components/Modals/InfoModal";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import InfoIcon from "../components/Icons/InfoIcon";
-import styles from "@/styles/SaveResults.module.scss";
 import PaginationControls from "../components/PaginationControls";
+import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 export default function SaveResults({
   searchParams,
@@ -79,7 +79,7 @@ export default function SaveResults({
                     <div className={styles["image-wrapper"]}>
                       <Image
                         src={info.input_image}
-                        alt={info.input_image}
+                        alt="Uploaded Image"
                         width={300}
                         height={300}
                         unoptimized
@@ -92,7 +92,7 @@ export default function SaveResults({
                     <div className={styles["image-wrapper"]}>
                       <Image
                         src={info.yolo_images}
-                        alt={info.yolo_images}
+                        alt="Detected Dragon Fruits"
                         width={300}
                         height={300}
                         unoptimized
@@ -110,7 +110,7 @@ export default function SaveResults({
                           <div className={styles["image-wrapper"]}>
                             <Image
                               src={result.cropped_images}
-                              alt={result.cropped_images}
+                              alt="Dragon Fruit"
                               width={250}
                               height={250}
                               unoptimized

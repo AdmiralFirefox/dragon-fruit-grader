@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import styles from "@/styles/PaginationControls.module.scss";
+import styles from "@/styles/saveresults/PaginationControls.module.scss";
 
 interface PaginationControlsProps {
   hasNextPage: boolean;
