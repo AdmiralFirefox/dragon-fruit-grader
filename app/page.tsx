@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import Axios from "axios";
@@ -142,6 +143,28 @@ export default function Home() {
     setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: false }));
   }
 
+  // Set Sample Image
+  const setSampleImage = async (imagePath: string) => {
+    if (imagePath) {
+      try {
+        const response = await fetch(imagePath);
+        const blob = await response.blob();
+
+        // Extract the filename from the imagePath
+        const filename = imagePath.split("/").pop();
+        const imageFile = new File([blob], filename as string, {
+          type: blob.type,
+        });
+
+        // Pass the imageFile as an array
+        mutation.mutate([imageFile]);
+        setInputMode(false);
+      } catch (error) {
+        console.error("Error setting sample image:", error);
+      }
+    }
+  };
+
   // Check if the format is in Base64
   const isBase64 = (str: string) => {
     return str.startsWith("data:");
@@ -174,15 +197,94 @@ export default function Home() {
       </div>
 
       {inputMode ? (
-        <div className={styles["scan-card-wrapper"]}>
-          <DragDrop
-            dragOver={dragOver}
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-            fileSelect={fileSelect}
-          />
-        </div>
+        <>
+          <div className={styles["scan-card-wrapper"]}>
+            <DragDrop
+              dragOver={dragOver}
+              onDragOver={onDragOver}
+              onDragLeave={onDragLeave}
+              onDrop={onDrop}
+              fileSelect={fileSelect}
+            />
+          </div>
+
+          <p className={styles["sample-images-title"]}>
+            Try these sample images:
+          </p>
+
+          <ul className={styles["sample-images-container"]}>
+            <li
+              className={styles["sample-image-wrapper"]}
+              onClick={() =>
+                setSampleImage("/sample-images/dragon_fruit_1.jpg")
+              }
+            >
+              <Image
+                src="/sample-images/dragon_fruit_1.jpg"
+                alt="Sample Dragon Fruit Image"
+                width={100}
+                height={100}
+                unoptimized
+              />
+            </li>
+            <li
+              className={styles["sample-image-wrapper"]}
+              onClick={() =>
+                setSampleImage("/sample-images/dragon_fruit_2.png")
+              }
+            >
+              <Image
+                src="/sample-images/dragon_fruit_2.png"
+                alt="Sample Dragon Fruit Image"
+                width={100}
+                height={100}
+                unoptimized
+              />
+            </li>
+            <li
+              className={styles["sample-image-wrapper"]}
+              onClick={() =>
+                setSampleImage("/sample-images/dragon_fruit_3.png")
+              }
+            >
+              <Image
+                src="/sample-images/dragon_fruit_3.png"
+                alt="Sample Dragon Fruit Image"
+                width={100}
+                height={100}
+                unoptimized
+              />
+            </li>
+            <li
+              className={styles["sample-image-wrapper"]}
+              onClick={() =>
+                setSampleImage("/sample-images/dragon_fruit_4.jpg")
+              }
+            >
+              <Image
+                src="/sample-images/dragon_fruit_4.jpg"
+                alt="Sample Dragon Fruit Image"
+                width={100}
+                height={100}
+                unoptimized
+              />
+            </li>
+            <li
+              className={styles["sample-image-wrapper"]}
+              onClick={() =>
+                setSampleImage("/sample-images/dragon_fruit_5.jpg")
+              }
+            >
+              <Image
+                src="/sample-images/dragon_fruit_5.jpg"
+                alt="Sample Dragon Fruit Image"
+                width={100}
+                height={100}
+                unoptimized
+              />
+            </li>
+          </ul>
+        </>
       ) : null}
 
       {mutation.isPending && <Loading />}
