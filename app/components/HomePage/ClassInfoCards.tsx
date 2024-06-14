@@ -1,6 +1,6 @@
 import Image from "next/image";
 import classInfo from "@/data/class_info.json";
-import styles from "@/styles/InfoCards.module.scss";
+import styles from "@/styles/homepage/InfoCards.module.scss";
 
 interface ClassCardProps {
   imgSrc: string;

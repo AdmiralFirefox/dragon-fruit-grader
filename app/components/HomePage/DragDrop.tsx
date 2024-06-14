@@ -1,5 +1,5 @@
 import { ChangeEvent, SyntheticEvent } from "react";
-import styles from "@/styles/DragDrop.module.scss";
+import styles from "@/styles/homepage/DragDrop.module.scss";
 
 interface DragDropProps {
   dragOver: boolean;

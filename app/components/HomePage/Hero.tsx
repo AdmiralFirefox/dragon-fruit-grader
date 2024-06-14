@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "@/styles/Hero.module.scss";
+import styles from "@/styles/homepage/Hero.module.scss";
 
 const Hero = () => {
   return (
