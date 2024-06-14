@@ -1,4 +1,4 @@
-@use "../styles/themeprovider/themeprovider" as theme;
+@use "../themeprovider/themeprovider" as theme;
 
 .wrapper {
   display: flex;
@@ -7,7 +7,7 @@
   margin-bottom: 3.5em;
 
   .content {
-    background: theme.$orange-color;
+    background: theme.$light-green-color;
     border-radius: 20px;
     width: min(30em, 85%);
     display: flex;
@@ -19,8 +19,8 @@
       color: theme.$white-color;
       font-family: var(--monserrat-bold);
       font-size: clamp(1.4rem, 2.3vw, 1.8rem);
+      margin-top: 1.3em;
       text-align: center;
-      margin-top: 0.5em;
     }
   }
 }
