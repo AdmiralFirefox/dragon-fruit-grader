@@ -24,7 +24,8 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-spinners": "^0.13.8",
-    "sass": "^1.77.1"
+    "sass": "^1.77.1",
+    "sharp": "^0.33.4"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.9",
