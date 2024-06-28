@@ -1,0 +1,10 @@
+services:
+  dragon-fruit-grader-backend:
+    container_name: dragon-fruit-grader-backend
+    image: dragon-fruit-grader-backend:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+

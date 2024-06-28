@@ -12,14 +12,11 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Api Directory
-COPY api /app/api
-
-# Include saved_models directory
-COPY saved_models /app/saved_models
+# Copy all the needed files
+COPY . .
 
 # Set the Flask application entry point
-ENV FLASK_APP=api/index.py
+ENV FLASK_APP=main.py
 
 EXPOSE 8000
 

@@ -44,7 +44,9 @@ interface DataSaved {
   [key: string]: boolean;
 }
 
-const backend_url = "http://localhost:8000";
+const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL
+  ? process.env.NEXT_PUBLIC_BACKEND_URL
+  : "http://localhost:8000";
 
 // Define the mutation function
 const sendUserInput = async (files: File[]) => {
