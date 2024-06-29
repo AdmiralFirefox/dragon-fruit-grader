@@ -6,6 +6,7 @@ import { db } from "../db";
 import Image from "next/image";
 import InfoModal from "../components/Modals/InfoModal";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { formatTime } from "@/utils/formatTime";
 import InfoIcon from "../components/Icons/InfoIcon";
 import PaginationControls from "../components/PaginationControls";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
@@ -143,7 +144,7 @@ export default function SaveResults({
                 </div>
 
                 <div className={styles["timestamp"]}>
-                  <p>Time Graded: {info.timestamp}</p>
+                  <p>Time Graded: {formatTime(info.timestamp)}</p>
                 </div>
               </div>
             </li>

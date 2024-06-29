@@ -6,6 +6,7 @@ from image_classification import image_classification
 from werkzeug.utils import secure_filename
 from collections import defaultdict
 from datetime import datetime
+import pytz
 import uuid
 import os
 
@@ -80,11 +81,10 @@ def analyze_images():
         grouped_list = list(grouped_dict.values())
 
         # Get Current Date and Time
-        now = datetime.now()
-        dt_string = now.strftime("%B %d, %Y, %I:%M %p")
+        utc_now = datetime.now(pytz.utc)
 
         # Structure all Information
-        structured_info = [{"id": str(uuid.uuid4()), "timestamp": dt_string, "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
+        structured_info = [{"id": str(uuid.uuid4()), "timestamp": utc_now.isoformat(), "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
 
         return jsonify({ "structured_info":  structured_info })
     else:

@@ -3,6 +3,7 @@ import SyncLoader from "react-spinners/SyncLoader";
 import InfoModal from "../Modals/InfoModal";
 import InfoIcon from "../Icons/InfoIcon";
 import { GradingInfo } from "../../db";
+import { formatTime } from "@/utils/formatTime";
 import styles from "@/styles/homepage/Results.module.scss";
 
 interface ResultsProps {
@@ -126,7 +127,7 @@ const Results = ({
               </div>
 
               <div className={styles["timestamp"]}>
-                <p>Time Graded: {info.timestamp}</p>
+                <p>Time Graded: {formatTime(info.timestamp)}</p>
               </div>
 
               <div className={styles["save-results-button"]}>
