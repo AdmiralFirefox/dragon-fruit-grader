@@ -12,6 +12,9 @@ const Hero = () => {
           height={30}
         />
       </div>
+      <div className={styles["hero-bg"]}>
+        <Image src="/background/hero-bg.png" alt="" fill priority />
+      </div>
       <h1>WELCOME</h1>
       <p>
         Find the easiest ways to classify dragon fruit and recommended products
