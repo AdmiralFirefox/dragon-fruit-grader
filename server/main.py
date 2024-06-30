@@ -14,9 +14,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Define directories
-UPLOAD_FOLDER = "outputs/uploads"
-RESULTS_FOLDER = "outputs/results"
-CROPPED_IMAGES_FOLDER = "outputs/cropped_images"
+UPLOAD_FOLDER = "/outputs/uploads"
+RESULTS_FOLDER = "/outputs/results"
+CROPPED_IMAGES_FOLDER = "/outputs/cropped_images"
 
 # Define configurations for directories
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
