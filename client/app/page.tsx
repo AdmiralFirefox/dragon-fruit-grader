@@ -295,7 +295,12 @@ export default function Home() {
         <>
           {!inputMode ? (
             <div className={styles["classify-button"]}>
-              <button onClick={() => setInputMode(true)}>
+              <button
+                onClick={() => {
+                  setInputMode(true);
+                  mutation.reset();
+                }}
+              >
                 Classify Another Set
               </button>
             </div>
