@@ -226,7 +226,6 @@ export default function Home() {
                 alt="Sample Dragon Fruit Image"
                 width={100}
                 height={100}
-                unoptimized
               />
             </li>
             <li
@@ -240,7 +239,6 @@ export default function Home() {
                 alt="Sample Dragon Fruit Image"
                 width={100}
                 height={100}
-                unoptimized
               />
             </li>
             <li
@@ -254,7 +252,6 @@ export default function Home() {
                 alt="Sample Dragon Fruit Image"
                 width={100}
                 height={100}
-                unoptimized
               />
             </li>
             <li
@@ -268,7 +265,6 @@ export default function Home() {
                 alt="Sample Dragon Fruit Image"
                 width={100}
                 height={100}
-                unoptimized
               />
             </li>
             <li
@@ -282,7 +278,6 @@ export default function Home() {
                 alt="Sample Dragon Fruit Image"
                 width={100}
                 height={100}
-                unoptimized
               />
             </li>
           </ul>
