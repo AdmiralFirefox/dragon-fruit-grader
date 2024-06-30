@@ -6,7 +6,8 @@ import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
   title: "Dragon Fruit Grader",
-  description: "A dragon fruit grader application",
+  description:
+    "Grade dragon fruits into different classes and know what products you can make with each classes.",
 };
 
 export default function RootLayout({
