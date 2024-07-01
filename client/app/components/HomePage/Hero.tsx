@@ -1,7 +1,12 @@
 import Image from "next/image";
 import styles from "@/styles/homepage/Hero.module.scss";
 
-const Hero = () => {
+interface HeroProps {
+  scrollToClassInfo: () => void;
+  scrollToClassify: () => void;
+}
+
+const Hero = ({ scrollToClassInfo, scrollToClassify }: HeroProps) => {
   return (
     <section className={styles["wrapper"]}>
       <div className={styles["logo-wrapper"]}>
@@ -22,8 +27,8 @@ const Hero = () => {
       </p>
 
       <div className={styles["button-wrapper"]}>
-        <button>Get Started</button>
-        <button>Learn More</button>
+        <button onClick={scrollToClassify}>Get Started</button>
+        <button onClick={scrollToClassInfo}>Learn More</button>
       </div>
     </section>
   );

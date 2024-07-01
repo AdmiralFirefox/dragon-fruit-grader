@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import Image from "next/image";
 import classInfo from "@/data/class_info.json";
 import styles from "@/styles/homepage/InfoCards.module.scss";
@@ -6,6 +7,10 @@ interface ClassCardProps {
   imgSrc: string;
   fruitClass: string;
   fruitDescription: string;
+}
+
+interface ClassInfoCardsProps {
+  classInfoSectionRef: RefObject<HTMLElement>;
 }
 
 const ClassCard = ({
@@ -24,10 +29,10 @@ const ClassCard = ({
   );
 };
 
-const ClassInfoCards = () => {
+const ClassInfoCards = ({ classInfoSectionRef }: ClassInfoCardsProps) => {
   return (
-    <div>
-      <section className={styles["card-title"]}>
+    <>
+      <section className={styles["card-title"]} ref={classInfoSectionRef}>
         <h1>Classification of Dragon Fruit</h1>
         <p>
           Marketable dragon fruit grading classes that possess excellent
@@ -47,7 +52,7 @@ const ClassInfoCards = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

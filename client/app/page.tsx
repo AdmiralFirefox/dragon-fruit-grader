@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { useScrollLock } from "@/hooks/useScrollLock";
@@ -75,10 +75,22 @@ export default function Home() {
   const [dataSaved, setDataSaved] = useState<DataSaved>({});
   const { dragOver, setDragOver, onDragOver, onDragLeave } = useDragAndDrop();
 
+  const classInfoSectionRef = useRef<HTMLElement>(null);
+  const classifySectionRef = useRef<HTMLDivElement>(null);
+
   const { lock, unlock } = useScrollLock({
     autoLock: false,
     lockTarget: "#scrollable",
   });
+
+  // Scroll to Specific Sections
+  const scrollToClassInfo = () => {
+    classInfoSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToClassify = () => {
+    classifySectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // Use the useMutation hook
   const mutation = useMutation<InputProps, Error, File[]>({
@@ -191,10 +203,13 @@ export default function Home() {
 
   return (
     <main>
-      <Hero />
-      <ClassInfoCards />
+      <Hero
+        scrollToClassInfo={scrollToClassInfo}
+        scrollToClassify={scrollToClassify}
+      />
+      <ClassInfoCards classInfoSectionRef={classInfoSectionRef} />
 
-      <div className={styles["scan-card-title"]}>
+      <div className={styles["scan-card-title"]} ref={classifySectionRef}>
         <h1>Dragon Fruit Scanning</h1>
       </div>
 
