@@ -36,6 +36,9 @@ for folder in [UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER]:
 @app.route("/api/analyze-images", methods=["POST"])
 def analyze_images():
     clear_old_images(UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER)
+
+    # Generate Unique ID for each image
+    unique_id = "_" + str(uuid.uuid4())
     
     # Get Images from the client
     input_images = request.files.getlist("inputImage")
@@ -55,9 +58,11 @@ def analyze_images():
         # Save Images in the /tmp/uploads folder
         for image in input_images:
             filename = secure_filename(image.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            unique_filename = os.path.splitext(filename)[0] + unique_id + os.path.splitext(filename)[1]
+
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
             image.save(file_path)
-            uploaded_filenames.append(filename)
+            uploaded_filenames.append(unique_filename)
             uploaded_images.append(file_path)
 
         object_detection(app, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
