@@ -34,6 +34,11 @@ interface InputProps {
       }[];
     }[];
   }[];
+  session_id: string;
+}
+
+interface ClearSessionProps {
+  message: string;
 }
 
 interface LoadingSave {
@@ -48,7 +53,7 @@ const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL
   ? process.env.NEXT_PUBLIC_BACKEND_URL
   : "http://localhost:8000";
 
-// Define the mutation function
+// Send User Input Images
 const sendUserInput = async (files: File[]) => {
   const formData = new FormData();
   files.forEach((file) => {
@@ -68,11 +73,27 @@ const sendUserInput = async (files: File[]) => {
   return response.data;
 };
 
+// Clear Sessions
+const clearSession = async (sessionId: string) => {
+  const response = await Axios.post(
+    `${backend_url}/api/clear-session-output`,
+    { sessionId },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  return response.data;
+};
+
 export default function Home() {
   const [inputMode, setInputMode] = useState(true);
   const [infoModal, setInfoModal] = useState<number | string>(0);
   const [loadingSave, setLoadingSave] = useState<LoadingSave>({});
   const [dataSaved, setDataSaved] = useState<DataSaved>({});
+  const [sessionId, setSessionId] = useState("");
   const { dragOver, setDragOver, onDragOver, onDragLeave } = useDragAndDrop();
 
   const classInfoSectionRef = useRef<HTMLElement>(null);
@@ -95,6 +116,17 @@ export default function Home() {
   // Use the useMutation hook
   const mutation = useMutation<InputProps, Error, File[]>({
     mutationFn: sendUserInput,
+    onSuccess: (data) => {
+      setSessionId(data.session_id);
+    },
+  });
+
+  const clear_session_mutation = useMutation<
+    ClearSessionProps,
+    Error,
+    typeof sessionId
+  >({
+    mutationFn: clearSession,
   });
 
   // Uploading Files to the server
@@ -309,6 +341,7 @@ export default function Home() {
                 onClick={() => {
                   setInputMode(true);
                   mutation.reset();
+                  clear_session_mutation.mutate(sessionId);
                 }}
               >
                 Classify Another Set

@@ -3,7 +3,7 @@ import cv2
 import os
 from werkzeug.utils import secure_filename
 
-def object_detection(app, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path):
+def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path):
     # Load Pre-trained YOLOv8 Model
     saved_model = 'saved_models/best.pt'
     model = YOLO(saved_model)
@@ -23,7 +23,7 @@ def object_detection(app, uploaded_images, uploaded_filenames, yolo_images, crop
         secured_filename = secure_filename(f'{uploaded_filenames_noextension}.jpg')
 
         # Save detected images to the results directory
-        filename = os.path.join(app.config['RESULTS_FOLDER'], secured_filename)
+        filename = os.path.join(results_folder, secured_filename)
         result.save(filename=filename) 
         yolo_images.append(secured_filename)
     
@@ -48,7 +48,7 @@ def object_detection(app, uploaded_images, uploaded_filenames, yolo_images, crop
             # Save to Folder 
             # Construct the filename with the desired path
             cropped_image_name = "cropped_" + os.path.basename(image).split(".")[0] + "_" + str(i) + ".jpg"
-            filename = os.path.join(app.config['CROPPED_IMAGES_FOLDER'], cropped_image_name)
+            filename = os.path.join(cropped_image_folder, cropped_image_name)
 
             # Save the cropped object as an image in the 'cropped_images' folder
             cv2.imwrite(filename, ultralytics_crop_object)

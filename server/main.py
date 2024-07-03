@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
-from clear_old_images import clear_old_images
+from clear_old_images import delete_files_with_pattern
 from object_detection import object_detection
 from image_classification import image_classification
 from werkzeug.utils import secure_filename
@@ -14,14 +14,15 @@ app = Flask(__name__)
 CORS(app)
 
 # Define directories
-UPLOAD_FOLDER = "outputs/uploads"
-RESULTS_FOLDER = "outputs/results"
-CROPPED_IMAGES_FOLDER = "outputs/cropped_images"
+UPLOAD_FOLDER = f"/tmp/outputs/uploads"
+RESULTS_FOLDER = f"/tmp/outputs/results"
+CROPPED_IMAGES_FOLDER = f"/tmp/outputs/cropped_images"
 
 # Define configurations for directories
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['RESULTS_FOLDER'] = RESULTS_FOLDER
 app.config['CROPPED_IMAGES_FOLDER'] = CROPPED_IMAGES_FOLDER
+
 
 def ensure_folder_exists(folder_path):
     if not os.path.exists(folder_path):
@@ -29,16 +30,35 @@ def ensure_folder_exists(folder_path):
     else:
         print(f"{folder_path} folder already exists.")
 
-# Ensure folders exist
-for folder in [UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER]:
-    ensure_folder_exists(folder)
+
+@app.route("/api/clear-session-output", methods=["POST"])
+def clear_output():
+    data = request.get_json()
+    session_id = data.get("sessionId")
+    
+    if not session_id:
+        return jsonify({"error": "Session ID is required"}), 400
+    
+    pattern = session_id
+
+    delete_files_with_pattern(UPLOAD_FOLDER, pattern)
+    delete_files_with_pattern(RESULTS_FOLDER, pattern)
+    delete_files_with_pattern(CROPPED_IMAGES_FOLDER, pattern)
+
+    return jsonify({ "message": "Files cleared successfully" })
+
 
 @app.route("/api/analyze-images", methods=["POST"])
 def analyze_images():
-    clear_old_images(UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER)
+    # Generate Session ID
+    session_id = str(uuid.uuid4())
+
+    # Ensure folders exist
+    for folder in [UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER]:
+        ensure_folder_exists(folder)
 
     # Generate Unique ID for each image
-    unique_id = "_" + str(uuid.uuid4())
+    unique_image_id = "_" + session_id
     
     # Get Images from the client
     input_images = request.files.getlist("inputImage")
@@ -58,14 +78,14 @@ def analyze_images():
         # Save Images in the /tmp/uploads folder
         for image in input_images:
             filename = secure_filename(image.filename)
-            unique_filename = os.path.splitext(filename)[0] + unique_id + os.path.splitext(filename)[1]
+            unique_filename = os.path.splitext(filename)[0] + unique_image_id + os.path.splitext(filename)[1]
 
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
             image.save(file_path)
             uploaded_filenames.append(unique_filename)
             uploaded_images.append(file_path)
 
-        object_detection(app, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
+        object_detection(app.config['RESULTS_FOLDER'], app.config['CROPPED_IMAGES_FOLDER'], uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path)
         image_classification(cropped_images_full_path, grading_results, product_suggestions, class_lists, class_probabilities)
 
         # Combining Class Lists and Class Probabilities
@@ -91,7 +111,7 @@ def analyze_images():
         # Structure all Information
         structured_info = [{"id": str(uuid.uuid4()), "timestamp": utc_now.isoformat(), "input_image": input_image, "yolo_images": detected_object, "results": results} for input_image, detected_object, results in zip(uploaded_filenames, yolo_images, grouped_list)]
 
-        return jsonify({ "structured_info":  structured_info })
+        return jsonify({ "structured_info": structured_info, "session_id": session_id })
     else:
         return jsonify({"error": "No files uploaded"}), 400
 
@@ -111,4 +131,4 @@ def cropped_images(filename):
     return send_file(file_path, mimetype='image/png')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", port="8000")
