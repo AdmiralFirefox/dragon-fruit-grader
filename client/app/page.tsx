@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import useSessionCleanup from "@/hooks/useSessionCleanup";
 import Axios from "axios";
 import useDragAndDrop from "@/hooks/useDragAndDrop";
 import Hero from "./components/HomePage/Hero";
@@ -98,6 +99,8 @@ export default function Home() {
 
   const classInfoSectionRef = useRef<HTMLElement>(null);
   const classifySectionRef = useRef<HTMLDivElement>(null);
+
+  useSessionCleanup(sessionId);
 
   const { lock, unlock } = useScrollLock({
     autoLock: false,
