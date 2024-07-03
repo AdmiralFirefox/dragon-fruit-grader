@@ -31,6 +31,11 @@ def ensure_folder_exists(folder_path):
         print(f"{folder_path} folder already exists.")
 
 
+# Ensure folders exist
+for folder in [UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER]:
+    ensure_folder_exists(folder)
+
+
 @app.route("/api/clear-session-output", methods=["POST"])
 def clear_output():
     data = request.get_json()
@@ -52,10 +57,6 @@ def clear_output():
 def analyze_images():
     # Generate Session ID
     session_id = str(uuid.uuid4())
-
-    # Ensure folders exist
-    for folder in [UPLOAD_FOLDER, RESULTS_FOLDER, CROPPED_IMAGES_FOLDER]:
-        ensure_folder_exists(folder)
 
     # Generate Unique ID for each image
     unique_image_id = "_" + session_id
