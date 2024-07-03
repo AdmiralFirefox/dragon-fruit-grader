@@ -13,8 +13,12 @@ function useSessionCleanup(sessionId: string | null): void {
 
     const cleanup = async (): Promise<void> => {
       try {
+        const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL
+          ? process.env.NEXT_PUBLIC_BACKEND_URL
+          : "http://localhost:8000";
+
         const response = await axios.post<CleanupResponse>(
-          "/api/clear-session-output",
+          `${backend_url}/api/clear-session-output`,
           { sessionId }
         );
         console.log(response.data.message);
