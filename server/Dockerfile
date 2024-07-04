@@ -1,7 +1,9 @@
-# Python requirements
 FROM python:3.10.11-slim AS flask
 
 WORKDIR /app
+
+# Create necessary directories
+RUN mkdir -p /tmp/outputs/uploads /tmp/outputs/results /tmp/outputs/cropped_images
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -9,11 +11,11 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Copy all the needed files
 COPY . .
+
+# Install python packages
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Set the Flask application entry point
 ENV FLASK_APP=main.py
