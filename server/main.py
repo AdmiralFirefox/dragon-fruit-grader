@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, abort
 from flask_cors import CORS
 from clear_old_images import delete_files_with_pattern
 from object_detection import object_detection
@@ -122,20 +122,30 @@ def analyze_images():
     else:
         return jsonify({"error": "No files uploaded"}), 400
 
+
+def serve_image(folder, filename):
+    file_path = os.path.join(folder, filename)
+    
+    if not os.path.exists(file_path):
+        abort(404, description="Image not found")
+    
+    try:
+        return send_file(file_path, mimetype='image/png')
+    except Exception:
+        abort(500, description="Error serving image")
+
+
 @app.route('/api/get-image/<filename>', methods=["GET"])
 def get_image(filename):
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    return send_file(file_path, mimetype='image/png')
+    return serve_image(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/api/yolo-results/<filename>', methods=["GET"])
 def yolo_results(filename):
-    file_path = os.path.join(app.config['RESULTS_FOLDER'], filename)
-    return send_file(file_path, mimetype='image/png')
+    return serve_image(app.config['RESULTS_FOLDER'], filename)
 
 @app.route('/api/yolo-cropped-images/<filename>', methods=["GET"])
 def cropped_images(filename):
-    file_path = os.path.join(app.config['CROPPED_IMAGES_FOLDER'], filename)
-    return send_file(file_path, mimetype='image/png')
+    return serve_image(app.config['CROPPED_IMAGES_FOLDER'], filename)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="8000")
