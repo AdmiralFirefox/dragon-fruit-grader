@@ -82,7 +82,13 @@ def analyze_images():
             unique_filename = os.path.splitext(filename)[0] + unique_image_id + os.path.splitext(filename)[1]
 
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-            image.save(file_path)
+
+            try:
+                image.save(file_path)
+            except FileNotFoundError:
+                os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+                image.save(file_path)
+
             uploaded_filenames.append(unique_filename)
             uploaded_images.append(file_path)
 

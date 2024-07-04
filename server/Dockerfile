@@ -2,9 +2,6 @@ FROM python:3.10.11-slim AS flask
 
 WORKDIR /app
 
-# Create necessary directories
-RUN mkdir -p /tmp/outputs/uploads /tmp/outputs/results /tmp/outputs/cropped_images
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     libgl1 \

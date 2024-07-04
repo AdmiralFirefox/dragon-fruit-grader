@@ -3,7 +3,17 @@ import cv2
 import os
 from werkzeug.utils import secure_filename
 
+
+def ensure_folder_exists(folder_path):
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+
+
 def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path):
+    # Ensure results and cropped image folders exist
+    ensure_folder_exists(results_folder)
+    ensure_folder_exists(cropped_image_folder)
+    
     # Load Pre-trained YOLOv8 Model
     saved_model = 'saved_models/best.pt'
     model = YOLO(saved_model)
