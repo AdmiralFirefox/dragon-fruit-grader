@@ -1,5 +1,6 @@
 Dockerfile
 .dockerignore
 .gitignore
+.env
 /grader-env
 /__pycache__
