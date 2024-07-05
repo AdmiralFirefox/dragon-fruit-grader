@@ -149,17 +149,26 @@ export default function Home() {
     mutation.mutate(files);
   };
 
+  // Ensuring the url served is in https
+  const imageInHttps = (image_url: string) => {
+    return image_url.startsWith("http://")
+      ? image_url.replace("http://", "https://")
+      : image_url;
+  };
+
   // Uploading to Grading Results Database
   async function addGradingInfo(info: GradingInfo) {
     setDataSaved((prevStates) => ({ ...prevStates, [info.id]: false }));
     setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
 
     // Convert string to file images
-    info.input_image = await toBase64FromUrl(info.input_image);
-    info.yolo_images = await toBase64FromUrl(info.yolo_images);
+    info.input_image = await toBase64FromUrl(imageInHttps(info.input_image));
+    info.yolo_images = await toBase64FromUrl(imageInHttps(info.yolo_images));
 
     for (const result of info.results) {
-      result.cropped_images = await toBase64FromUrl(result.cropped_images);
+      result.cropped_images = await toBase64FromUrl(
+        imageInHttps(result.cropped_images)
+      );
     }
 
     await db.transaction(
@@ -341,6 +350,7 @@ export default function Home() {
           {!inputMode ? (
             <Results
               structured_info={mutation.data.structured_info}
+              imageInHttps={imageInHttps}
               infoModal={infoModal}
               openModal={openModal}
               closeModal={closeModal}

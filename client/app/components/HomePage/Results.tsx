@@ -24,6 +24,7 @@ interface ResultsProps {
       }[];
     }[];
   }[];
+  imageInHttps: (image_url: string) => string;
   infoModal: string | number;
   openModal: (id: string) => void;
   closeModal: (id: string) => void;
@@ -34,6 +35,7 @@ interface ResultsProps {
 
 const Results = ({
   structured_info,
+  imageInHttps,
   infoModal,
   openModal,
   closeModal,
@@ -52,7 +54,7 @@ const Results = ({
                   <p>Uploaded Image</p>
                   <div className={styles["image-wrapper"]}>
                     <Image
-                      src={info.input_image}
+                      src={imageInHttps(info.input_image)}
                       alt="Uploaded Image"
                       width={300}
                       height={300}
@@ -65,7 +67,7 @@ const Results = ({
                   <p>Detected Dragon Fruits</p>
                   <div className={styles["image-wrapper"]}>
                     <Image
-                      src={info.yolo_images}
+                      src={imageInHttps(info.yolo_images)}
                       alt="Detected Dragon Fruits"
                       width={300}
                       height={300}
@@ -83,7 +85,7 @@ const Results = ({
                       <div key={result.id} className={styles["results-card"]}>
                         <div className={styles["image-wrapper"]}>
                           <Image
-                            src={result.cropped_images}
+                            src={imageInHttps(result.cropped_images)}
                             alt="Dragon Fruit"
                             width={250}
                             height={250}
