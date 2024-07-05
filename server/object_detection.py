@@ -1,4 +1,5 @@
 from ultralytics import YOLO
+from cloudinary import uploader
 import cv2
 import os
 from werkzeug.utils import secure_filename
@@ -9,7 +10,7 @@ def ensure_folder_exists(folder_path):
         os.makedirs(folder_path)
 
 
-def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path):
+def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path, result_image_url, cropped_image_url):
     # Ensure results and cropped image folders exist
     ensure_folder_exists(results_folder)
     ensure_folder_exists(cropped_image_folder)
@@ -30,11 +31,19 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
         
         # Get the file name of the uploaded images
         uploaded_filenames_noextension = os.path.splitext(uploaded_filenames[i])[0]
-        secured_filename = secure_filename(f'{uploaded_filenames_noextension}.jpg')
+        secured_filename = secure_filename(f'detected_{uploaded_filenames_noextension}.jpg')
 
         # Save detected images to the results directory
         filename = os.path.join(results_folder, secured_filename)
         result.save(filename=filename) 
+
+        # Upload image to cloudinary
+        detected_public_id = os.path.splitext(secured_filename)[0]
+        upload_detected_result = uploader.upload(filename,
+                                        public_id=detected_public_id,
+                                        resource_type="image")
+        result_image_url.append(upload_detected_result["url"])
+
         yolo_images.append(secured_filename)
     
     # Perform inference on each image and crop the detected objects
@@ -62,5 +71,13 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
 
             # Save the cropped object as an image in the 'cropped_images' folder
             cv2.imwrite(filename, ultralytics_crop_object)
+
+            # Upload image to cloudinary
+            cropped_public_id = os.path.splitext(cropped_image_name)[0]
+            upload_cropped_result = uploader.upload(filename,
+                                            public_id=cropped_public_id,
+                                            resource_type="image")
+            cropped_image_url.append(upload_cropped_result["url"])
+
             cropped_images.append(cropped_image_name)
             cropped_images_full_path.append(filename)

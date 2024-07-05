@@ -155,17 +155,11 @@ export default function Home() {
     setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
 
     // Convert string to file images
-    info.input_image = await toBase64FromUrl(
-      `${backend_url}/api/get-image/${info.input_image}`
-    );
-    info.yolo_images = await toBase64FromUrl(
-      `${backend_url}/api/yolo-results/${info.yolo_images}`
-    );
+    info.input_image = await toBase64FromUrl(info.input_image);
+    info.yolo_images = await toBase64FromUrl(info.yolo_images);
 
     for (const result of info.results) {
-      result.cropped_images = await toBase64FromUrl(
-        `${backend_url}/api/yolo-cropped-images/${result.cropped_images}`
-      );
+      result.cropped_images = await toBase64FromUrl(result.cropped_images);
     }
 
     await db.transaction(
@@ -209,11 +203,6 @@ export default function Home() {
         console.error("Error setting sample image:", error);
       }
     }
-  };
-
-  // Check if the format is in Base64
-  const isBase64 = (str: string) => {
-    return str.startsWith("data:");
   };
 
   // Info Modal
@@ -352,8 +341,6 @@ export default function Home() {
           {!inputMode ? (
             <Results
               structured_info={mutation.data.structured_info}
-              backend_url={backend_url}
-              isBase64={isBase64}
               infoModal={infoModal}
               openModal={openModal}
               closeModal={closeModal}

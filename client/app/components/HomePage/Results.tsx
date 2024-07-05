@@ -24,8 +24,6 @@ interface ResultsProps {
       }[];
     }[];
   }[];
-  backend_url: string;
-  isBase64: (str: string) => boolean;
   infoModal: string | number;
   openModal: (id: string) => void;
   closeModal: (id: string) => void;
@@ -36,8 +34,6 @@ interface ResultsProps {
 
 const Results = ({
   structured_info,
-  backend_url,
-  isBase64,
   infoModal,
   openModal,
   closeModal,
@@ -56,11 +52,7 @@ const Results = ({
                   <p>Uploaded Image</p>
                   <div className={styles["image-wrapper"]}>
                     <Image
-                      src={
-                        isBase64(info.input_image)
-                          ? info.input_image
-                          : `${backend_url}/api/get-image/${info.input_image}`
-                      }
+                      src={info.input_image}
                       alt="Uploaded Image"
                       width={300}
                       height={300}
@@ -73,11 +65,7 @@ const Results = ({
                   <p>Detected Dragon Fruits</p>
                   <div className={styles["image-wrapper"]}>
                     <Image
-                      src={
-                        isBase64(info.yolo_images)
-                          ? info.yolo_images
-                          : `${backend_url}/api/yolo-results/${info.yolo_images}`
-                      }
+                      src={info.yolo_images}
                       alt="Detected Dragon Fruits"
                       width={300}
                       height={300}
@@ -95,11 +83,7 @@ const Results = ({
                       <div key={result.id} className={styles["results-card"]}>
                         <div className={styles["image-wrapper"]}>
                           <Image
-                            src={
-                              isBase64(result.cropped_images)
-                                ? result.cropped_images
-                                : `${backend_url}/api/yolo-cropped-images/${result.cropped_images}`
-                            }
+                            src={result.cropped_images}
                             alt="Dragon Fruit"
                             width={250}
                             height={250}

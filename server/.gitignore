@@ -9,3 +9,6 @@
 
 # Output Folders
 /outputs
+
+# Environment variables
+.env
