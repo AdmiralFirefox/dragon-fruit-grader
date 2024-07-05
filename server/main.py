@@ -82,8 +82,6 @@ def analyze_images():
     uploaded_filenames = []
 
     uploaded_images = []
-    yolo_images = []
-    cropped_images = []
     cropped_images_full_path = []
     grading_results = []
     product_suggestions = []
@@ -120,7 +118,7 @@ def analyze_images():
             uploaded_filenames.append(unique_filename)
             uploaded_images.append(file_path)
 
-        object_detection(app.config['RESULTS_FOLDER'], app.config['CROPPED_IMAGES_FOLDER'], uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path, result_image_url, cropped_image_url)
+        object_detection(app.config['RESULTS_FOLDER'], app.config['CROPPED_IMAGES_FOLDER'], uploaded_images, uploaded_filenames, cropped_images_full_path, result_image_url, cropped_image_url)
         image_classification(cropped_images_full_path, grading_results, product_suggestions, class_lists, class_probabilities)
 
         # Combining Class Lists and Class Probabilities

@@ -10,7 +10,7 @@ def ensure_folder_exists(folder_path):
         os.makedirs(folder_path)
 
 
-def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, yolo_images, cropped_images, cropped_images_full_path, result_image_url, cropped_image_url):
+def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, cropped_images_full_path, result_image_url, cropped_image_url):
     # Ensure results and cropped image folders exist
     ensure_folder_exists(results_folder)
     ensure_folder_exists(cropped_image_folder)
@@ -43,8 +43,6 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
                                         public_id=detected_public_id,
                                         resource_type="image")
         result_image_url.append(upload_detected_result["url"])
-
-        yolo_images.append(secured_filename)
     
     # Perform inference on each image and crop the detected objects
     for image in uploaded_images:
@@ -79,5 +77,4 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
                                             resource_type="image")
             cropped_image_url.append(upload_cropped_result["url"])
 
-            cropped_images.append(cropped_image_name)
             cropped_images_full_path.append(filename)
