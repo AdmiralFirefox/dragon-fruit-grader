@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from clear_old_images import delete_files_with_pattern
+from clear_old_images import delete_files_with_pattern, remove_from_cloudinary
 from object_detection import object_detection
 from image_classification import image_classification
 from werkzeug.utils import secure_filename
@@ -26,9 +26,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Define directories
-UPLOAD_FOLDER = f"/tmp/outputs/uploads"
-RESULTS_FOLDER = f"/tmp/outputs/results"
-CROPPED_IMAGES_FOLDER = f"/tmp/outputs/cropped_images"
+UPLOAD_FOLDER = "/tmp/outputs/uploads"
+RESULTS_FOLDER = "/tmp/outputs/results"
+CROPPED_IMAGES_FOLDER = "/tmp/outputs/cropped_images"
 
 # Define configurations for directories
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -57,6 +57,10 @@ def clear_output():
         return jsonify({"error": "Session ID is required"}), 400
     
     pattern = session_id
+
+    remove_from_cloudinary(UPLOAD_FOLDER, pattern)
+    remove_from_cloudinary(RESULTS_FOLDER, pattern)
+    remove_from_cloudinary(CROPPED_IMAGES_FOLDER, pattern)
 
     delete_files_with_pattern(UPLOAD_FOLDER, pattern)
     delete_files_with_pattern(RESULTS_FOLDER, pattern)
