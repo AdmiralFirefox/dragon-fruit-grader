@@ -112,6 +112,7 @@ def analyze_images():
             input_public_id = os.path.splitext(unique_filename)[0]
             upload_input_result = uploader.upload(file_path,
                                             public_id=input_public_id,
+                                            folder="dragon-fruit-grader",
                                             resource_type="image")
             upload_image_url.append(upload_input_result["url"])
 

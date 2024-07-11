@@ -41,6 +41,7 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
         detected_public_id = os.path.splitext(secured_filename)[0]
         upload_detected_result = uploader.upload(filename,
                                         public_id=detected_public_id,
+                                        folder="dragon-fruit-grader",
                                         resource_type="image")
         result_image_url.append(upload_detected_result["url"])
     
@@ -74,6 +75,7 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
             cropped_public_id = os.path.splitext(cropped_image_name)[0]
             upload_cropped_result = uploader.upload(filename,
                                             public_id=cropped_public_id,
+                                            folder="dragon-fruit-grader",
                                             resource_type="image")
             cropped_image_url.append(upload_cropped_result["url"])
 

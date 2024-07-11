@@ -31,7 +31,7 @@ def remove_from_cloudinary(local_directory, session_id):
                 public_id = os.path.splitext(filename)[0]
                 
                 # Delete the image from Cloudinary
-                result = uploader.destroy(public_id, resource_type="image")
+                result = uploader.destroy(f"dragon-fruit-grader/{public_id}", resource_type="image")
                 
                 if result.get('result') == 'ok':
                     print(f"Successfully deleted {filename} from Cloudinary")
