@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import Axios from "axios";
@@ -10,6 +9,7 @@ import Hero from "@/app/components/PageContent/HomePageContent/Hero";
 import ClassInfoCards from "@/app/components/PageContent/HomePageContent/ClassInfoCards";
 import Results from "@/app/components/PageContent/HomePageContent/Results";
 import DragDrop from "@/app/components/PageContent/HomePageContent/DragDrop";
+import TestImages from "./HomePageContent/TestImages";
 import Loading from "@/app/components/States/Loading";
 import Error from "@/app/components/States/Error";
 import { db, GradingInfo } from "@/app/db";
@@ -255,77 +255,7 @@ const HomeContent = () => {
             />
           </div>
 
-          <p className={styles["sample-images-title"]}>
-            Try these sample images:
-          </p>
-
-          <ul className={styles["sample-images-container"]}>
-            <li
-              className={styles["sample-image-wrapper"]}
-              onClick={() =>
-                setSampleImage("/sample-images/dragon_fruit_1.jpg")
-              }
-            >
-              <Image
-                src="/sample-images/dragon_fruit_1.jpg"
-                alt="Sample Dragon Fruit Image"
-                width={100}
-                height={100}
-              />
-            </li>
-            <li
-              className={styles["sample-image-wrapper"]}
-              onClick={() =>
-                setSampleImage("/sample-images/dragon_fruit_2.png")
-              }
-            >
-              <Image
-                src="/sample-images/dragon_fruit_2.png"
-                alt="Sample Dragon Fruit Image"
-                width={100}
-                height={100}
-              />
-            </li>
-            <li
-              className={styles["sample-image-wrapper"]}
-              onClick={() =>
-                setSampleImage("/sample-images/dragon_fruit_3.png")
-              }
-            >
-              <Image
-                src="/sample-images/dragon_fruit_3.png"
-                alt="Sample Dragon Fruit Image"
-                width={100}
-                height={100}
-              />
-            </li>
-            <li
-              className={styles["sample-image-wrapper"]}
-              onClick={() =>
-                setSampleImage("/sample-images/dragon_fruit_4.jpg")
-              }
-            >
-              <Image
-                src="/sample-images/dragon_fruit_4.jpg"
-                alt="Sample Dragon Fruit Image"
-                width={100}
-                height={100}
-              />
-            </li>
-            <li
-              className={styles["sample-image-wrapper"]}
-              onClick={() =>
-                setSampleImage("/sample-images/dragon_fruit_5.jpg")
-              }
-            >
-              <Image
-                src="/sample-images/dragon_fruit_5.jpg"
-                alt="Sample Dragon Fruit Image"
-                width={100}
-                height={100}
-              />
-            </li>
-          </ul>
+          <TestImages setSampleImage={setSampleImage} />
         </>
       ) : null}
 
