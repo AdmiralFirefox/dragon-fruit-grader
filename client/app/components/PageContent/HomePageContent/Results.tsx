@@ -1,8 +1,8 @@
 import Image from "next/image";
 import SyncLoader from "react-spinners/SyncLoader";
-import InfoModal from "../Modals/InfoModal";
-import InfoIcon from "../Icons/InfoIcon";
-import { GradingInfo } from "../../db";
+import InfoModal from "@/app/components/Modals/InfoModal";
+import InfoIcon from "@/app/components/Icons/InfoIcon";
+import { GradingInfo } from "@/app/db";
 import { formatTime } from "@/utils/formatTime";
 import styles from "@/styles/homepage/Results.module.scss";
 
