@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { koho_bold, monserrat_medium, monserrat_bold } from "./fonts";
 import Navbar from "./components/Navbar";
+import { AuthProvider } from "@/providers/AuthProvider";
 import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({
     >
       <body>
         <Navbar />
-        <QueryProvider>{children}</QueryProvider>
+        <AuthProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

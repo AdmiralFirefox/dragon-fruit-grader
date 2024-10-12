@@ -1,4 +1,4 @@
-@use "../styles/themeprovider/themeprovider" as theme;
+@use "../themeprovider/themeprovider" as theme;
 
 .navbar {
   background: theme.$orange-color;
@@ -33,6 +33,16 @@
       font-size: 1.4rem;
       margin-left: 0.2em;
     }
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    font-family: var(--monserrat-medium);
+    font-weight: 600;
+    font-size: 1rem;
+    color: theme.$white-color;
+    cursor: pointer;
   }
 }
 

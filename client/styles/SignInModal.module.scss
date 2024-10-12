@@ -1,0 +1,75 @@
+@use "../styles/themeprovider/themeprovider" as theme;
+
+.backdrop {
+  background: theme.$black-color-transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+.modal {
+  position: fixed;
+  width: 100%;
+  left: 50%;
+  z-index: 4;
+  overflow-y: auto;
+  width: min(85%, 45em);
+  background: theme.$white-color;
+  padding: 2em;
+  border-radius: 5px;
+
+  .close-button {
+    background: transparent;
+    border: none;
+    position: absolute;
+    right: 0.7em;
+    top: 0.7em;
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+  }
+
+  h1 {
+    color: theme.$black-color;
+    font-family: var(--monserrat-medium);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin-top: 0.3em;
+  }
+
+  p {
+    color: theme.$black-color;
+    font-family: var(--monserrat-medium);
+    margin-top: 0.5em;
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+  }
+
+  .google-button {
+    background: theme.$white-color;
+    font-family: var(--monserrat-medium);
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 0.5em;
+    border-radius: 5px;
+    margin-top: 2em;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out;
+
+    p {
+      color: theme.$black-color;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    img {
+      width: 100%;
+      object-fit: cover;
+      margin-left: 0.7em;
+    }
+
+    &:hover {
+      background: theme.$white-color-hover;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { motion, AnimatePresence } from "framer-motion";
 import DonutChart from "../Charts/DonutChart";
-import styles from "@/styles/InfoModal.module.scss";
+import styles from "@/styles/modals/InfoModal.module.scss";
 
 interface InfoModalProps {
   active: boolean;
