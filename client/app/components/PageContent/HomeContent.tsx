@@ -170,9 +170,9 @@ const HomeContent = () => {
         const gradingInfoRef = collection(db, "grading_info");
 
         await addDoc(gradingInfoRef, {
-          ownerId: user?.uid,
-          ownerEmail: user?.email,
-          ownerPhoto: user?.photoURL,
+          owner_id: user?.uid,
+          owner_email: user?.email,
+          owner_photo: user?.photoURL,
           input_image: info.input_image,
           timestamp: info.timestamp,
           yolo_images: info.yolo_images,

@@ -13,6 +13,7 @@ import {
   query,
   orderBy,
   onSnapshot,
+  where,
 } from "firebase/firestore";
 import Image from "next/image";
 import InfoModal from "@/app/components/Modals/InfoModal";
@@ -92,7 +93,11 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   useEffect(() => {
     if (user) {
       const gradingInfoRef = collection(db, "grading_info");
-      const q = query(gradingInfoRef, orderBy("timestamp", "desc"));
+      const q = query(
+        gradingInfoRef,
+        orderBy("timestamp", "desc"),
+        where("owner_id", "==", user!.uid)
+      );
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const grading_info = snapshot.docs.map((doc) => ({
