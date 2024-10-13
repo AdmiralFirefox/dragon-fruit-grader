@@ -1,7 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "@/firebase/firebase";
+import { AuthContext } from "@/context/AuthContext";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import Axios from "axios";
 import useDragAndDrop from "@/hooks/useDragAndDrop";
@@ -12,8 +15,7 @@ import DragDrop from "@/app/components/PageContent/HomePageContent/DragDrop";
 import TestImages from "./HomePageContent/TestImages";
 import Loading from "@/app/components/States/Loading";
 import Error from "@/app/components/States/Error";
-import { db, GradingInfo } from "@/app/db";
-import { toBase64FromUrl } from "@/utils/toBase64FromUrl";
+import { GradingInfo } from "@/app/db";
 import styles from "@/styles/Classify.module.scss";
 
 interface InputProps {
@@ -37,16 +39,16 @@ interface InputProps {
   session_id: string;
 }
 
+interface DocLoadingSave {
+  [key: string]: boolean;
+}
+
+interface DocExist {
+  [key: string]: boolean;
+}
+
 interface ClearSessionProps {
   message: string;
-}
-
-interface LoadingSave {
-  [key: string]: boolean;
-}
-
-interface DataSaved {
-  [key: string]: boolean;
 }
 
 const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -91,13 +93,15 @@ const clearSession = async (sessionId: string) => {
 const HomeContent = () => {
   const [inputMode, setInputMode] = useState(true);
   const [infoModal, setInfoModal] = useState<number | string>(0);
-  const [loadingSave, setLoadingSave] = useState<LoadingSave>({});
-  const [dataSaved, setDataSaved] = useState<DataSaved>({});
+  const [docExist, setDocExist] = useState<DocExist>({});
+  const [docLoadingSave, setDocLoadingSave] = useState<DocLoadingSave>({});
   const [sessionId, setSessionId] = useState("");
   const { dragOver, setDragOver, onDragOver, onDragLeave } = useDragAndDrop();
 
   const classInfoSectionRef = useRef<HTMLElement>(null);
   const classifySectionRef = useRef<HTMLDivElement>(null);
+
+  const user = useContext(AuthContext);
 
   const { lock, unlock } = useScrollLock({
     autoLock: false,
@@ -157,40 +161,31 @@ const HomeContent = () => {
   };
 
   // Uploading to Grading Results Database
-  async function addGradingInfo(info: GradingInfo) {
-    setDataSaved((prevStates) => ({ ...prevStates, [info.id]: false }));
-    setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
+  const addGradingInfo = async (info: GradingInfo) => {
+    setDocExist((prevStates) => ({ ...prevStates, [info.id]: false }));
+    setDocLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
 
-    // Convert string to file images
-    info.input_image = await toBase64FromUrl(imageInHttps(info.input_image));
-    info.yolo_images = await toBase64FromUrl(imageInHttps(info.yolo_images));
+    if (user) {
+      try {
+        const gradingInfoRef = collection(db, "grading_info");
 
-    for (const result of info.results) {
-      result.cropped_images = await toBase64FromUrl(
-        imageInHttps(result.cropped_images)
-      );
+        await addDoc(gradingInfoRef, {
+          ownerId: user?.uid,
+          ownerEmail: user?.email,
+          ownerPhoto: user?.photoURL,
+          input_image: info.input_image,
+          timestamp: info.timestamp,
+          yolo_images: info.yolo_images,
+          results: info.results,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    await db.transaction(
-      "rw",
-      db.grading_info,
-      db.results,
-      db.probabilities,
-      async () => {
-        await db.grading_info.add(info);
-
-        for (const result of info.results) {
-          await db.results.add(result);
-          for (const probability of result.probabilities) {
-            await db.probabilities.add(probability);
-          }
-        }
-      }
-    );
-
-    setDataSaved((prevStates) => ({ ...prevStates, [info.id]: true }));
-    setLoadingSave((prevStates) => ({ ...prevStates, [info.id]: false }));
-  }
+    setDocExist((prevStates) => ({ ...prevStates, [info.id]: true }));
+    setDocLoadingSave((prevStates) => ({ ...prevStates, [info.id]: false }));
+  };
 
   // Set Sample Image
   const setSampleImage = async (imagePath: string) => {
@@ -284,9 +279,9 @@ const HomeContent = () => {
               infoModal={infoModal}
               openModal={openModal}
               closeModal={closeModal}
-              loadingSave={loadingSave}
-              dataSaved={dataSaved}
               addGradingInfo={addGradingInfo}
+              docExist={docExist}
+              docLoadingSave={docLoadingSave}
             />
           ) : null}
         </>

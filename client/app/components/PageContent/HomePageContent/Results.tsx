@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 import SyncLoader from "react-spinners/SyncLoader";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
@@ -28,9 +32,13 @@ interface ResultsProps {
   infoModal: string | number;
   openModal: (id: string) => void;
   closeModal: (id: string) => void;
-  loadingSave: { [key: string]: boolean };
-  dataSaved: { [key: string]: boolean };
   addGradingInfo(info: GradingInfo): Promise<void>;
+  docExist: {
+    [key: string]: boolean;
+  };
+  docLoadingSave: {
+    [key: string]: boolean;
+  };
 }
 
 const Results = ({
@@ -39,10 +47,12 @@ const Results = ({
   infoModal,
   openModal,
   closeModal,
-  loadingSave,
-  dataSaved,
   addGradingInfo,
+  docExist,
+  docLoadingSave,
 }: ResultsProps) => {
+  const user = useContext(AuthContext);
+
   return (
     <ul>
       {structured_info.map((info) => {
@@ -116,21 +126,29 @@ const Results = ({
                 <p>Time Graded: {formatTime(info.timestamp)}</p>
               </div>
 
-              <div className={styles["save-results-button"]}>
-                {loadingSave[info.id] ? (
-                  <button className={styles["loading-button"]}>
-                    <SyncLoader color="#f7fff9" size={10} />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => addGradingInfo(info)}
-                    className={styles["save-button"]}
-                    disabled={dataSaved[info.id]}
-                  >
-                    {dataSaved[info.id] ? "Results Saved" : "Save Results"}
-                  </button>
-                )}
-              </div>
+              {!user ? (
+                <div className={styles["save-results-button"]}>
+                  <p>Sign In to Save Results</p>
+                </div>
+              ) : (
+                <div className={styles["save-results-button"]}>
+                  {docLoadingSave[info.id] ? (
+                    <button className={styles["loading-button"]}>
+                      <SyncLoader color="#f7fff9" size={10} />
+                    </button>
+                  ) : (
+                    <div className={styles["save-results-button"]}>
+                      <button
+                        onClick={() => addGradingInfo(info)}
+                        className={styles["save-button"]}
+                        disabled={docExist[info.id]}
+                      >
+                        {docExist[info.id] ? "Results Saved" : "Save Results"}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </li>
         );

@@ -3,10 +3,17 @@
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "@/hooks/useAuthState";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/app/db";
 import { AuthContext } from "@/context/AuthContext";
 import { auth } from "@/firebase/firebase";
+import { db } from "@/firebase/firebase";
+import {
+  deleteDoc,
+  doc,
+  collection,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 import Image from "next/image";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import { useScrollLock } from "@/hooks/useScrollLock";
@@ -14,6 +21,7 @@ import { formatTime } from "@/utils/formatTime";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
 import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
+import { GradingInfo } from "@/app/db";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -21,6 +29,9 @@ interface SavedResultsProps {
 }
 
 const SavedResults = ({ searchParams }: SavedResultsProps) => {
+  const [gradingInfo, setGradingInfo] = useState<GradingInfo[]>([]);
+  const [loadingInfo, setLoadingInfo] = useState(true);
+
   const [infoModal, setInfoModal] = useState<number | string>(0);
   const { initializing } = useAuthState();
 
@@ -39,13 +50,8 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   const start = (Number(page) - 1) * Number(per_page);
   const end = start + Number(per_page);
 
-  // Fetch Data from database
-  const grading_info = useLiveQuery(() =>
-    db.grading_info.orderBy("timestamp").reverse().toArray()
-  );
-
   // Slice the data
-  const grading_data = grading_info !== undefined ? grading_info : [];
+  const grading_data = gradingInfo !== undefined ? gradingInfo : [];
   const entries = grading_data.slice(start, end);
 
   const { lock, unlock } = useScrollLock({
@@ -55,10 +61,13 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
 
   // Delete Result
   const deleteResult = async (id: string) => {
-    try {
-      await db.grading_info.delete(id);
-    } catch (error) {
-      console.error("Failed to delete friend:", error);
+    if (user) {
+      try {
+        const docRef = doc(db, "grading_info", id);
+        await deleteDoc(docRef);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -79,6 +88,28 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
     }
   };
 
+  // Fetch Data from database
+  useEffect(() => {
+    if (user) {
+      const gradingInfoRef = collection(db, "grading_info");
+      const q = query(gradingInfoRef, orderBy("timestamp", "desc"));
+
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const grading_info = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setGradingInfo(grading_info as GradingInfo[]);
+        setLoadingInfo(false);
+      });
+
+      // Clean up function
+      return () => unsubscribe();
+    }
+  }, [user]);
+
+  // Redirect unauthorized users
   useEffect(() => {
     if (!initializing && !user) {
       router.push("/");
@@ -112,8 +143,14 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
       <div className={styles["saved-results-title"]}>
         <h1>Saved Results</h1>
       </div>
-      {grading_info !== undefined
-        ? entries!.map((info) => (
+
+      {gradingInfo.length === 0 && loadingInfo ? (
+        <div style={{ textAlign: "center" }}>
+          <h1>Loading...</h1>
+        </div>
+      ) : (
+        <>
+          {entries!.map((info) => (
             <li key={info.id} className={styles["result-wrapper"]}>
               <div className={styles["result-container"]}>
                 <div className={styles["first-section"]}>
@@ -190,8 +227,9 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                 </div>
               </div>
             </li>
-          ))
-        : null}
+          ))}
+        </>
+      )}
 
       {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
         <PaginationControls
