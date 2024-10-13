@@ -6,11 +6,16 @@ import { useState, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import ResultIcon from "./Icons/ResultIcon";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { useAuthState } from "@/hooks/useAuthState";
 import SignInModal from "./Modals/SignInModal";
-import styles from "@/styles/modals/Navbar.module.scss";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
+import styles from "@/styles/Navbar.module.scss";
 
 const Navbar = () => {
   const [signInModal, setSignInModal] = useState(false);
+  const { initializing } = useAuthState();
+
   const user = useContext(AuthContext);
 
   const { lock, unlock } = useScrollLock({
@@ -28,6 +33,22 @@ const Navbar = () => {
     setSignInModal(false);
   };
 
+  //Sign In with Google
+  const signInWithgoogle = async () => {
+    const provider = new GoogleAuthProvider();
+
+    auth.useDeviceLanguage();
+
+    try {
+      await signInWithPopup(auth, provider);
+      closeModal();
+    } catch (err) {
+      console.log(err);
+      closeModal();
+      alert(err);
+    }
+  };
+
   return (
     <>
       <header className={styles["navbar"]}>
@@ -43,16 +64,28 @@ const Navbar = () => {
           <h1>Dragon Fruit Grader</h1>
         </Link>
 
-        {!user ? (
-          <button onClick={openModal}>Sign In</button>
+        {initializing ? (
+          <p>Loading...</p>
         ) : (
-          <Link href="/save_results?page=1">
-            <ResultIcon width="2.8em" height="2.8em" />
-          </Link>
+          <>
+            {!user ? (
+              <button onClick={openModal}>Sign In</button>
+            ) : (
+              <Link href="/save_results?page=1">
+                <ResultIcon width="2.8em" height="2.8em" />
+              </Link>
+            )}
+          </>
         )}
       </header>
 
-      <SignInModal signInModal={signInModal} closeModal={closeModal} />
+      {!user ? (
+        <SignInModal
+          signInModal={signInModal}
+          closeModal={closeModal}
+          signInWithgoogle={signInWithgoogle}
+        />
+      ) : null}
     </>
   );
 };

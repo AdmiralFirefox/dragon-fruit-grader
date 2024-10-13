@@ -2,14 +2,19 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import CloseIcon from "../Icons/CloseIcon";
-import styles from "@/styles/SignInModal.module.scss";
+import styles from "@/styles/modals/SignInModal.module.scss";
 
 interface SignInModalProps {
   signInModal: boolean;
   closeModal: () => void;
+  signInWithgoogle: () => Promise<void>;
 }
 
-const SignInModal = ({ signInModal, closeModal }: SignInModalProps) => {
+const SignInModal = ({
+  signInModal,
+  closeModal,
+  signInWithgoogle,
+}: SignInModalProps) => {
   const { height: windowHeight } = useWindowSize();
 
   const variants = {
@@ -59,7 +64,10 @@ const SignInModal = ({ signInModal, closeModal }: SignInModalProps) => {
             </button>
             <h1>Sign In</h1>
             <p>Sign in to save your grading results.</p>
-            <button className={styles["google-button"]}>
+            <button
+              className={styles["google-button"]}
+              onClick={signInWithgoogle}
+            >
               <p>Sign In</p>
               <Image
                 src="/logos/google.png"

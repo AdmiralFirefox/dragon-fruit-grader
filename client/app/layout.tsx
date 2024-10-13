@@ -22,8 +22,8 @@ export default function RootLayout({
       className={`${koho_bold.variable} ${monserrat_medium.variable} ${monserrat_bold.variable}`}
     >
       <body>
-        <Navbar />
         <AuthProvider>
+          <Navbar />
           <QueryProvider>{children}</QueryProvider>
         </AuthProvider>
       </body>

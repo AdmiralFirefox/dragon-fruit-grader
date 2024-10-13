@@ -1,7 +1,40 @@
 @use "../themeprovider/themeprovider" as theme;
 
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    margin-top: 6.5em;
+    border-radius: 50px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-top: 0.25em;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-top: 0.25em;
+  }
+
+  button {
+    border: none;
+    border-radius: 10px;
+    margin-top: 1em;
+    padding: 0.7em 1em;
+    font-size: 1em;
+    font-weight: 600;
+    background: rgb(255, 0, 0);
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
 .saved-results-title {
-  margin: 5em 1em 2em 1em;
+  margin: 3.5em 1em 2em 1em;
 
   h1 {
     font-size: clamp(2.3rem, 3.5vw, 2.7rem);

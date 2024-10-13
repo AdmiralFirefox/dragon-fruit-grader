@@ -1,14 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthState } from "@/hooks/useAuthState";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/app/db";
+import { AuthContext } from "@/context/AuthContext";
+import { auth } from "@/firebase/firebase";
 import Image from "next/image";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { formatTime } from "@/utils/formatTime";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
 import PaginationControls from "@/app/components/PaginationControls";
+import { signOut } from "firebase/auth";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -17,6 +22,15 @@ interface SavedResultsProps {
 
 const SavedResults = ({ searchParams }: SavedResultsProps) => {
   const [infoModal, setInfoModal] = useState<number | string>(0);
+  const { initializing } = useAuthState();
+
+  const user = useContext(AuthContext);
+  const router = useRouter();
+
+  //Sign Out
+  const signOutAccount = async () => {
+    await signOut(auth);
+  };
 
   // Define Parameters for Pagination
   const page = searchParams["page"] ?? "1";
@@ -65,8 +79,36 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
     }
   };
 
-  return (
+  useEffect(() => {
+    if (!initializing && !user) {
+      router.push("/");
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, initializing]);
+
+  if (initializing) {
+    return (
+      <div style={{ marginTop: "5em", textAlign: "center" }}>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+
+  return user !== null ? (
     <main>
+      <div className={styles["user"]}>
+        <Image
+          src={user?.photoURL as string}
+          alt="User Profile"
+          width={70}
+          height={70}
+        />
+        <h1>Hello {user?.displayName}!</h1>
+        <p>Email: {user?.email}</p>
+        <button onClick={signOutAccount}>Sign Out</button>
+      </div>
+
       <div className={styles["saved-results-title"]}>
         <h1>Saved Results</h1>
       </div>
@@ -159,7 +201,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
         />
       )}
     </main>
-  );
+  ) : null;
 };
 
 export default SavedResults;
