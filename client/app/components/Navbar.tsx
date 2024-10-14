@@ -40,7 +40,19 @@ const Navbar = () => {
     auth.useDeviceLanguage();
 
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+
+      // Get ID token of signed-in user
+      const user = result.user;
+      const token = await user.getIdToken();
+
+      await fetch("/api/auth/set-custom-claims", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       closeModal();
     } catch (err) {
       console.log(err);
