@@ -151,6 +151,18 @@ const HomeContent = () => {
           yolo_images: info.yolo_images,
           results: info.results,
         });
+
+        await fetch("/api/cloudinary/upload-image", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input_image: info.input_image,
+            yolo_images: info.yolo_images,
+            results: info.results.map((result) => result.cropped_images),
+          }),
+        });
       } catch (error) {
         console.error(error);
       }

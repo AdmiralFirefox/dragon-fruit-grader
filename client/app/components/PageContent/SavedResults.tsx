@@ -19,6 +19,7 @@ import Image from "next/image";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { formatTime } from "@/utils/formatTime";
+import { formatUrl } from "@/utils/formatUrl";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
 import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
@@ -61,11 +62,23 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   });
 
   // Delete Result
-  const deleteResult = async (id: string) => {
+  const deleteResult = async (info: StructuredInfo) => {
     if (user) {
       try {
-        const docRef = doc(db, "grading_info", id);
+        const docRef = doc(db, "grading_info", info.id);
         await deleteDoc(docRef);
+
+        await fetch("/api/cloudinary/delete-image", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input_image: info.input_image,
+            yolo_images: info.yolo_images,
+            results: info.results.map((result) => result.cropped_images),
+          }),
+        });
       } catch (error) {
         console.error(error);
       }
@@ -163,7 +176,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                     <p>Uploaded Image</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={info.input_image}
+                        src={formatUrl(info.input_image) as string}
                         alt="Uploaded Image"
                         width={300}
                         height={300}
@@ -176,7 +189,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                     <p>Detected Dragon Fruits</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={info.yolo_images}
+                        src={formatUrl(info.yolo_images) as string}
                         alt="Detected Dragon Fruits"
                         width={300}
                         height={300}
@@ -194,7 +207,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                         <div key={result.id} className={styles["results-card"]}>
                           <div className={styles["image-wrapper"]}>
                             <Image
-                              src={result.cropped_images}
+                              src={formatUrl(result.cropped_images) as string}
                               alt="Dragon Fruit"
                               width={250}
                               height={250}
@@ -222,7 +235,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                 </div>
 
                 <div className={styles["delete-results-button"]}>
-                  <button onClick={() => deleteResult(info.id)}>
+                  <button onClick={() => deleteResult(info)}>
                     Delete Result
                   </button>
                 </div>
