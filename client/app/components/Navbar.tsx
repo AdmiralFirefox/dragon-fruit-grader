@@ -59,7 +59,7 @@ const Navbar = () => {
     }
   };
 
-  // Check if user has admin privileges
+  // Check if user is an admin
   useEffect(() => {
     const checkAdmin = async () => {
       const currentUser = auth.currentUser;
@@ -78,7 +78,7 @@ const Navbar = () => {
     };
 
     checkAdmin();
-  }, [user]);
+  }, []);
 
   return (
     <>
