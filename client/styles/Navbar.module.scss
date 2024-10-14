@@ -35,14 +35,27 @@
     }
   }
 
-  button {
-    background: transparent;
-    border: none;
-    font-family: var(--monserrat-medium);
-    font-weight: 600;
-    font-size: 1rem;
-    color: theme.$white-color;
-    cursor: pointer;
+  .page-links {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    .admin-link {
+      text-decoration: none;
+      color: theme.$white-color;
+      font-family: var(--monserrat-medium);
+      font-size: 1.05rem;
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      font-family: var(--monserrat-medium);
+      font-weight: 600;
+      font-size: 1rem;
+      color: theme.$white-color;
+      cursor: pointer;
+    }
   }
 }
 

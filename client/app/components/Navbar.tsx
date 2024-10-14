@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import ResultIcon from "./Icons/ResultIcon";
 import { useScrollLock } from "@/hooks/useScrollLock";
@@ -14,6 +14,7 @@ import styles from "@/styles/Navbar.module.scss";
 
 const Navbar = () => {
   const [signInModal, setSignInModal] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const { initializing } = useAuthState();
 
   const user = useContext(AuthContext);
@@ -61,6 +62,27 @@ const Navbar = () => {
     }
   };
 
+  // Check if user has admin privileges
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        const token = await currentUser.getIdTokenResult();
+
+        if (!token.claims.admin) {
+          setIsAdmin(false);
+        } else {
+          setIsAdmin(true);
+        }
+      } else {
+        setIsAdmin(false);
+      }
+    };
+
+    checkAdmin();
+  }, [user]);
+
   return (
     <>
       <header className={styles["navbar"]}>
@@ -76,19 +98,27 @@ const Navbar = () => {
           <h1>Dragon Fruit Grader</h1>
         </Link>
 
-        {initializing ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {!user ? (
-              <button onClick={openModal}>Sign In</button>
-            ) : (
-              <Link href="/save_results?page=1">
-                <ResultIcon width="2.8em" height="2.8em" />
-              </Link>
-            )}
-          </>
-        )}
+        <div className={styles["page-links"]}>
+          {initializing ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {isAdmin ? (
+                <Link href="/admin" className={styles["admin-link"]}>
+                  Admin
+                </Link>
+              ) : null}
+
+              {!user ? (
+                <button onClick={openModal}>Sign In</button>
+              ) : (
+                <Link href="/save_results?page=1">
+                  <ResultIcon width="2.8em" height="2.8em" />
+                </Link>
+              )}
+            </>
+          )}
+        </div>
       </header>
 
       {!user ? (
