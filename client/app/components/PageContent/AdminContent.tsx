@@ -1,22 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "@/hooks/useAuthState";
-import { auth } from "@/firebase/firebase";
 
 const AdminContent = () => {
   const { initializing } = useAuthState();
+
+  const user = useContext(AuthContext);
   const router = useRouter();
 
   // Restrict access
   useEffect(() => {
     const checkAdmin = async () => {
-      const currentUser = auth.currentUser;
-
       if (!initializing) {
-        if (currentUser) {
-          const token = await currentUser.getIdTokenResult();
+        if (user) {
+          const token = await user.getIdTokenResult();
 
           if (!token.claims.admin) {
             router.push("/"); // Redirect if not admin
@@ -32,7 +32,7 @@ const AdminContent = () => {
     checkAdmin();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initializing]);
+  }, [initializing, user]);
 
   if (initializing) {
     return (

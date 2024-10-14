@@ -62,10 +62,8 @@ const Navbar = () => {
   // Check if user is an admin
   useEffect(() => {
     const checkAdmin = async () => {
-      const currentUser = auth.currentUser;
-
-      if (currentUser) {
-        const token = await currentUser.getIdTokenResult();
+      if (user) {
+        const token = await user.getIdTokenResult();
 
         if (!token.claims.admin) {
           setIsAdmin(false);
@@ -78,7 +76,7 @@ const Navbar = () => {
     };
 
     checkAdmin();
-  }, []);
+  }, [user]);
 
   return (
     <>
