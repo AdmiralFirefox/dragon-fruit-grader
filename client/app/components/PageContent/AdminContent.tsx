@@ -34,6 +34,14 @@ const AdminContent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initializing]);
 
+  if (initializing) {
+    return (
+      <div style={{ marginTop: "5em", textAlign: "center" }}>
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+
   return (
     <main style={{ marginTop: "4em" }}>
       <h1>Admin Page</h1>

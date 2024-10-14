@@ -37,21 +37,18 @@ const Navbar = () => {
   //Sign In with Google
   const signInWithgoogle = async () => {
     const provider = new GoogleAuthProvider();
-
     auth.useDeviceLanguage();
 
     try {
-      const result = await signInWithPopup(auth, provider);
-
-      // Get ID token of signed-in user
-      const user = result.user;
-      const token = await user.getIdToken();
+      const userCreds = await signInWithPopup(auth, provider);
+      const idToken = await userCreds.user.getIdToken();
 
       await fetch("/api/auth/set-custom-claims", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({ idToken }),
       });
 
       closeModal();
