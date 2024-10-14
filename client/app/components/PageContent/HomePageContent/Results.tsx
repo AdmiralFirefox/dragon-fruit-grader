@@ -6,40 +6,9 @@ import { AuthContext } from "@/context/AuthContext";
 import SyncLoader from "react-spinners/SyncLoader";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
-import { GradingInfo } from "@/app/db";
 import { formatTime } from "@/utils/formatTime";
+import { ResultsProps } from "@/types/ResultTypes";
 import styles from "@/styles/homepage/Results.module.scss";
-
-interface ResultsProps {
-  structured_info: {
-    id: string;
-    input_image: string;
-    yolo_images: string;
-    timestamp: string;
-    results: {
-      id: string;
-      cropped_images: string;
-      grading_result: string;
-      products: string[];
-      probabilities: {
-        id: string;
-        class: string;
-        probability: number;
-      }[];
-    }[];
-  }[];
-  imageInHttps: (image_url: string) => string;
-  infoModal: string | number;
-  openModal: (id: string) => void;
-  closeModal: (id: string) => void;
-  addGradingInfo(info: GradingInfo): Promise<void>;
-  docExist: {
-    [key: string]: boolean;
-  };
-  docLoadingSave: {
-    [key: string]: boolean;
-  };
-}
 
 const Results = ({
   structured_info,

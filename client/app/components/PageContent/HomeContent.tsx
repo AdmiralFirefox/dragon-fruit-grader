@@ -15,41 +15,14 @@ import DragDrop from "@/app/components/PageContent/HomePageContent/DragDrop";
 import TestImages from "./HomePageContent/TestImages";
 import Loading from "@/app/components/States/Loading";
 import Error from "@/app/components/States/Error";
-import { GradingInfo } from "@/app/db";
+import { StructuredInfo } from "@/types/DataType";
+import {
+  InputProps,
+  DocLoadingSave,
+  DocExist,
+  ClearSessionProps,
+} from "@/types/HomeContentTypes";
 import styles from "@/styles/Classify.module.scss";
-
-interface InputProps {
-  structured_info: {
-    id: string;
-    input_image: string;
-    yolo_images: string;
-    timestamp: string;
-    results: {
-      id: string;
-      cropped_images: string;
-      grading_result: string;
-      products: string[];
-      probabilities: {
-        id: string;
-        class: string;
-        probability: number;
-      }[];
-    }[];
-  }[];
-  session_id: string;
-}
-
-interface DocLoadingSave {
-  [key: string]: boolean;
-}
-
-interface DocExist {
-  [key: string]: boolean;
-}
-
-interface ClearSessionProps {
-  message: string;
-}
 
 const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL
   ? process.env.NEXT_PUBLIC_BACKEND_URL
@@ -161,7 +134,7 @@ const HomeContent = () => {
   };
 
   // Uploading to Grading Results Database
-  const addGradingInfo = async (info: GradingInfo) => {
+  const addGradingInfo = async (info: StructuredInfo) => {
     setDocExist((prevStates) => ({ ...prevStates, [info.id]: false }));
     setDocLoadingSave((prevStates) => ({ ...prevStates, [info.id]: true }));
 

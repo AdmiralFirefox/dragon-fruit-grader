@@ -22,7 +22,7 @@ import { formatTime } from "@/utils/formatTime";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
 import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
-import { GradingInfo } from "@/app/db";
+import { StructuredInfo } from "@/types/DataType";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -30,7 +30,7 @@ interface SavedResultsProps {
 }
 
 const SavedResults = ({ searchParams }: SavedResultsProps) => {
-  const [gradingInfo, setGradingInfo] = useState<GradingInfo[]>([]);
+  const [gradingInfo, setGradingInfo] = useState<StructuredInfo[]>([]);
   const [loadingInfo, setLoadingInfo] = useState(true);
 
   const [infoModal, setInfoModal] = useState<number | string>(0);
@@ -105,7 +105,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
           ...doc.data(),
         }));
 
-        setGradingInfo(grading_info as GradingInfo[]);
+        setGradingInfo(grading_info as StructuredInfo[]);
         setLoadingInfo(false);
       });
 
