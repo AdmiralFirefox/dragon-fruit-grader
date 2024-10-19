@@ -20,7 +20,7 @@ import InfoModal from "@/app/components/Modals/InfoModal";
 import useInfoModal from "@/hooks/useInfoModal";
 import { formatTime } from "@/utils/formatTime";
 import { formatUrl } from "@/utils/formatUrl";
-import InfoIcon from "@/app/components/Icons/InfoIcon";
+import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
 import { StructuredInfo } from "@/types/DataType";
@@ -158,7 +158,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                     <p>Uploaded Image</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={formatUrl(info.input_image) as string}
+                        src={formatUrl(info.input_image)}
                         alt="Uploaded Image"
                         width={300}
                         height={300}
@@ -171,7 +171,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                     <p>Detected Dragon Fruits</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={formatUrl(info.yolo_images) as string}
+                        src={formatUrl(info.yolo_images)}
                         alt="Detected Dragon Fruits"
                         width={300}
                         height={300}
@@ -189,21 +189,25 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                         <div key={result.id} className={styles["results-card"]}>
                           <div className={styles["image-wrapper"]}>
                             <Image
-                              src={formatUrl(result.cropped_images) as string}
+                              src={formatUrl(result.cropped_images)}
                               alt="Dragon Fruit"
                               width={250}
                               height={250}
                               unoptimized
                             />
                           </div>
-                          <div className={styles["result-info"]}>
+
+                          <button
+                            onClick={() => openModalInfo(result.id)}
+                            className={styles["result-info-button"]}
+                          >
                             <p className={styles["grading-result"]}>
                               {result.grading_result}
                             </p>
-                            <button onClick={() => openModalInfo(result.id)}>
-                              <InfoIcon width="2em" height="2em" />
-                            </button>
-                          </div>
+
+                            <ArrowIcon width="2em" height="2em" />
+                          </button>
+
                           <InfoModal
                             active={infoModal === result.id}
                             closeModal={() => closeModalInfo(result.id)}
@@ -216,14 +220,14 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                   </div>
                 </div>
 
+                <div className={styles["timestamp"]}>
+                  <p>Time Graded: {formatTime(info.timestamp)}</p>
+                </div>
+
                 <div className={styles["delete-results-button"]}>
                   <button onClick={() => deleteResult(info)}>
                     Delete Result
                   </button>
-                </div>
-
-                <div className={styles["timestamp"]}>
-                  <p>Time Graded: {formatTime(info.timestamp)}</p>
                 </div>
               </div>
             </li>
