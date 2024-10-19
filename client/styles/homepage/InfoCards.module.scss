@@ -4,20 +4,24 @@
   scroll-margin: 5.3em;
   margin-top: 3em;
   padding: 0em 1em 0em 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   h1 {
     text-align: center;
     font-size: clamp(2.3rem, 3.5vw, 2.7rem);
-    font-family: var(--koho-bold);
-    color: theme.$light-brown-color;
+    font-family: var(--monserrat-bold);
+    color: theme.$pink-color;
     line-height: 1.1em;
   }
 
   p {
     text-align: center;
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-size: 1.2rem;
+    width: min(40em, 100%);
     font-family: var(--monserrat-medium);
-    color: theme.$orange-color;
+    color: theme.$black-color;
     line-height: 1.5em;
     margin-top: 1em;
   }
@@ -32,15 +36,15 @@
   padding: 0em 2em 0em 2em;
 
   .card-container {
-    width: min(45em, 100%);
+    width: min(17em, 100%);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(12em, 1fr));
-    grid-gap: 3.5em;
+    grid-gap: 3em;
 
     .card-content {
       .image-wrapper {
-        padding: 0.8em;
-        background: theme.$orange-color;
+        padding: 0.7em;
+        background: theme.$pink-color;
         border-radius: 20px;
 
         img {
@@ -53,15 +57,15 @@
 
       p:first-of-type {
         margin-top: 1em;
-        color: theme.$orange-color;
-        font-size: 1.05rem;
+        color: theme.$pink-color;
+        font-size: 1.3rem;
         font-family: var(--monserrat-bold);
       }
 
       p:last-of-type {
         margin-top: 1em;
-        color: theme.$light-brown-color;
-        font-size: 1.05rem;
+        color: theme.$black-color;
+        font-size: 1rem;
         font-family: var(--monserrat-medium);
         line-height: 1.5em;
       }
@@ -76,6 +80,7 @@
 
   .card-wrapper {
     .card-container {
+      width: min(37em, 100%);
       grid-template-columns: repeat(2, 1fr);
     }
   }
