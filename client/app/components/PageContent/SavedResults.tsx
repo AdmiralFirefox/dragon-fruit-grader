@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import Image from "next/image";
 import InfoModal from "@/app/components/Modals/InfoModal";
-import { useScrollLock } from "@/hooks/useScrollLock";
+import useInfoModal from "@/hooks/useInfoModal";
 import { formatTime } from "@/utils/formatTime";
 import { formatUrl } from "@/utils/formatUrl";
 import InfoIcon from "@/app/components/Icons/InfoIcon";
@@ -34,8 +34,12 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   const [gradingInfo, setGradingInfo] = useState<StructuredInfo[]>([]);
   const [loadingInfo, setLoadingInfo] = useState(true);
 
-  const [infoModal, setInfoModal] = useState<number | string>(0);
   const { initializing } = useAuthState();
+  const {
+    infoModal,
+    openModal: openModalInfo,
+    closeModal: closeModalInfo,
+  } = useInfoModal();
 
   const user = useContext(AuthContext);
   const router = useRouter();
@@ -55,11 +59,6 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   // Slice the data
   const grading_data = gradingInfo !== undefined ? gradingInfo : [];
   const entries = grading_data.slice(start, end);
-
-  const { lock, unlock } = useScrollLock({
-    autoLock: false,
-    lockTarget: "#scrollable",
-  });
 
   // Delete Result
   const deleteResult = async (info: StructuredInfo) => {
@@ -82,23 +81,6 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
       } catch (error) {
         console.error(error);
       }
-    }
-  };
-
-  // Info Modal
-  const openModal = (id: string) => {
-    lock();
-    if (infoModal === id) {
-      return setInfoModal(0);
-    }
-
-    setInfoModal(id);
-  };
-
-  const closeModal = (id: string) => {
-    unlock();
-    if (infoModal === id) {
-      return setInfoModal(0);
     }
   };
 
@@ -218,13 +200,13 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                             <p className={styles["grading-result"]}>
                               {result.grading_result}
                             </p>
-                            <button onClick={() => openModal(result.id)}>
+                            <button onClick={() => openModalInfo(result.id)}>
                               <InfoIcon width="2em" height="2em" />
                             </button>
                           </div>
                           <InfoModal
                             active={infoModal === result.id}
-                            closeModal={() => closeModal(result.id)}
+                            closeModal={() => closeModalInfo(result.id)}
                             products={result.products}
                             probabilities={result.probabilities}
                             id={result.id}

@@ -5,7 +5,6 @@ import { useMutation } from "@tanstack/react-query";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 import { AuthContext } from "@/context/AuthContext";
-import { useScrollLock } from "@/hooks/useScrollLock";
 import Axios from "axios";
 import useDragAndDrop from "@/hooks/useDragAndDrop";
 import Hero from "@/app/components/PageContent/HomePageContent/Hero";
@@ -65,21 +64,17 @@ const clearSession = async (sessionId: string) => {
 
 const HomeContent = () => {
   const [inputMode, setInputMode] = useState(true);
-  const [infoModal, setInfoModal] = useState<number | string>(0);
+  const [sessionId, setSessionId] = useState("");
+
   const [docExist, setDocExist] = useState<DocExist>({});
   const [docLoadingSave, setDocLoadingSave] = useState<DocLoadingSave>({});
-  const [sessionId, setSessionId] = useState("");
+
   const { dragOver, setDragOver, onDragOver, onDragLeave } = useDragAndDrop();
 
   const classInfoSectionRef = useRef<HTMLElement>(null);
   const classifySectionRef = useRef<HTMLDivElement>(null);
 
   const user = useContext(AuthContext);
-
-  const { lock, unlock } = useScrollLock({
-    autoLock: false,
-    lockTarget: "#scrollable",
-  });
 
   // Scroll to Specific Sections
   const scrollToClassInfo = () => {
@@ -194,23 +189,6 @@ const HomeContent = () => {
     }
   };
 
-  // Info Modal
-  const openModal = (id: string) => {
-    lock();
-    if (infoModal === id) {
-      return setInfoModal(0);
-    }
-
-    setInfoModal(id);
-  };
-
-  const closeModal = (id: string) => {
-    unlock();
-    if (infoModal === id) {
-      return setInfoModal(0);
-    }
-  };
-
   return (
     <main>
       <Hero
@@ -261,9 +239,6 @@ const HomeContent = () => {
             <Results
               structured_info={mutation.data.structured_info}
               imageInHttps={imageInHttps}
-              infoModal={infoModal}
-              openModal={openModal}
-              closeModal={closeModal}
               addGradingInfo={addGradingInfo}
               docExist={docExist}
               docLoadingSave={docLoadingSave}

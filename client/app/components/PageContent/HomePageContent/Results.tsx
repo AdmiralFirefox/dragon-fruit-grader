@@ -9,15 +9,13 @@ import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { formatTime } from "@/utils/formatTime";
 import { ResultsProps } from "@/types/ResultTypes";
 import useSignInModal from "@/hooks/useSignInModal";
+import useInfoModal from "@/hooks/useInfoModal";
 import SignInModal from "@/app/components/Modals/SignInModal";
 import styles from "@/styles/homepage/Results.module.scss";
 
 const Results = ({
   structured_info,
   imageInHttps,
-  infoModal,
-  openModal,
-  closeModal,
   addGradingInfo,
   docExist,
   docLoadingSave,
@@ -29,6 +27,12 @@ const Results = ({
     closeModal: closeSignInModal,
     signInWithgoogle,
   } = useSignInModal();
+
+  const {
+    infoModal,
+    openModal: openModalInfo,
+    closeModal: closeModalInfo,
+  } = useInfoModal();
 
   return (
     <ul>
@@ -81,7 +85,7 @@ const Results = ({
                         </div>
 
                         <button
-                          onClick={() => openModal(result.id)}
+                          onClick={() => openModalInfo(result.id)}
                           className={styles["result-info-button"]}
                         >
                           <p className={styles["grading-result"]}>
@@ -93,7 +97,7 @@ const Results = ({
 
                         <InfoModal
                           active={infoModal === result.id}
-                          closeModal={() => closeModal(result.id)}
+                          closeModal={() => closeModalInfo(result.id)}
                           products={result.products}
                           probabilities={result.probabilities}
                           id={result.id}
