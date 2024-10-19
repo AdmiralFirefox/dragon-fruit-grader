@@ -8,6 +8,8 @@ import InfoModal from "@/app/components/Modals/InfoModal";
 import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { formatTime } from "@/utils/formatTime";
 import { ResultsProps } from "@/types/ResultTypes";
+import useSignInModal from "@/hooks/useSignInModal";
+import SignInModal from "@/app/components/Modals/SignInModal";
 import styles from "@/styles/homepage/Results.module.scss";
 
 const Results = ({
@@ -21,6 +23,12 @@ const Results = ({
   docLoadingSave,
 }: ResultsProps) => {
   const user = useContext(AuthContext);
+  const {
+    signInModal,
+    openModal: openSignInModal,
+    closeModal: closeSignInModal,
+    signInWithgoogle,
+  } = useSignInModal();
 
   return (
     <ul>
@@ -100,9 +108,18 @@ const Results = ({
               </div>
 
               {!user ? (
-                <div className={styles["not-signed-in"]}>
-                  <p>Sign In to Save Results</p>
-                </div>
+                <>
+                  <div className={styles["sign-in-button"]}>
+                    <button onClick={openSignInModal}>
+                      <p>Sign In to Save Results</p>
+                    </button>
+                  </div>
+                  <SignInModal
+                    signInModal={signInModal}
+                    closeModal={closeSignInModal}
+                    signInWithgoogle={signInWithgoogle}
+                  />
+                </>
               ) : (
                 <div className={styles["save-results-button"]}>
                   {docLoadingSave[info.id] ? (

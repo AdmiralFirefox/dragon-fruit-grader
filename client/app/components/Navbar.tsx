@@ -5,59 +5,18 @@ import Link from "next/link";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import ResultIcon from "./Icons/ResultIcon";
-import { useScrollLock } from "@/hooks/useScrollLock";
 import { useAuthState } from "@/hooks/useAuthState";
+import useSignInModal from "@/hooks/useSignInModal";
 import SignInModal from "./Modals/SignInModal";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "@/firebase/firebase";
 import styles from "@/styles/Navbar.module.scss";
 
 const Navbar = () => {
-  const [signInModal, setSignInModal] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const { initializing } = useAuthState();
+  const { signInModal, openModal, closeModal, signInWithgoogle } =
+    useSignInModal();
 
   const user = useContext(AuthContext);
-
-  const { lock, unlock } = useScrollLock({
-    autoLock: false,
-    lockTarget: "#scrollable",
-  });
-
-  const openModal = () => {
-    lock();
-    setSignInModal(true);
-  };
-
-  const closeModal = () => {
-    unlock();
-    setSignInModal(false);
-  };
-
-  //Sign In with Google
-  const signInWithgoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    auth.useDeviceLanguage();
-
-    try {
-      const userCreds = await signInWithPopup(auth, provider);
-      const idToken = await userCreds.user.getIdToken();
-
-      await fetch("/api/auth/set-custom-claims", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ idToken }),
-      });
-
-      closeModal();
-    } catch (err) {
-      console.log(err);
-      closeModal();
-      alert(err);
-    }
-  };
 
   // Check if user is an admin
   useEffect(() => {

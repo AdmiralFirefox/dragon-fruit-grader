@@ -111,12 +111,25 @@
       }
     }
 
-    .not-signed-in {
-      font-family: var(--monserrat-medium);
-      text-align: center;
-      margin-top: 1.2em;
-      color: theme.$pink-color;
-      font-size: 1.1rem;
+    .sign-in-button {
+      display: flex;
+      justify-content: center;
+
+      button {
+        font-family: var(--monserrat-bold);
+        text-align: center;
+        margin-top: 1.2em;
+        background: transparent;
+        border: none;
+        color: theme.$pink-color;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+
+        &:hover {
+          color: theme.$pink-color-hover;
+        }
+      }
     }
 
     .save-results-button {
