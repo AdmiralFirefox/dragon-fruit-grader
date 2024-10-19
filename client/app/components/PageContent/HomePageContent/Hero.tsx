@@ -9,26 +9,27 @@ interface HeroProps {
 const Hero = ({ scrollToClassInfo, scrollToClassify }: HeroProps) => {
   return (
     <section className={styles["wrapper"]}>
-      <div className={styles["logo-wrapper"]}>
-        <Image
-          src="/logos/web-logo.png"
-          alt="Dragon Fruit Logo"
-          width={300}
-          height={30}
-        />
-      </div>
-      <div className={styles["hero-bg"]}>
-        <Image src="/background/hero-bg.png" alt="" fill priority />
-      </div>
-      <h1>WELCOME</h1>
-      <p>
-        Find the easiest ways to classify dragon fruit and recommended products
-        just for you!
-      </p>
+      <div className={styles["content"]}>
+        <div className={styles["hero-info"]}>
+          <h1>Welcome!</h1>
+          <p>
+            The easiest ways to classify dragon fruit and recommend products.
+          </p>
 
-      <div className={styles["button-wrapper"]}>
-        <button onClick={scrollToClassify}>Get Started</button>
-        <button onClick={scrollToClassInfo}>Learn More</button>
+          <div className={styles["button-wrapper"]}>
+            <button onClick={scrollToClassify}>Get Started</button>
+            <button onClick={scrollToClassInfo}>Learn More</button>
+          </div>
+        </div>
+
+        <div className={styles["hero-logo"]}>
+          <Image
+            src="/logos/hero-logo.png"
+            alt="Hero Logo"
+            width={600}
+            height={600}
+          />
+        </div>
       </div>
     </section>
   );
