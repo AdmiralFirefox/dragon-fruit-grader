@@ -25,9 +25,9 @@ const DragDrop = ({
           onDragLeave={onDragLeave}
           onDrop={onDrop}
         >
-          <h1 style={{ color: `${dragOver ? "#d0d6b5" : "#987284"}` }}>
+          <h1>
             {!dragOver
-              ? "Upload a dragon fruit picture to classify and see the results and product suggestions."
+              ? "Upload, drag and drop, or take a photo of dragon fruit here for the application to scan and detect. Results will then be shown after analysis."
               : "Drop here..."}
           </h1>
         </label>

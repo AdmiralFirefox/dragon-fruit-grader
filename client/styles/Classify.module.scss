@@ -2,13 +2,13 @@
 
 .scan-card-title {
   scroll-margin: 4.8em;
-  margin: 3.5em 1.5em 0em 1.5em;
+  margin: 4em 1.5em 0em 1.5em;
 
   h1 {
-    color: theme.$light-brown-color;
+    color: theme.$pink-color;
     text-align: center;
     font-size: clamp(2.3rem, 3.5vw, 2.7rem);
-    font-family: var(--koho-bold);
+    font-family: var(--monserrat-bold);
   }
 }
 
@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 2em;
+  margin-top: 3em;
 }
 
 .classify-button {
