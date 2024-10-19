@@ -31,7 +31,7 @@
     border: none;
     font-size: 1.1rem;
     font-family: var(--koho-bold);
-    background: theme.$light-green-color;
+    background: theme.$pink-color;
     color: theme.$white-color;
     padding: 1em;
     border-radius: 40px;
@@ -39,7 +39,7 @@
     cursor: pointer;
 
     &:hover {
-      background: theme.$light-green-color-hover;
+      background: theme.$pink-color-hover;
     }
   }
 }

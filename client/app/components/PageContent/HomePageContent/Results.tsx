@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import SyncLoader from "react-spinners/SyncLoader";
 import InfoModal from "@/app/components/Modals/InfoModal";
-import InfoIcon from "@/app/components/Icons/InfoIcon";
+import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { formatTime } from "@/utils/formatTime";
 import { ResultsProps } from "@/types/ResultTypes";
 import styles from "@/styles/homepage/Results.module.scss";
@@ -71,14 +71,18 @@ const Results = ({
                             unoptimized
                           />
                         </div>
-                        <div className={styles["result-info"]}>
+
+                        <button
+                          onClick={() => openModal(result.id)}
+                          className={styles["result-info-button"]}
+                        >
                           <p className={styles["grading-result"]}>
                             {result.grading_result}
                           </p>
-                          <button onClick={() => openModal(result.id)}>
-                            <InfoIcon width="2em" height="2em" />
-                          </button>
-                        </div>
+
+                          <ArrowIcon width="2em" height="2em" />
+                        </button>
+
                         <InfoModal
                           active={infoModal === result.id}
                           closeModal={() => closeModal(result.id)}
@@ -96,7 +100,7 @@ const Results = ({
               </div>
 
               {!user ? (
-                <div className={styles["save-results-button"]}>
+                <div className={styles["not-signed-in"]}>
                   <p>Sign In to Save Results</p>
                 </div>
               ) : (
