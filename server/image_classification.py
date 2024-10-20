@@ -36,10 +36,9 @@ def image_classification(cropped_images_full_path, grading_results, product_sugg
 
     # Define image transformation
     preprocess = transforms.Compose([
-        transforms.Resize(256), # Resize the image to 256x256 pixels
-        transforms.CenterCrop(224), # Crop the center of the image to 224x224 pixels
-        transforms.ToTensor(), # Convert the image to a PyTorch tensor
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), # Normalize the image
+        transforms.Resize((224, 224)), # Resize
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
     # Predicting multiple images
