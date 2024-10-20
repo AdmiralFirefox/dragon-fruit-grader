@@ -1,21 +1,22 @@
 @use "../themeprovider/themeprovider" as theme;
 
 .sample-images-title {
-  font-size: clamp(1.4rem, 2.5vw, 1.7rem);
+  font-size: 1.38rem;
   font-family: var(--monserrat-medium);
   text-align: center;
-  margin: 2em 1em 1em 1em;
+  margin: 2.6em 1em 1em 1em;
+  color: theme.$black-color;
 }
 
 .sample-images-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75em;
+  gap: 0.25em;
   margin: 0em 1.5em 5.3em 1.5em;
 
   .sample-image-wrapper {
-    width: clamp(6em, 10vw, 7em);
+    width: clamp(6em, 10vw, 6.5em);
     list-style: none;
     border: 5px solid theme.$white-color;
     border-radius: 15px;
@@ -30,7 +31,7 @@
     }
 
     &:hover {
-      border: 5px solid theme.$orange-color;
+      border: 5px solid theme.$pink-color;
     }
   }
 }

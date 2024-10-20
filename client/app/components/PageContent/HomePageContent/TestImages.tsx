@@ -8,15 +8,15 @@ interface TestImagesProps {
 const TestImages = ({ setSampleImage }: TestImagesProps) => {
   return (
     <>
-      <p className={styles["sample-images-title"]}>Try these sample images:</p>
+      <p className={styles["sample-images-title"]}>Try our system by clicking one of the images below:</p>
 
       <ul className={styles["sample-images-container"]}>
         <li
           className={styles["sample-image-wrapper"]}
-          onClick={() => setSampleImage("/sample-images/dragon_fruit_1.jpg")}
+          onClick={() => setSampleImage("/sample-images/dragon_fruit_1.jpeg")}
         >
           <Image
-            src="/sample-images/dragon_fruit_1.jpg"
+            src="/sample-images/dragon_fruit_1.jpeg"
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
@@ -46,10 +46,10 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
         </li>
         <li
           className={styles["sample-image-wrapper"]}
-          onClick={() => setSampleImage("/sample-images/dragon_fruit_4.jpg")}
+          onClick={() => setSampleImage("/sample-images/dragon_fruit_4.jpeg")}
         >
           <Image
-            src="/sample-images/dragon_fruit_4.jpg"
+            src="/sample-images/dragon_fruit_4.jpeg"
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
