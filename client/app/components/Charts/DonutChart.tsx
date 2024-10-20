@@ -8,15 +8,20 @@ interface DonutChartProps {
 ChartJS.register(ArcElement, Tooltip);
 
 const DonutChart = ({ probability }: DonutChartProps) => {
+  const foreground = "hsl(342, 65%, 60%)";
+  const foregroundHover = "hsl(342, 65%, 65%)";
+  const background = "hsl(20, 90%, 93%)";
+  const backgroundHover = "hsl(20, 90%, 94%)";
+
   const data = {
     labels: ["Likely", "Unlikely"],
     datasets: [
       {
         data: [probability, 100 - probability],
-        backgroundColor: ["#D0D6B5", "#E3E3DF"],
-        borderColor: ["#D0D6B5", "#E3E3DF"],
-        hoverBackgroundColor: ["#A5A675", "#EDEEE8"],
-        hoverBorderColor: ["#A5A675", "#EDEEE8"],
+        backgroundColor: [foreground, background],
+        borderColor: [foreground, background],
+        hoverBackgroundColor: [foregroundHover, backgroundHover],
+        hoverBorderColor: [foregroundHover, backgroundHover],
         borderWidth: 1,
       },
     ],

@@ -1,6 +1,8 @@
+import { useState, ChangeEvent } from "react";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { motion, AnimatePresence } from "framer-motion";
 import DonutChart from "../Charts/DonutChart";
+import CloseIcon from "../Icons/CloseIcon";
 import styles from "@/styles/modals/InfoModal.module.scss";
 
 interface InfoModalProps {
@@ -22,7 +24,12 @@ const InfoModal = ({
   id,
   probabilities,
 }: InfoModalProps) => {
+  const [showGraphs, setShowGraphs] = useState(false);
   const { height = 0 } = useWindowSize();
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setShowGraphs(event.target.checked);
+  };
 
   const variants = {
     initial: { opacity: 0, top: "20%", transform: "translate(-50%, -50%)" },
@@ -69,21 +76,12 @@ const InfoModal = ({
               className={styles["modal-content"]}
               style={{ maxHeight: `calc(${height}px - 3em)` }}
             >
-              <div className={styles["chart-content"]}>
-                {probabilities.map((result) => (
-                  <div key={result.id} className={styles["content"]}>
-                    <p className={styles["class-result"]}>{result.class}</p>
-                    <div className={styles["chart-container"]}>
-                      <DonutChart
-                        probability={Math.round(result.probability * 100) / 100}
-                      />
-                    </div>
-                    <p className={styles["class-probability"]}>
-                      {Math.round(result.probability * 100) / 100}%
-                    </p>
-                  </div>
-                ))}
+              <div className={styles["close-button"]}>
+                <button onClick={() => closeModal(id)}>
+                  <CloseIcon width="35" height="35" />
+                </button>
               </div>
+              
               <div className={styles["products-content"]}>
                 <p className={styles["products-title"]}>Products:</p>
                 <ul
@@ -98,9 +96,35 @@ const InfoModal = ({
                   ))}
                 </ul>
               </div>
-              <div className={styles["close-button"]}>
-                <button onClick={() => closeModal(id)}>Close</button>
+
+              <div className={styles["advanced-results-input"]}>
+                <input
+                  type="checkbox"
+                  checked={showGraphs}
+                  onChange={handleCheckboxChange}
+                />
+                <p>Show Advanced Results</p>
               </div>
+
+              {showGraphs ? (
+                <div className={styles["chart-content"]}>
+                  {probabilities.map((result) => (
+                    <div key={result.id} className={styles["content"]}>
+                      <p className={styles["class-result"]}>{result.class}</p>
+                      <div className={styles["chart-container"]}>
+                        <DonutChart
+                          probability={
+                            Math.round(result.probability * 100) / 100
+                          }
+                        />
+                      </div>
+                      <p className={styles["class-probability"]}>
+                        {Math.round(result.probability * 100) / 100}%
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </motion.div>
         ) : null}
