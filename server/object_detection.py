@@ -10,7 +10,7 @@ def ensure_folder_exists(folder_path):
         os.makedirs(folder_path)
 
 
-def object_detection(results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, cropped_images_full_path, result_image_url, cropped_image_url):
+def object_detection(upload_folder, results_folder, cropped_image_folder, uploaded_images, uploaded_filenames, cropped_images_full_path, upload_image_url, result_image_url, cropped_image_url):
     # Ensure results and cropped image folders exist
     ensure_folder_exists(results_folder)
     ensure_folder_exists(cropped_image_folder)
@@ -24,26 +24,35 @@ def object_detection(results_folder, cropped_image_folder, uploaded_images, uplo
 
     # Iterate through the Detected Objects
     for i, result in enumerate(results):
-        boxes = result.boxes 
-        masks = result.masks  
-        keypoints = result.keypoints
-        probs = result.probs  
-        
-        # Get the file name of the uploaded images
-        uploaded_filenames_noextension = os.path.splitext(uploaded_filenames[i])[0]
-        secured_filename = secure_filename(f'detected_{uploaded_filenames_noextension}.jpg')
+        boxes = result.boxes  
 
-        # Save detected images to the results directory
-        filename = os.path.join(results_folder, secured_filename)
-        result.save(filename=filename) 
+        if len(boxes) > 0:
+            # Get the file name of the uploaded images
+            uploaded_filenames_noextension = os.path.splitext(uploaded_filenames[i])[0]
+            secured_filename = secure_filename(f'detected_{uploaded_filenames_noextension}.jpg')
 
-        # Upload image to cloudinary
-        detected_public_id = os.path.splitext(secured_filename)[0]
-        upload_detected_result = uploader.upload(filename,
-                                        public_id=detected_public_id,
-                                        folder="dragon-fruit-grader",
-                                        resource_type="image")
-        result_image_url.append(upload_detected_result["url"])
+            # Save detected images to the results directory
+            filename = os.path.join(results_folder, secured_filename)
+            result.save(filename=filename)
+
+            # Upload input image to cloudinary
+            input_public_id = os.path.splitext(uploaded_filenames[i])[0]
+            input_image_file_path = os.path.join(upload_folder, uploaded_filenames[i])
+            upload_input_result = uploader.upload(input_image_file_path,
+                                            public_id=input_public_id,
+                                            folder="dragon-fruit-grader",
+                                            resource_type="image")
+            upload_image_url.append(upload_input_result["url"])
+
+            # Upload detected image to cloudinary
+            detected_public_id = os.path.splitext(secured_filename)[0]
+            upload_detected_result = uploader.upload(filename,
+                                            public_id=detected_public_id,
+                                            folder="dragon-fruit-grader",
+                                            resource_type="image")
+            result_image_url.append(upload_detected_result["url"])
+        else:
+            print(f"No detections in image {uploaded_filenames[i]}, skipping save and upload.")
     
     # Perform inference on each image and crop the detected objects
     for image in uploaded_images:
