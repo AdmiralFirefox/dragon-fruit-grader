@@ -129,15 +129,19 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   return user !== null ? (
     <main>
       <div className={styles["user"]}>
-        <Image
-          src={user?.photoURL as string}
-          alt="User Profile"
-          width={70}
-          height={70}
-        />
-        <h1>Hello {user?.displayName}!</h1>
-        <p>Email: {user?.email}</p>
-        <button onClick={signOutAccount}>Sign Out</button>
+        <div className={styles["user-photo"]}>
+          <Image
+            src={user?.photoURL as string}
+            alt="User Profile"
+            width={85}
+            height={85}
+          />
+        </div>
+        <div className={styles["user-info"]}>
+          <h1>{user?.displayName}</h1>
+          <p>{user?.email}</p>
+          <button onClick={signOutAccount}>Sign Out</button>
+        </div>
       </div>
 
       <div className={styles["saved-results-title"]}>

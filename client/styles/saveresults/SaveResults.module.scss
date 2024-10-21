@@ -4,32 +4,55 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 1em;
+  background: theme.$light-peach-color;
+  margin-top: 1.7em;
+  padding: 0em 1.5em;
+  height: 31em;
 
-  img {
-    margin-top: 6.5em;
-    border-radius: 50px;
+  .user-photo {
+    img {
+      border-radius: 50px;
+    }
   }
 
-  h1 {
-    font-size: 2rem;
-    margin-top: 0.25em;
-  }
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 
-  p {
-    font-size: 1.1rem;
-    margin-top: 0.25em;
-  }
+    h1 {
+      font-size: 2rem;
+      font-family: var(--monserrat-bold);
+      overflow-wrap: anywhere;
+    }
 
-  button {
-    border: none;
-    border-radius: 10px;
-    margin-top: 1em;
-    padding: 0.7em 1em;
-    font-size: 1em;
-    font-weight: 600;
-    background: rgb(255, 0, 0);
-    color: #fff;
-    cursor: pointer;
+    p {
+      font-size: 1.1rem;
+      margin-top: 0.5em;
+      font-family: var(--monserrat-medium);
+      overflow-wrap: anywhere;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      font-family: var(--monserrat-medium);
+      margin-top: 1em;
+      padding: 0.7em 1em;
+      font-size: 1em;
+      font-weight: 600;
+      background: theme.$pink-color;
+      color: theme.$white-color;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:hover {
+        background: theme.$pink-color-hover;
+      }
+    }
   }
 }
 
@@ -180,6 +203,20 @@
 }
 
 @media (min-width: theme.$media-query-small-value) {
+  .user {
+    flex-direction: row;
+    gap: 1.5em;
+    height: 20em;
+
+    .user-info {
+      align-items: flex-start;
+
+      p {
+        margin-top: 0.25em;
+      }
+    }
+  }
+
   .result-wrapper {
     .result-container {
       .first-section {
