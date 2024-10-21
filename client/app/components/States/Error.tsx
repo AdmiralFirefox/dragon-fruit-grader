@@ -1,12 +1,16 @@
 import ErrorIcon from "../Icons/ErrorIcon";
 import styles from "@/styles/states/Error.module.scss";
 
-const Error = () => {
+interface ErrorProps {
+  message: string;
+}
+
+const Error = ({ message }: ErrorProps) => {
   return (
     <div className={styles["wrapper"]}>
       <div className={styles["content"]}>
         <ErrorIcon width="4.75em" height="4.75em" />
-        <h1>Something went wrong. Please try again later.</h1>
+        <h1>{message}</h1>
       </div>
     </div>
   );

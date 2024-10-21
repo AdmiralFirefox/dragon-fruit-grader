@@ -218,7 +218,9 @@ const HomeContent = () => {
       ) : null}
 
       {mutation.isPending && <Loading />}
-      {mutation.isError && <Error />}
+      {mutation.isError && (
+        <Error message="Something went wrong. Please try again later." />
+      )}
       {mutation.isSuccess && mutation.data !== undefined && (
         <>
           {!inputMode ? (
@@ -243,6 +245,10 @@ const HomeContent = () => {
               docExist={docExist}
               docLoadingSave={docLoadingSave}
             />
+          ) : null}
+
+          {mutation.data.structured_info.length === 0 ? (
+            <Error message="No Dragon Fruits Detected" />
           ) : null}
         </>
       )}
