@@ -1,5 +1,12 @@
 import AdminContent from "@/app/components/PageContent/AdminContent";
+import { signOutUser, disableUser, deleteUser } from "./action";
 
-export default function Admin() {
-  return <AdminContent />;
+export default async function Admin() {
+  return (
+    <AdminContent
+      signOutUser={signOutUser}
+      disableUser={disableUser}
+      deleteUser={deleteUser}
+    />
+  );
 }

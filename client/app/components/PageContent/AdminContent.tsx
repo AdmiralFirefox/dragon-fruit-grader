@@ -4,17 +4,74 @@ import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { User } from "firebase/auth";
 import { useAuthState } from "@/hooks/useAuthState";
+import { AdminContentProps, UserInfo } from "@/types/AdminTypes";
 import styles from "@/styles/Admin.module.scss";
 
-const AdminContent = () => {
-  const [users, setUsers] = useState<User[]>([]);
+const AdminContent = ({
+  signOutUser,
+  disableUser,
+  deleteUser,
+}: AdminContentProps) => {
+  const [users, setUsers] = useState<UserInfo[]>([]);
   const { initializing } = useAuthState();
   const imageSize = 53;
 
   const user = useContext(AuthContext);
   const router = useRouter();
+
+  // Sign Out User
+  const handleSignOut = async (uid: string) => {
+    const token = await user!.getIdToken();
+
+    if (token) {
+      try {
+        await signOutUser(token, uid);
+        alert("User will be signed out");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  // Disable User
+  const handleDisable = async (uid: string, disabled: boolean) => {
+    const token = await user!.getIdToken();
+
+    if (token) {
+      try {
+        await disableUser(token, uid, disabled);
+
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.uid === uid ? { ...user, disabled } : user
+          )
+        );
+
+        if (disabled) {
+          alert("User is disabled");
+        } else {
+          alert("User is enabled");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  // Delete User
+  const handleDelete = async (uid: string) => {
+    const token = await user!.getIdToken();
+
+    if (token) {
+      try {
+        await deleteUser(token, uid);
+        setUsers((prevUsers) => prevUsers.filter((user) => user.uid !== uid));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   // Fetch list of users
   useEffect(() => {
@@ -126,13 +183,21 @@ const AdminContent = () => {
                   <td>{user.email}</td>
                   <td>User</td>
                   <td>
-                    <button>Sign Out</button>
+                    <button onClick={() => handleSignOut(user.uid)}>
+                      Sign Out
+                    </button>
                   </td>
                   <td>
-                    <button>Disable</button>
+                    <button
+                      onClick={() => handleDisable(user.uid, !user.disabled)}
+                    >
+                      {user.disabled ? "Enable" : "Disable"}
+                    </button>
                   </td>
                   <td>
-                    <button>Delete</button>
+                    <button onClick={() => handleDelete(user.uid)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
