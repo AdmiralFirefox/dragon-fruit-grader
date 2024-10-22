@@ -241,7 +241,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
 
       {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
         <PaginationControls
-          pageUrl="save_results"
+          routeName="save_results"
           hasNextPage={end < grading_data!.length}
           hasPrevPage={start > 0}
           dataLength={grading_data.length}
