@@ -17,6 +17,8 @@ const AdminContent = ({
   deleteUser,
 }: AdminContentProps) => {
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(true);
+
   const { initializing } = useAuthState();
   const imageSize = 53;
 
@@ -102,12 +104,14 @@ const AdminContent = ({
         });
 
         if (res.status === 403) {
+          setLoadingUsers(false);
           alert("Access denied");
           return;
         }
 
         const users_data = await res.json();
         setUsers(users_data);
+        setLoadingUsers(false);
       }
     };
 
@@ -124,7 +128,7 @@ const AdminContent = ({
           if (!token.claims.admin) {
             router.push("/"); // Redirect if not admin
           } else {
-            return; // Continue loading admin content
+            setLoadingUsers(true); // Continue loading admin content
           }
         } else {
           router.push("/"); // Redirect if not authenticated
@@ -148,87 +152,97 @@ const AdminContent = ({
   return (
     <main>
       <AdminNavbar />
-      <div className={styles["user-info"]}>
-        <table>
-          <thead>
-            <tr>
-              <th>User Photo</th>
-              <th>Display Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Sign Out</th>
-              <th>Disable</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Admin */}
-            {users
-              .filter((currentUser) => currentUser.uid === user!.uid)
-              .map((user) => (
-                <tr key={user.uid}>
-                  <td>
-                    <Image
-                      src={user.photoURL as string}
-                      alt="User Photo"
-                      width={imageSize}
-                      height={imageSize}
-                    />
-                  </td>
-                  <td>{user.displayName}</td>
-                  <td>{user.email}</td>
-                  <td>Admin</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+      {users.length === 0 && loadingUsers ? (
+        <h1 style={{ textAlign: "center", marginTop: "1em" }}>
+          Loading data...
+        </h1>
+      ) : (
+        <>
+          <div className={styles["user-info"]}>
+            <table>
+              <thead>
+                <tr>
+                  <th>User Photo</th>
+                  <th>Display Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Sign Out</th>
+                  <th>Disable</th>
+                  <th>Delete</th>
                 </tr>
-              ))}
-            {/* User */}
-            {entries
-              .filter((currentUser) => currentUser.uid !== user!.uid)
-              .map((user) => (
-                <tr key={user.uid}>
-                  <td>
-                    <Image
-                      src={user.photoURL as string}
-                      alt="User Photo"
-                      width={imageSize}
-                      height={imageSize}
-                    />
-                  </td>
-                  <td>{user.displayName}</td>
-                  <td>{user.email}</td>
-                  <td>User</td>
-                  <td>
-                    <button onClick={() => handleSignOut(user.uid)}>
-                      Sign Out
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDisable(user.uid, !user.disabled)}
-                    >
-                      {user.disabled ? "Enable" : "Disable"}
-                    </button>
-                  </td>
-                  <td>
-                    <button onClick={() => handleDelete(user.uid)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody>
+                {/* Admin */}
+                {users
+                  .filter((currentUser) => currentUser.uid === user!.uid)
+                  .map((user) => (
+                    <tr key={user.uid}>
+                      <td>
+                        <Image
+                          src={user.photoURL as string}
+                          alt="User Photo"
+                          width={imageSize}
+                          height={imageSize}
+                        />
+                      </td>
+                      <td>{user.displayName}</td>
+                      <td>{user.email}</td>
+                      <td>Admin</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  ))}
+                {/* User */}
+                {entries
+                  .filter((currentUser) => currentUser.uid !== user!.uid)
+                  .map((user) => (
+                    <tr key={user.uid}>
+                      <td>
+                        <Image
+                          src={user.photoURL as string}
+                          alt="User Photo"
+                          width={imageSize}
+                          height={imageSize}
+                        />
+                      </td>
+                      <td>{user.displayName}</td>
+                      <td>{user.email}</td>
+                      <td>User</td>
+                      <td>
+                        <button onClick={() => handleSignOut(user.uid)}>
+                          Sign Out
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          onClick={() =>
+                            handleDisable(user.uid, !user.disabled)
+                          }
+                        >
+                          {user.disabled ? "Enable" : "Disable"}
+                        </button>
+                      </td>
+                      <td>
+                        <button onClick={() => handleDelete(user.uid)}>
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
 
-      <PaginationControls
-        routeName="admin"
-        contentsPerPage={contents_per_page}
-        hasNextPage={end < grading_data!.length}
-        hasPrevPage={start > 0}
-        dataLength={grading_data.length}
-      />
+          <PaginationControls
+            routeName="admin"
+            contentsPerPage={contents_per_page}
+            hasNextPage={end < grading_data!.length}
+            hasPrevPage={start > 0}
+            dataLength={grading_data.length}
+          />
+        </>
+      )}
     </main>
   );
 };
