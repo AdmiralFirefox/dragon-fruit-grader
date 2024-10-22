@@ -6,6 +6,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "@/hooks/useAuthState";
 import { AdminContentProps, UserInfo } from "@/types/AdminTypes";
+import AdminNavbar from "../AdminNavbar";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
@@ -130,7 +131,8 @@ const AdminContent = ({
   }
 
   return (
-    <main style={{ marginTop: "4em" }}>
+    <main>
+      <AdminNavbar />
       <div className={styles["user-info"]}>
         <table>
           <thead>

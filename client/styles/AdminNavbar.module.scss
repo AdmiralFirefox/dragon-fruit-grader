@@ -1,0 +1,19 @@
+@use "themeprovider/themeprovider" as theme;
+
+.content {
+  margin-top: 5.5em;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+
+  a {
+    text-decoration: none;
+    font-family: var(--monserrat-medium);
+    font-size: 1rem;
+    color: theme.$black-color;
+
+    &:hover {
+        text-decoration: underline;
+    }
+  }
+}
