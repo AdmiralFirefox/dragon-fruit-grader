@@ -21,9 +21,14 @@ import { formatUrl } from "@/utils/formatUrl";
 import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { StructuredInfo } from "@/types/DataType";
 import AdminNavbar from "../AdminNavbar";
+import PaginationControls from "@/app/components/PaginationControls";
 import styles from "@/styles/RecentActivity.module.scss";
 
-const RecentActivityContent = () => {
+interface RecentActivityProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   const [gradingInfo, setGradingInfo] = useState<StructuredInfo[]>([]);
   const [loadingInfo, setLoadingInfo] = useState(true);
 
@@ -36,6 +41,17 @@ const RecentActivityContent = () => {
 
   const user = useContext(AuthContext);
   const router = useRouter();
+
+  // Define Parameters for Pagination
+  const page = searchParams["page"] ?? "1";
+  const per_page = searchParams["per_page"] ?? "5";
+
+  const start = (Number(page) - 1) * Number(per_page);
+  const end = start + Number(per_page);
+
+  // Slice the data
+  const grading_data = gradingInfo !== undefined ? gradingInfo : [];
+  const entries = grading_data.slice(start, end);
 
   // Delete Result
   const deleteResult = async (info: StructuredInfo) => {
@@ -122,7 +138,7 @@ const RecentActivityContent = () => {
         </div>
       ) : (
         <>
-          {gradingInfo!.map((info) => (
+          {entries!.map((info) => (
             <li key={info.id} className={styles["result-wrapper"]}>
               <div className={styles["result-container"]}>
                 <div className={styles["user-section"]}>
@@ -220,6 +236,15 @@ const RecentActivityContent = () => {
             </li>
           ))}
         </>
+      )}
+
+      {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
+        <PaginationControls
+          routeName="admin/recent_activity"
+          hasNextPage={end < grading_data!.length}
+          hasPrevPage={start > 0}
+          dataLength={grading_data.length}
+        />
       )}
     </main>
   );

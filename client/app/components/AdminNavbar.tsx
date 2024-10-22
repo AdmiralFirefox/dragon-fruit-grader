@@ -5,7 +5,7 @@ const AdminNavbar = () => {
   return (
     <div className={styles["content"]}>
       <Link href="/admin">Users</Link>
-      <Link href="/admin/recent_activity">Recent Activity</Link>
+      <Link href="/admin/recent_activity?page=1">Recent Activity</Link>
     </div>
   );
 };

@@ -5,12 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/styles/saveresults/PaginationControls.module.scss";
 
 interface PaginationControlsProps {
+  routeName: string;
   hasNextPage: boolean;
   hasPrevPage: boolean;
   dataLength: number;
 }
 
 const PaginationControls: FC<PaginationControlsProps> = ({
+  routeName,
   hasNextPage,
   hasPrevPage,
   dataLength,
@@ -45,7 +47,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
   const handlePageInputSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (inputPage > 0 && inputPage <= totalPages) {
-      router.push(`/save_results?page=${inputPage}`);
+      router.push(`/${routeName}?page=${inputPage}`);
     } else {
       alert(`Please enter a valid page number between 1 and ${totalPages}`);
     }
@@ -57,7 +59,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
         <div className={styles["first-section"]}>
           <button
             disabled={!hasPrevPage}
-            onClick={() => router.push(`/save_results?page=${page - 1}`)}
+            onClick={() => router.push(`/${routeName}?page=${page - 1}`)}
           >
             Prev
           </button>
@@ -68,7 +70,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
 
           <button
             disabled={!hasNextPage}
-            onClick={() => router.push(`/save_results?page=${page + 1}`)}
+            onClick={() => router.push(`/${routeName}?page=${page + 1}`)}
           >
             Next
           </button>
