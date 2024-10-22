@@ -6,6 +6,7 @@ import styles from "@/styles/saveresults/PaginationControls.module.scss";
 
 interface PaginationControlsProps {
   routeName: string;
+  contentsPerPage: string;
   hasNextPage: boolean;
   hasPrevPage: boolean;
   dataLength: number;
@@ -13,6 +14,7 @@ interface PaginationControlsProps {
 
 const PaginationControls: FC<PaginationControlsProps> = ({
   routeName,
+  contentsPerPage,
   hasNextPage,
   hasPrevPage,
   dataLength,
@@ -21,7 +23,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
   const searchParams = useSearchParams();
 
   const page = Number(searchParams.get("page") ?? "1");
-  const per_page = Number(searchParams.get("per_page") ?? "5");
+  const per_page = Number(searchParams.get("per_page") ?? contentsPerPage);
   const totalPages = Math.ceil(dataLength / per_page);
 
   const [inputPage, setInputPage] = useState(page);

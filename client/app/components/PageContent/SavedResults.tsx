@@ -50,8 +50,10 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   };
 
   // Define Parameters for Pagination
+  const contents_per_page = "5";
+
   const page = searchParams["page"] ?? "1";
-  const per_page = searchParams["per_page"] ?? "5";
+  const per_page = searchParams["per_page"] ?? contents_per_page;
 
   const start = (Number(page) - 1) * Number(per_page);
   const end = start + Number(per_page);
@@ -242,6 +244,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
       {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
         <PaginationControls
           routeName="save_results"
+          contentsPerPage={contents_per_page}
           hasNextPage={end < grading_data!.length}
           hasPrevPage={start > 0}
           dataLength={grading_data.length}

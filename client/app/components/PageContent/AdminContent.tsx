@@ -7,9 +7,11 @@ import { useRouter } from "next/navigation";
 import { useAuthState } from "@/hooks/useAuthState";
 import { AdminContentProps, UserInfo } from "@/types/AdminTypes";
 import AdminNavbar from "../AdminNavbar";
+import PaginationControls from "../PaginationControls";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
+  searchParams,
   signOutUser,
   disableUser,
   deleteUser,
@@ -20,6 +22,19 @@ const AdminContent = ({
 
   const user = useContext(AuthContext);
   const router = useRouter();
+
+  // Define Parameters for Pagination
+  const contents_per_page = "10";
+
+  const page = searchParams["page"] ?? "1";
+  const per_page = searchParams["per_page"] ?? contents_per_page;
+
+  const start = (Number(page) - 1) * Number(per_page);
+  const end = start + Number(per_page);
+
+  // Slice the data
+  const grading_data = users !== undefined ? users : [];
+  const entries = grading_data.slice(start, end);
 
   // Sign Out User
   const handleSignOut = async (uid: string) => {
@@ -169,7 +184,7 @@ const AdminContent = ({
                 </tr>
               ))}
             {/* User */}
-            {users
+            {entries
               .filter((currentUser) => currentUser.uid !== user!.uid)
               .map((user) => (
                 <tr key={user.uid}>
@@ -206,6 +221,14 @@ const AdminContent = ({
           </tbody>
         </table>
       </div>
+
+      <PaginationControls
+        routeName="admin"
+        contentsPerPage={contents_per_page}
+        hasNextPage={end < grading_data!.length}
+        hasPrevPage={start > 0}
+        dataLength={grading_data.length}
+      />
     </main>
   );
 };
