@@ -137,16 +137,6 @@ const HomeContent = () => {
       try {
         const gradingInfoRef = collection(db, "grading_info");
 
-        await addDoc(gradingInfoRef, {
-          owner_id: user?.uid,
-          owner_email: user?.email,
-          owner_photo: user?.photoURL,
-          input_image: info.input_image,
-          timestamp: info.timestamp,
-          yolo_images: info.yolo_images,
-          results: info.results,
-        });
-
         await fetch("/api/cloudinary/upload-image", {
           method: "POST",
           headers: {
@@ -157,6 +147,17 @@ const HomeContent = () => {
             yolo_images: info.yolo_images,
             results: info.results.map((result) => result.cropped_images),
           }),
+        });
+
+        await addDoc(gradingInfoRef, {
+          owner_id: user?.uid,
+          owner_email: user?.email,
+          owner_name: user?.displayName,
+          owner_photo: user?.photoURL,
+          input_image: info.input_image,
+          timestamp: info.timestamp,
+          yolo_images: info.yolo_images,
+          results: info.results,
         });
       } catch (error) {
         console.error(error);
