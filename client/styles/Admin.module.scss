@@ -1,0 +1,67 @@
+@use "themeprovider/themeprovider" as theme;
+
+$table-padding: 0.5em 0.85em;
+
+.user-info {
+  overflow-x: auto;
+  margin-top: 4.5em;
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid theme.$white-color;
+
+    thead {
+      tr {
+        th {
+          text-align: left;
+          padding: $table-padding;
+          font-family: var(--monserrat-bold);
+          font-size: 1.1rem;
+          text-wrap: nowrap;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          text-align: left;
+          padding: $table-padding;
+          font-family: var(--monserrat-medium);
+          font-size: 0.95rem;
+          text-wrap: nowrap;
+
+          img {
+            border-radius: 50px;
+          }
+
+          button {
+            padding: 0.7em 0.9em;
+            font-size: 0.9rem;
+            border: none;
+            font-family: var(--monserrat-bold);
+            background: theme.$pink-color;
+            color: theme.$white-color;
+            border-radius: 50px;
+            transition: background 0.2s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+              background: theme.$pink-color-hover;
+            }
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+
+        &:nth-child(even) {
+          background-color: theme.$gray-color;
+        }
+      }
+    }
+  }
+}
