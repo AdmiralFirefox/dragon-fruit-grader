@@ -1,5 +1,195 @@
 @use "themeprovider/themeprovider" as theme;
 
-.content {
-  margin-top: 4em;
+.result-wrapper {
+  margin-top: 2.5em;
+  margin-bottom: 2.5em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .result-container {
+    border: 10px solid theme.$pink-color;
+    border-radius: 20px;
+    width: min(45em, 90%);
+    padding: 1.5em 2em 2em 2em;
+
+    .user-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+
+      div:first-child {
+        img {
+          border-radius: 50px;
+        }
+      }
+
+      div:last-child {
+        text-align: center;
+
+        p:first-of-type {
+          font-family: var(--monserrat-medium);
+          font-size: 1rem;
+        }
+
+        p:last-of-type {
+          font-family: var(--monserrat-medium);
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .first-section {
+      margin-top: 1.45em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2em;
+
+      .uploaded-image,
+      .detected-image {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        p {
+          font-size: 1.25rem;
+          margin-bottom: 0.7em;
+          color: theme.$pink-color;
+          font-family: var(--monserrat-bold);
+        }
+
+        .image-wrapper {
+          width: min(15em, 100%);
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+
+    .second-section {
+      margin-top: 3em;
+
+      .result-title {
+        font-size: 1.25rem;
+        font-family: var(--monserrat-bold);
+        margin-bottom: 1em;
+        color: theme.$pink-color;
+        text-align: center;
+      }
+
+      .grading-results {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2em;
+
+        .results-card {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+
+          .image-wrapper {
+            width: 10em;
+
+            img {
+              object-fit: cover;
+              width: 100%;
+              height: 100%;
+              border-radius: 10px;
+            }
+          }
+
+          .result-info-button {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            border: none;
+            margin-top: 0.15em;
+            cursor: pointer;
+
+            .grading-result {
+              font-size: 1rem;
+              font-family: var(--monserrat-medium);
+              color: theme.$pink-color;
+              margin-right: 0.4em;
+            }
+          }
+        }
+      }
+    }
+
+    .delete-results-button {
+      display: flex;
+      justify-content: center;
+      margin-top: 2.3em;
+
+      button {
+        background: none;
+        border: none;
+        font-size: 1.05rem;
+        font-family: var(--monserrat-bold);
+        background: theme.$pink-color;
+        color: theme.$white-color;
+        padding: 1em;
+        border-radius: 40px;
+        transition: background 0.3s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+          background: theme.$pink-color-hover;
+        }
+      }
+    }
+
+    .timestamp {
+      margin-top: 3em;
+
+      p {
+        color: theme.$pink-color;
+        font-size: 1.1rem;
+        font-family: var(--monserrat-medium);
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media (min-width: theme.$media-query-small-value) {
+  .result-wrapper {
+    .result-container {
+      .user-section {
+        flex-direction: row;
+
+        div:last-child {
+          text-align: left;
+        }
+      }
+
+      .first-section {
+        flex-direction: row;
+
+        .uploaded-image,
+        .detected-image {
+          align-items: flex-start;
+          text-align: left;
+
+          .image-wrapper {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 }

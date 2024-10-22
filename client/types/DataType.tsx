@@ -14,4 +14,8 @@ export interface StructuredInfo {
       probability: number;
     }[];
   }[];
+  owner_email?: string;
+  owner_name?: string;
+  owner_id?: string;
+  owner_photo?: string;
 }
