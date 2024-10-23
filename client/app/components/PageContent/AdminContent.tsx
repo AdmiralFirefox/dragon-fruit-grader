@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Fuse from "fuse.js";
 import { useAuthState } from "@/hooks/useAuthState";
 import { AdminContentProps, UserInfo } from "@/types/AdminTypes";
 import AdminNavbar from "../AdminNavbar";
@@ -17,6 +18,7 @@ const AdminContent = ({
   deleteUser,
 }: AdminContentProps) => {
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [searchUser, setSearchUser] = useState("");
   const [loadingUsers, setLoadingUsers] = useState(true);
 
   const { initializing } = useAuthState();
@@ -37,6 +39,20 @@ const AdminContent = ({
   // Slice the data
   const grading_data = users !== undefined ? users : [];
   const entries = grading_data.slice(start, end);
+
+  //Create a fuse instance
+  const fuse = new Fuse(entries, {
+    keys: ["displayName", "uid", "email"],
+    includeScore: true,
+    threshold: 0.3,
+  });
+
+  //Create a Search Result
+  const results = fuse.search(searchUser);
+
+  //Map the search result
+  const filteredEntries =
+    searchUser === "" ? entries : results.map((result) => result.item);
 
   // Sign Out User
   const handleSignOut = async (uid: string) => {
@@ -158,6 +174,14 @@ const AdminContent = ({
         </h1>
       ) : (
         <>
+          <div className={styles["search-wrapper"]}>
+            <input
+              type="text"
+              value={searchUser}
+              onChange={(e) => setSearchUser(e.target.value)}
+            />
+          </div>
+
           <div className={styles["user-info"]}>
             <table>
               <thead>
@@ -173,7 +197,7 @@ const AdminContent = ({
               </thead>
               <tbody>
                 {/* Admin */}
-                {users
+                {filteredEntries
                   .filter((currentUser) => currentUser.uid === user!.uid)
                   .map((user) => (
                     <tr key={user.uid}>
@@ -194,7 +218,7 @@ const AdminContent = ({
                     </tr>
                   ))}
                 {/* User */}
-                {entries
+                {filteredEntries
                   .filter((currentUser) => currentUser.uid !== user!.uid)
                   .map((user) => (
                     <tr key={user.uid}>

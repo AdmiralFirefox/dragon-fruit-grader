@@ -2,6 +2,27 @@
 
 $table-padding: 0.5em 0.85em;
 
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.4em;
+
+  input {
+    width: min(25em, 90%);
+    padding: 1em 0.8em;
+    border: none;
+    background: theme.$gray-color;
+    font-size: 1rem;
+    font-family: var(--monserrat-medium);
+    color: theme.$black-color;
+    border-radius: 10px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
 .user-info {
   overflow-x: auto;
   margin-top: 1.5em;
