@@ -139,7 +139,11 @@ const AdminContent = ({
 
   // Redirect if the page number is out of range
   useEffect(() => {
-    if (page > totalPages && totalPages > 0) {
+    const isValidNumber = !isNaN(page) && Number.isInteger(page);
+
+    if (!isValidNumber) {
+      router.push(`/admin?page=1`);
+    } else if (page > totalPages && totalPages > 0) {
       router.push(`/admin?page=1`);
     } else if (page < 1) {
       router.push(`/admin?page=1`);
