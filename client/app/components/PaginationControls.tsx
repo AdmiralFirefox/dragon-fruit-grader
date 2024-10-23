@@ -2,6 +2,8 @@
 
 import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import PageLeftIcon from "./Icons/PageLeftIcon";
+import PageRightIcon from "./Icons/PageRightIcon";
 import styles from "@/styles/saveresults/PaginationControls.module.scss";
 
 interface PaginationControlsProps {
@@ -63,7 +65,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
             disabled={!hasPrevPage}
             onClick={() => router.push(`/${routeName}?page=${page - 1}`)}
           >
-            Prev
+            <PageLeftIcon width="1.85em" height="1.85em" />
           </button>
 
           <p>
@@ -74,7 +76,7 @@ const PaginationControls: FC<PaginationControlsProps> = ({
             disabled={!hasNextPage}
             onClick={() => router.push(`/${routeName}?page=${page + 1}`)}
           >
-            Next
+            <PageRightIcon width="1.85em" height="1.85em" />
           </button>
         </div>
 
