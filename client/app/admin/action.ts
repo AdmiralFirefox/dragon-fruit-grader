@@ -77,6 +77,11 @@ export async function deleteUser(token: string, uid: string) {
       redirect("/");
     }
 
+    await adminDB.collection("blacklist").doc(uid).set({
+      uid: uid,
+      disabledAt: new Date(),
+    });
+
     await adminAuth.deleteUser(uid);
   } catch (error) {
     console.log(error);
