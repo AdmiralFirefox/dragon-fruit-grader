@@ -301,7 +301,7 @@ const AdminContent = ({
             </table>
           </div>
 
-          {filteredUsers.length !== 0 ? (
+          {users_data.length <= 0 || users_data.length <= 9 ? null : (
             <PaginationControls
               routeName="admin"
               contentsPerPage={contents_per_page}
@@ -309,7 +309,7 @@ const AdminContent = ({
               hasPrevPage={start > 0}
               dataLength={users_data.length}
             />
-          ) : null}
+          )}
         </>
       )}
     </main>
