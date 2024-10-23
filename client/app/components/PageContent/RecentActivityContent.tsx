@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, FormEvent } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useAuthState } from "@/hooks/useAuthState";
 import { db } from "@/firebase/firebase";
@@ -31,6 +31,7 @@ interface RecentActivityProps {
 
 const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   const [gradingInfo, setGradingInfo] = useState<StructuredInfo[]>([]);
+  const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState("");
   const [loadingInfo, setLoadingInfo] = useState(true);
 
@@ -70,6 +71,13 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   // Slice the data
   const grading_data = filteredInfo !== undefined ? filteredInfo : [];
   const entries = grading_data.slice(start, end);
+
+  // Handle Search
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchResults(searchInput);
+    router.push("/admin/recent_activity?page=1");
+  };
 
   // Delete Result
   const deleteResult = async (info: StructuredInfo) => {
@@ -156,13 +164,17 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
         </div>
       ) : (
         <>
-          <div className={styles["search-wrapper"]}>
+          <form
+            className={styles["search-wrapper"]}
+            onSubmit={handleSearchSubmit}
+          >
             <input
               type="text"
-              value={searchResults}
-              onChange={(e) => setSearchResults(e.target.value)}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
-          </div>
+            <button type="submit">Submit</button>
+          </form>
 
           {entries!.map((info) => (
             <li key={info.id} className={styles["result-wrapper"]}>

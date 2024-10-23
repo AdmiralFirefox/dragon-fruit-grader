@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, FormEvent } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
@@ -18,6 +18,7 @@ const AdminContent = ({
   deleteUser,
 }: AdminContentProps) => {
   const [users, setUsers] = useState<UserInfo[]>([]);
+  const [searchInput, setSearchInput] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [loadingUsers, setLoadingUsers] = useState(true);
 
@@ -53,6 +54,13 @@ const AdminContent = ({
   // Slice the data
   const users_data = filteredUsers !== undefined ? filteredUsers : [];
   const entries = users_data.slice(start, end);
+
+  // Handle Search
+  const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchUser(searchInput);
+    router.push("/admin?page=1");
+  };
 
   // Sign Out User
   const handleSignOut = async (uid: string) => {
@@ -174,13 +182,17 @@ const AdminContent = ({
         </h1>
       ) : (
         <>
-          <div className={styles["search-wrapper"]}>
+          <form
+            className={styles["search-wrapper"]}
+            onSubmit={handleSearchSubmit}
+          >
             <input
               type="text"
-              value={searchUser}
-              onChange={(e) => setSearchUser(e.target.value)}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
-          </div>
+            <button type="submit">Submit</button>
+          </form>
 
           <div className={styles["user-info"]}>
             <table>
