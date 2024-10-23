@@ -62,8 +62,18 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   // Define Parameters for Pagination
   const contents_per_page = "5";
 
-  const page = searchParams["page"] ?? "1";
-  const per_page = searchParams["per_page"] ?? contents_per_page;
+  const pageParam = searchParams["page"];
+  const perPageParam = searchParams["per_page"] ?? contents_per_page;
+
+  const page = Array.isArray(pageParam)
+    ? Number(pageParam[0])
+    : Number(pageParam ?? "1");
+  const per_page = Array.isArray(perPageParam)
+    ? Number(perPageParam[0])
+    : Number(perPageParam);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(gradingInfo.length / per_page);
 
   const start = (Number(page) - 1) * Number(per_page);
   const end = start + Number(per_page);
@@ -102,6 +112,15 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
       }
     }
   };
+
+  // Redirect if the page number is out of range
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      router.push(`/admin/recent_activity?page=1`);
+    } else if (page < 1) {
+      router.push(`/admin/recent_activity?page=1`);
+    }
+  }, [page, totalPages, router]);
 
   // Fetch Data from database
   useEffect(() => {
