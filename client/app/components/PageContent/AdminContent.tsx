@@ -27,6 +27,20 @@ const AdminContent = ({
   const user = useContext(AuthContext);
   const router = useRouter();
 
+  //Create a fuse instance
+  const fuse = new Fuse(users, {
+    keys: ["displayName", "uid", "email"],
+    includeScore: true,
+    threshold: 0.3,
+  });
+
+  //Create a Search Result
+  const results = fuse.search(searchUser);
+
+  //Map the search result
+  const filteredUsers =
+    searchUser === "" ? users : results.map((result) => result.item);
+
   // Define Parameters for Pagination
   const contents_per_page = "10";
 
@@ -37,22 +51,8 @@ const AdminContent = ({
   const end = start + Number(per_page);
 
   // Slice the data
-  const grading_data = users !== undefined ? users : [];
-  const entries = grading_data.slice(start, end);
-
-  //Create a fuse instance
-  const fuse = new Fuse(entries, {
-    keys: ["displayName", "uid", "email"],
-    includeScore: true,
-    threshold: 0.3,
-  });
-
-  //Create a Search Result
-  const results = fuse.search(searchUser);
-
-  //Map the search result
-  const filteredEntries =
-    searchUser === "" ? entries : results.map((result) => result.item);
+  const users_data = filteredUsers !== undefined ? filteredUsers : [];
+  const entries = users_data.slice(start, end);
 
   // Sign Out User
   const handleSignOut = async (uid: string) => {
@@ -197,7 +197,7 @@ const AdminContent = ({
               </thead>
               <tbody>
                 {/* Admin */}
-                {filteredEntries
+                {entries
                   .filter((currentUser) => currentUser.uid === user!.uid)
                   .map((user) => (
                     <tr key={user.uid}>
@@ -218,7 +218,7 @@ const AdminContent = ({
                     </tr>
                   ))}
                 {/* User */}
-                {filteredEntries
+                {entries
                   .filter((currentUser) => currentUser.uid !== user!.uid)
                   .map((user) => (
                     <tr key={user.uid}>
@@ -261,9 +261,9 @@ const AdminContent = ({
           <PaginationControls
             routeName="admin"
             contentsPerPage={contents_per_page}
-            hasNextPage={end < grading_data!.length}
+            hasNextPage={end < users_data!.length}
             hasPrevPage={start > 0}
-            dataLength={grading_data.length}
+            dataLength={users_data.length}
           />
         </>
       )}

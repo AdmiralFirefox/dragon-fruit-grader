@@ -16,6 +16,7 @@ import {
 } from "firebase/firestore";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import useInfoModal from "@/hooks/useInfoModal";
+import Fuse from "fuse.js";
 import { formatTime } from "@/utils/formatTime";
 import { formatUrl } from "@/utils/formatUrl";
 import ArrowIcon from "@/app/components/Icons/ArrowIcon";
@@ -30,6 +31,7 @@ interface RecentActivityProps {
 
 const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   const [gradingInfo, setGradingInfo] = useState<StructuredInfo[]>([]);
+  const [searchResults, setSearchResults] = useState("");
   const [loadingInfo, setLoadingInfo] = useState(true);
 
   const { initializing } = useAuthState();
@@ -42,6 +44,20 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   const user = useContext(AuthContext);
   const router = useRouter();
 
+  //Create a fuse instance
+  const fuse = new Fuse(gradingInfo, {
+    keys: ["owner_name", "owner_email"],
+    includeScore: true,
+    threshold: 0.3,
+  });
+
+  //Create a Search Result
+  const results = fuse.search(searchResults);
+
+  //Map the search result
+  const filteredInfo =
+    searchResults === "" ? gradingInfo : results.map((result) => result.item);
+
   // Define Parameters for Pagination
   const contents_per_page = "5";
 
@@ -52,7 +68,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   const end = start + Number(per_page);
 
   // Slice the data
-  const grading_data = gradingInfo !== undefined ? gradingInfo : [];
+  const grading_data = filteredInfo !== undefined ? filteredInfo : [];
   const entries = grading_data.slice(start, end);
 
   // Delete Result
@@ -140,6 +156,14 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
         </div>
       ) : (
         <>
+          <div className={styles["search-wrapper"]}>
+            <input
+              type="text"
+              value={searchResults}
+              onChange={(e) => setSearchResults(e.target.value)}
+            />
+          </div>
+
           {entries!.map((info) => (
             <li key={info.id} className={styles["result-wrapper"]}>
               <div className={styles["result-container"]}>
