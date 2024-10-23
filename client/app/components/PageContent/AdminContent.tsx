@@ -9,6 +9,8 @@ import { useAuthState } from "@/hooks/useAuthState";
 import { AdminContentProps, UserInfo } from "@/types/AdminTypes";
 import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "../PaginationControls";
+import { truncateText } from "@/utils/truncateText";
+import ClipboardIcon from "../Icons/ClipboardIcon";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
@@ -60,6 +62,16 @@ const AdminContent = ({
     e.preventDefault();
     setSearchUser(searchInput);
     router.push("/admin?page=1");
+  };
+
+  // Copy User ID
+  const handleCopy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Copied UID");
+    } catch (err) {
+      console.error("Failed to copy text:", err);
+    }
   };
 
   // Sign Out User
@@ -199,6 +211,7 @@ const AdminContent = ({
               <thead>
                 <tr>
                   <th>User Photo</th>
+                  <th>User ID</th>
                   <th>Display Name</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -221,6 +234,15 @@ const AdminContent = ({
                           height={imageSize}
                         />
                       </td>
+                      <td>
+                        {truncateText(user.uid, 10)}
+                        <button
+                          className={styles["copy"]}
+                          onClick={() => handleCopy(user.uid)}
+                        >
+                          <ClipboardIcon width="1.8em" height="1.8em" />
+                        </button>
+                      </td>
                       <td>{user.displayName}</td>
                       <td>{user.email}</td>
                       <td>Admin</td>
@@ -241,6 +263,15 @@ const AdminContent = ({
                           width={imageSize}
                           height={imageSize}
                         />
+                      </td>
+                      <td>
+                        {truncateText(user.uid, 10)}
+                        <button
+                          className={styles["copy"]}
+                          onClick={() => handleCopy(user.uid)}
+                        >
+                          <ClipboardIcon width="1.8em" height="1.8em" />
+                        </button>
                       </td>
                       <td>{user.displayName}</td>
                       <td>{user.email}</td>

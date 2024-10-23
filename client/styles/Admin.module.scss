@@ -97,6 +97,12 @@ $table-padding: 0.5em 0.85em;
               outline: none;
             }
           }
+
+          .copy {
+            margin-left: 0.5em;
+            border-radius: 10px;
+            padding: 0.3em;
+          }
         }
 
         &:nth-child(even) {

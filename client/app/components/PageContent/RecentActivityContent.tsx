@@ -47,7 +47,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
 
   //Create a fuse instance
   const fuse = new Fuse(gradingInfo, {
-    keys: ["owner_name", "owner_email"],
+    keys: ["owner_name", "owner_email", "owner_id"],
     includeScore: true,
     threshold: 0.3,
   });
