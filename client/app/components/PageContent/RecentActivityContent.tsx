@@ -264,15 +264,13 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
         </>
       )}
 
-      {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
-        <PaginationControls
-          routeName="admin/recent_activity"
-          contentsPerPage={contents_per_page}
-          hasNextPage={end < grading_data!.length}
-          hasPrevPage={start > 0}
-          dataLength={grading_data.length}
-        />
-      )}
+      <PaginationControls
+        routeName="admin/recent_activity"
+        contentsPerPage={contents_per_page}
+        hasNextPage={end < grading_data!.length}
+        hasPrevPage={start > 0}
+        dataLength={grading_data.length}
+      />
     </main>
   );
 };
