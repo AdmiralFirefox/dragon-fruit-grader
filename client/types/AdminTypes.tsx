@@ -12,3 +12,7 @@ export interface AdminContentProps {
 export interface UserInfo extends User {
   disabled?: boolean;
 }
+
+export interface LoadingAdminFunctions {
+  [key: string]: boolean;
+}

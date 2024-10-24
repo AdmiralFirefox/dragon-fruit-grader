@@ -6,12 +6,17 @@ import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import { useAuthState } from "@/hooks/useAuthState";
-import { AdminContentProps, UserInfo } from "@/types/AdminTypes";
+import {
+  AdminContentProps,
+  UserInfo,
+  LoadingAdminFunctions,
+} from "@/types/AdminTypes";
 import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "../PaginationControls";
 import { truncateText } from "@/utils/truncateText";
 import ClipboardIcon from "../Icons/ClipboardIcon";
 import LoadingAdmin from "../States/LoadingAdmin";
+import SyncLoader from "../Loaders/SyncLoader";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
@@ -24,6 +29,15 @@ const AdminContent = ({
   const [searchInput, setSearchInput] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [loadingUsers, setLoadingUsers] = useState(true);
+
+  // Admin functions loadings state
+  const [loadingSignOut, setLoadingSignOut] = useState<LoadingAdminFunctions>(
+    {}
+  );
+  const [loadingDisable, setLoadingDisable] = useState<LoadingAdminFunctions>(
+    {}
+  );
+  const [loadingDelete, setLoadingDelete] = useState<LoadingAdminFunctions>({});
 
   const { initializing } = useAuthState();
   const imageSize = 53;
@@ -87,6 +101,7 @@ const AdminContent = ({
 
   // Sign Out User
   const handleSignOut = async (uid: string) => {
+    setLoadingSignOut((prevStates) => ({ ...prevStates, [uid]: true }));
     const token = await user!.getIdToken();
 
     if (token) {
@@ -97,10 +112,13 @@ const AdminContent = ({
         console.log(error);
       }
     }
+
+    setLoadingSignOut((prevStates) => ({ ...prevStates, [uid]: false }));
   };
 
   // Disable User
   const handleDisable = async (uid: string, disabled: boolean) => {
+    setLoadingDisable((prevStates) => ({ ...prevStates, [uid]: true }));
     const token = await user!.getIdToken();
 
     if (token) {
@@ -122,10 +140,13 @@ const AdminContent = ({
         console.log(error);
       }
     }
+
+    setLoadingDisable((prevStates) => ({ ...prevStates, [uid]: false }));
   };
 
   // Delete User
   const handleDelete = async (uid: string) => {
+    setLoadingDelete((prevStates) => ({ ...prevStates, [uid]: true }));
     const token = await user!.getIdToken();
 
     if (token) {
@@ -291,23 +312,41 @@ const AdminContent = ({
                       <td>{user.email}</td>
                       <td>User</td>
                       <td>
-                        <button onClick={() => handleSignOut(user.uid)}>
-                          Sign Out
-                        </button>
+                        {loadingSignOut[user.uid] ? (
+                          <button className={styles["loading-button"]}>
+                            <SyncLoader width="2.5em" />
+                          </button>
+                        ) : (
+                          <button onClick={() => handleSignOut(user.uid)}>
+                            Sign Out
+                          </button>
+                        )}
                       </td>
                       <td>
-                        <button
-                          onClick={() =>
-                            handleDisable(user.uid, !user.disabled)
-                          }
-                        >
-                          {user.disabled ? "Enable" : "Disable"}
-                        </button>
+                        {loadingDisable[user.uid] ? (
+                          <button className={styles["loading-button"]}>
+                            <SyncLoader width="2.5em" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              handleDisable(user.uid, !user.disabled)
+                            }
+                          >
+                            {user.disabled ? "Enable" : "Disable"}
+                          </button>
+                        )}
                       </td>
                       <td>
-                        <button onClick={() => handleDelete(user.uid)}>
-                          Delete
-                        </button>
+                        {loadingDelete[user.uid] ? (
+                          <button className={styles["loading-button"]}>
+                            <SyncLoader width="2.5em" />
+                          </button>
+                        ) : (
+                          <button onClick={() => handleDelete(user.uid)}>
+                            Delete
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}

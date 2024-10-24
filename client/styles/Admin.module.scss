@@ -78,6 +78,19 @@ $table-padding: 0.5em 0.85em;
             border-radius: 50px;
           }
 
+          .loading-button {
+            background: none;
+            border: none;
+            background: theme.$darker-gray-color;
+            padding: 0.7em 1.6em;
+            border-radius: 40px;
+            cursor: not-allowed;
+
+            &:hover {
+              background: theme.$darker-gray-color;
+            }
+          }
+
           button {
             padding: 0.7em 0.9em;
             font-size: 0.9rem;
