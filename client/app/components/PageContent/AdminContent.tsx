@@ -11,6 +11,7 @@ import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "../PaginationControls";
 import { truncateText } from "@/utils/truncateText";
 import ClipboardIcon from "../Icons/ClipboardIcon";
+import Initializing from "../States/Initializing";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
@@ -201,11 +202,7 @@ const AdminContent = ({
   }, [initializing, user]);
 
   if (initializing) {
-    return (
-      <div style={{ marginTop: "5em", textAlign: "center" }}>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Initializing />;
   }
 
   return (

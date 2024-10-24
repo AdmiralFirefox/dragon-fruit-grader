@@ -23,6 +23,7 @@ import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { StructuredInfo } from "@/types/DataType";
 import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "@/app/components/PaginationControls";
+import Initializing from "../States/Initializing";
 import styles from "@/styles/RecentActivity.module.scss";
 
 interface RecentActivityProps {
@@ -171,11 +172,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   }, [initializing, user]);
 
   if (initializing) {
-    return (
-      <div style={{ marginTop: "5em", textAlign: "center" }}>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Initializing />;
   }
 
   return (

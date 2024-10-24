@@ -24,6 +24,7 @@ import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
 import { StructuredInfo } from "@/types/DataType";
+import Initializing from "../States/Initializing";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -144,11 +145,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   }, [user, initializing]);
 
   if (initializing) {
-    return (
-      <div style={{ marginTop: "5em", textAlign: "center" }}>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Initializing />;
   }
 
   return user !== null ? (
