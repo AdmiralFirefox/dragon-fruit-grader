@@ -1,0 +1,62 @@
+@use "../themeprovider/themeprovider" as theme;
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  background: theme.$light-peach-color;
+  margin-top: 1.7em;
+  padding: 0em 1.5em;
+  height: 31em;
+
+  .user-photo {
+    div {
+      @include theme.loading-skeleton(50%, 5.3em, 5.3em);
+    }
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.8em;
+    width: min(15em, 100%);
+
+    div:first-child {
+      @include theme.loading-skeleton(5px, min(15em, 100%), 2em);
+    }
+
+    div:nth-of-type(2) {
+      @include theme.loading-skeleton(5px, min(12em, 100%), 1.5em);
+    }
+
+    div:last-child {
+      @include theme.loading-skeleton(10px, min(6.2em, 100%), 2.4em);
+    }
+  }
+}
+
+.saved-results-title {
+  margin: 3.5em 1em 0em 1em;
+
+  h1 {
+    font-size: clamp(2.3rem, 3.5vw, 2.7rem);
+    font-family: var(--koho-bold);
+    text-align: center;
+  }
+}
+
+@media (min-width: theme.$media-query-small-value) {
+  .user {
+    flex-direction: row;
+    gap: 1.5em;
+    height: 20em;
+
+    .user-info {
+      align-items: flex-start;
+    }
+  }
+}

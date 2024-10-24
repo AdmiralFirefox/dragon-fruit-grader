@@ -24,7 +24,7 @@ import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
 import { StructuredInfo } from "@/types/DataType";
-import Initializing from "../States/Initializing";
+import LoadingUser from "../States/LoadingUser";
 import SpinnerLoader from "../Loaders/SpinnerLoader";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
@@ -146,7 +146,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   }, [user, initializing]);
 
   if (initializing) {
-    return <Initializing />;
+    return <LoadingUser />;
   }
 
   return user !== null ? (
