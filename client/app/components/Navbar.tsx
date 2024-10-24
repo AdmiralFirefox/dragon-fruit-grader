@@ -54,7 +54,7 @@ const Navbar = () => {
 
         <div className={styles["page-links"]}>
           {initializing ? (
-            <p>Loading...</p>
+            <div className={styles["scale-up-loader"]}></div>
           ) : (
             <>
               {isAdmin ? (
