@@ -25,6 +25,7 @@ import PaginationControls from "@/app/components/PaginationControls";
 import { signOut } from "firebase/auth";
 import { StructuredInfo } from "@/types/DataType";
 import Initializing from "../States/Initializing";
+import SpinnerLoader from "../Loaders/SpinnerLoader";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -171,9 +172,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
       </div>
 
       {gradingInfo.length === 0 && loadingInfo ? (
-        <div style={{ textAlign: "center" }}>
-          <h1>Loading...</h1>
-        </div>
+        <SpinnerLoader />
       ) : (
         <>
           {entries!.map((info) => (

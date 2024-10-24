@@ -24,6 +24,7 @@ import { StructuredInfo } from "@/types/DataType";
 import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "@/app/components/PaginationControls";
 import Initializing from "../States/Initializing";
+import SpinnerLoader from "../Loaders/SpinnerLoader";
 import styles from "@/styles/RecentActivity.module.scss";
 
 interface RecentActivityProps {
@@ -179,9 +180,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
     <main>
       <AdminNavbar />
       {gradingInfo.length === 0 && loadingInfo ? (
-        <div style={{ textAlign: "center", marginTop: "2em" }}>
-          <h1>Loading...</h1>
-        </div>
+        <SpinnerLoader />
       ) : (
         <>
           <form
