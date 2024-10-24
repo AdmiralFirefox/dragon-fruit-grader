@@ -1,11 +1,11 @@
-import SyncLoader from "react-spinners/SyncLoader";
+import CogLoader from "../Loaders/CogLoader";
 import styles from "@/styles/states/Loading.module.scss";
 
 const Loading = () => {
   return (
     <div className={styles["wrapper"]}>
       <div className={styles["content"]}>
-        <SyncLoader color="#f7fff9" size={15} />
+        <CogLoader />
         <h1>Detecting and Classifying Dragon Fruits</h1>
       </div>
     </div>
