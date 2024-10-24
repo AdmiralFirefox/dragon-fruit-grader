@@ -37,10 +37,19 @@
 
   h1 {
     color: theme.$black-color;
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     font-family: var(--monserrat-bold);
     margin-top: 1em;
     text-align: center;
+    width: min(10em, 100%);
+  }
+}
+
+@media (min-width: theme.$media-query-small-value) {
+  .container {
+    h1 {
+      width: 100%;
+    }
   }
 }
 
