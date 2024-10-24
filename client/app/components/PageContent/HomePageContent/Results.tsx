@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useContext } from "react";
 import { AuthContext } from "@/context/AuthContext";
-import SyncLoader from "react-spinners/SyncLoader";
 import InfoModal from "@/app/components/Modals/InfoModal";
 import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { formatTime } from "@/utils/formatTime";
@@ -11,6 +10,7 @@ import { ResultsProps } from "@/types/ResultTypes";
 import useSignInModal from "@/hooks/useSignInModal";
 import useInfoModal from "@/hooks/useInfoModal";
 import SignInModal from "@/app/components/Modals/SignInModal";
+import SyncLoader from "@/app/components/Loaders/SyncLoader";
 import styles from "@/styles/homepage/Results.module.scss";
 
 const Results = ({
@@ -128,7 +128,7 @@ const Results = ({
                 <div className={styles["save-results-button"]}>
                   {docLoadingSave[info.id] ? (
                     <button className={styles["loading-button"]}>
-                      <SyncLoader color="#f7fff9" size={10} />
+                      <SyncLoader width="3.5em" />
                     </button>
                   ) : (
                     <div className={styles["save-results-button"]}>
