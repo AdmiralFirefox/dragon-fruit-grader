@@ -1,0 +1,54 @@
+@use "../themeprovider/themeprovider" as theme;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 3.5em 1em 5em 1em;
+
+  .loader {
+    width: 2.2em;
+    height: 5.25em;
+    position: relative;
+  }
+
+  .loader:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 3px 5px;
+    border-top: 1px solid #bbb6aa;
+    border-bottom: 4px solid #bbb6aa;
+    background: linear-gradient(theme.$pink-color 0 0) bottom no-repeat
+        content-box,
+      #e4e0d7;
+    mix-blend-mode: darken;
+    animation: l1 2.5s infinite linear;
+  }
+
+  .loader:before {
+    content: "";
+    position: absolute;
+    inset: -18px calc(50% - 2px) 8px;
+    background: #eb6b3e;
+    transform-origin: bottom;
+    transform: rotate(8deg);
+  }
+
+  h1 {
+    color: theme.$black-color;
+    font-size: 1.7rem;
+    font-family: var(--monserrat-bold);
+    margin-top: 1em;
+    text-align: center;
+  }
+}
+
+@keyframes l1 {
+  0% {
+    background-size: 100% 100%;
+  }
+  100% {
+    background-size: 100% 5%;
+  }
+}

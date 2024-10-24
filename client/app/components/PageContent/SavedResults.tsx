@@ -27,6 +27,7 @@ import { StructuredInfo } from "@/types/DataType";
 import LoadingUser from "../States/LoadingUser";
 import SpinnerLoader from "../Loaders/SpinnerLoader";
 import { imageInHttps } from "@/utils/imageInHttps";
+import Empty from "../States/Empty";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -262,6 +263,8 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
           ))}
         </>
       )}
+
+      {gradingInfo.length <= 0 && !loadingInfo ? <Empty /> : null}
 
       {grading_data.length <= 0 || grading_data.length <= 4 ? null : (
         <PaginationControls
