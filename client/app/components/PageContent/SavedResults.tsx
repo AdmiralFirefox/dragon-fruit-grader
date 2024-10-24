@@ -26,6 +26,7 @@ import { signOut } from "firebase/auth";
 import { StructuredInfo } from "@/types/DataType";
 import LoadingUser from "../States/LoadingUser";
 import SpinnerLoader from "../Loaders/SpinnerLoader";
+import { imageInHttps } from "@/utils/imageInHttps";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -183,7 +184,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                     <p>Uploaded Image</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={formatUrl(info.input_image)}
+                        src={formatUrl(imageInHttps(info.input_image))}
                         alt="Uploaded Image"
                         width={300}
                         height={300}
@@ -196,7 +197,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                     <p>Detected Dragon Fruits</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={formatUrl(info.yolo_images)}
+                        src={formatUrl(imageInHttps(info.yolo_images))}
                         alt="Detected Dragon Fruits"
                         width={300}
                         height={300}
@@ -214,7 +215,9 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                         <div key={result.id} className={styles["results-card"]}>
                           <div className={styles["image-wrapper"]}>
                             <Image
-                              src={formatUrl(result.cropped_images)}
+                              src={formatUrl(
+                                imageInHttps(result.cropped_images)
+                              )}
                               alt="Dragon Fruit"
                               width={250}
                               height={250}

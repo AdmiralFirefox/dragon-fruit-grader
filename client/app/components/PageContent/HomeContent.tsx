@@ -14,6 +14,7 @@ import DragDrop from "@/app/components/PageContent/HomePageContent/DragDrop";
 import TestImages from "./HomePageContent/TestImages";
 import Loading from "@/app/components/States/Loading";
 import Error from "@/app/components/States/Error";
+import { imageInHttps } from "@/utils/imageInHttps";
 import { StructuredInfo } from "@/types/DataType";
 import {
   InputProps,
@@ -119,13 +120,6 @@ const HomeContent = () => {
     setInputMode(false);
     const files = event.target.files ? Array.from(event.target.files) : [];
     mutation.mutate(files);
-  };
-
-  // Ensuring the url served is in https
-  const imageInHttps = (image_url: string) => {
-    return image_url.startsWith("http://")
-      ? image_url.replace("http://", "https://")
-      : image_url;
   };
 
   // Uploading to Grading Results Database

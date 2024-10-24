@@ -24,6 +24,7 @@ import { StructuredInfo } from "@/types/DataType";
 import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "@/app/components/PaginationControls";
 import LoadingAdmin from "../States/LoadingAdmin";
+import { imageInHttps } from "@/utils/imageInHttps";
 import styles from "@/styles/RecentActivity.module.scss";
 
 interface RecentActivityProps {
@@ -213,7 +214,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                     <p>Uploaded Image</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={formatUrl(info.input_image)}
+                        src={formatUrl(imageInHttps(info.input_image))}
                         alt="Uploaded Image"
                         width={300}
                         height={300}
@@ -226,7 +227,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                     <p>Detected Dragon Fruits</p>
                     <div className={styles["image-wrapper"]}>
                       <Image
-                        src={formatUrl(info.yolo_images)}
+                        src={formatUrl(imageInHttps(info.yolo_images))}
                         alt="Detected Dragon Fruits"
                         width={300}
                         height={300}
@@ -244,7 +245,9 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                         <div key={result.id} className={styles["results-card"]}>
                           <div className={styles["image-wrapper"]}>
                             <Image
-                              src={formatUrl(result.cropped_images)}
+                              src={formatUrl(
+                                imageInHttps(result.cropped_images)
+                              )}
                               alt="Dragon Fruit"
                               width={250}
                               height={250}
