@@ -9,7 +9,7 @@ const Error = ({ message }: ErrorProps) => {
   return (
     <div className={styles["wrapper"]}>
       <div className={styles["content"]}>
-        <ErrorIcon width="4.75em" height="4.75em" />
+        <ErrorIcon width="4.5em" height="4.5em" />
         <h1>{message}</h1>
       </div>
     </div>
