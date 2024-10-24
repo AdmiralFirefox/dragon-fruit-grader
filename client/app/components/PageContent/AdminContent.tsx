@@ -11,7 +11,7 @@ import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "../PaginationControls";
 import { truncateText } from "@/utils/truncateText";
 import ClipboardIcon from "../Icons/ClipboardIcon";
-import Initializing from "../States/Initializing";
+import LoadingAdmin from "../States/LoadingAdmin";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
@@ -201,17 +201,11 @@ const AdminContent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initializing, user]);
 
-  if (initializing) {
-    return <Initializing />;
-  }
-
   return (
     <main>
       <AdminNavbar />
       {users.length === 0 && loadingUsers ? (
-        <h1 style={{ textAlign: "center", marginTop: "1em" }}>
-          Loading data...
-        </h1>
+        <LoadingAdmin message="Loading Users" />
       ) : (
         <>
           <form

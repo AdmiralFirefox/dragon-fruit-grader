@@ -23,8 +23,7 @@ import ArrowIcon from "@/app/components/Icons/ArrowIcon";
 import { StructuredInfo } from "@/types/DataType";
 import AdminNavbar from "../AdminNavbar";
 import PaginationControls from "@/app/components/PaginationControls";
-import Initializing from "../States/Initializing";
-import SpinnerLoader from "../Loaders/SpinnerLoader";
+import LoadingAdmin from "../States/LoadingAdmin";
 import styles from "@/styles/RecentActivity.module.scss";
 
 interface RecentActivityProps {
@@ -159,7 +158,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
           if (!token.claims.admin) {
             router.push("/"); // Redirect if not admin
           } else {
-            return; // Continue loading admin content
+            setLoadingInfo(true); // Continue loading admin content
           }
         } else {
           router.push("/"); // Redirect if not authenticated
@@ -172,15 +171,11 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initializing, user]);
 
-  if (initializing) {
-    return <Initializing />;
-  }
-
   return (
     <main>
       <AdminNavbar />
       {gradingInfo.length === 0 && loadingInfo ? (
-        <SpinnerLoader />
+        <LoadingAdmin message="Loading Data" />
       ) : (
         <>
           <form
