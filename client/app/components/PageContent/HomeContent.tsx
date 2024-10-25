@@ -22,6 +22,7 @@ import {
   DocExist,
   ClearSessionProps,
 } from "@/types/HomeContentTypes";
+import { toast, Bounce } from "react-toastify";
 import styles from "@/styles/Classify.module.scss";
 
 const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL
@@ -153,8 +154,31 @@ const HomeContent = () => {
           yolo_images: info.yolo_images,
           results: info.results,
         });
+
+        toast.success("Added to Saved Results", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       } catch (error) {
         console.error(error);
+        toast.error((error as Error).message || "An unknown error occurred", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     }
 

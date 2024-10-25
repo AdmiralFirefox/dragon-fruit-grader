@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useScrollLock } from "@/hooks/useScrollLock";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
+import { toast, Bounce } from "react-toastify";
 
 const useSignInModal = () => {
   const [signInModal, setSignInModal] = useState(false);
@@ -39,10 +40,32 @@ const useSignInModal = () => {
       });
 
       closeModal();
+      toast.success("Signed In Successfully", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
       console.log(err);
       closeModal();
-      alert(err);
+
+      toast.error((err as Error).message || "An unknown error occurred", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 

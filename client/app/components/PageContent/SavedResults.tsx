@@ -28,6 +28,7 @@ import LoadingUser from "../States/LoadingUser";
 import SpinnerLoader from "../Loaders/SpinnerLoader";
 import { imageInHttps } from "@/utils/imageInHttps";
 import Empty from "../States/Empty";
+import { toast, Bounce } from "react-toastify";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -51,6 +52,17 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   //Sign Out
   const signOutAccount = async () => {
     await signOut(auth);
+    toast.error("Signed out Successfully", {
+      position: "top-center",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
 
   // Define Parameters for Pagination
@@ -96,6 +108,17 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
         });
       } catch (error) {
         console.error(error);
+        toast.error((error as Error).message || "An unknown error occurred", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     }
   };

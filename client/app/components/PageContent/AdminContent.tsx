@@ -17,6 +17,7 @@ import { truncateText } from "@/utils/truncateText";
 import ClipboardIcon from "../Icons/ClipboardIcon";
 import LoadingAdmin from "../States/LoadingAdmin";
 import SyncLoader from "../Loaders/SyncLoader";
+import { toast, Bounce } from "react-toastify";
 import styles from "@/styles/Admin.module.scss";
 
 const AdminContent = ({
@@ -93,9 +94,30 @@ const AdminContent = ({
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("Copied UID");
+      toast.info("Copied User ID", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
       console.error("Failed to copy text:", err);
+      toast.error((err as Error).message || "An unknown error occurred", {
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -107,9 +129,30 @@ const AdminContent = ({
     if (token) {
       try {
         await signOutUser(token, uid);
-        alert("User will be signed out");
+        toast.error("User will be Signed Out", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       } catch (error) {
         console.log(error);
+        toast.error((error as Error).message || "An unknown error occurred", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     }
 
@@ -132,12 +175,43 @@ const AdminContent = ({
         );
 
         if (disabled) {
-          alert("User is disabled");
+          toast.error("User is disabled", {
+            position: "top-center",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         } else {
-          alert("User is enabled");
+          toast.info("User is enabled", {
+            position: "top-center",
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            transition: Bounce,
+          });
         }
       } catch (error) {
         console.log(error);
+        toast.error((error as Error).message || "An unknown error occurred", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     }
 
@@ -153,8 +227,30 @@ const AdminContent = ({
       try {
         await deleteUser(token, uid);
         setUsers((prevUsers) => prevUsers.filter((user) => user.uid !== uid));
+        toast.error("User has been deleted", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       } catch (error) {
         console.log(error);
+        toast.error((error as Error).message || "An unknown error occurred", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     }
   };
@@ -186,8 +282,6 @@ const AdminContent = ({
 
         if (res.status === 403) {
           setLoadingUsers(false);
-          alert("Access denied");
-          return;
         }
 
         const users_data = await res.json();

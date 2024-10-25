@@ -3,6 +3,8 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { koho_bold, monserrat_medium, monserrat_bold } from "./fonts";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "@/providers/AuthProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
@@ -24,6 +26,7 @@ export default function RootLayout({
       <body>
         <AuthProvider>
           <Navbar />
+          <ToastContainer limit={2} />
           <QueryProvider>{children}</QueryProvider>
         </AuthProvider>
       </body>
