@@ -71,11 +71,13 @@
         p:first-of-type {
           font-family: var(--monserrat-medium);
           font-size: 1rem;
+          overflow-wrap: anywhere;
         }
 
         p:last-of-type {
           font-family: var(--monserrat-medium);
           font-size: 0.9rem;
+          overflow-wrap: anywhere;
         }
       }
     }
