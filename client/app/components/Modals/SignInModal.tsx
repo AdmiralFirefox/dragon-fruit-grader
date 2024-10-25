@@ -1,7 +1,7 @@
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import CloseIcon from "../Icons/CloseIcon";
+import GoogleIcon from "../Icons/GoogleIcon";
 import styles from "@/styles/modals/SignInModal.module.scss";
 
 interface SignInModalProps {
@@ -69,12 +69,7 @@ const SignInModal = ({
               onClick={signInWithgoogle}
             >
               <p>Sign In</p>
-              <Image
-                src="/logos/google.png"
-                alt="Googl Logo"
-                width={35}
-                height={35}
-              />
+              <GoogleIcon width="2.5em" height="2.5em" />
             </button>
           </motion.div>
         ) : null}
