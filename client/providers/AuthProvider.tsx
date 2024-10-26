@@ -30,6 +30,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           body: JSON.stringify({ token: tokenResult.token }),
         });
 
+        // Trigger a refresh to rerun middleware with the new token
+        router.refresh();
+
         // Set a timer to refresh the token before it expires
         const expirationTime = new Date(tokenResult.expirationTime).getTime();
         const currentTime = new Date().getTime();
@@ -45,6 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ token: newTokenResult.token }),
           });
+          router.refresh();
         }, refreshTimeout);
 
         return () => clearTimeout(refreshTimer); // Clear the timer on unmount

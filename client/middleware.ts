@@ -38,10 +38,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const response = NextResponse.next();
-  response.headers.set("Cache-Control", "no-store");
-
-  return response;
+  return NextResponse.next();
 }
 
 // Apply middleware to specific routes
