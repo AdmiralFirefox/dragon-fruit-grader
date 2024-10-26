@@ -94,23 +94,27 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   // Delete Result
   const deleteResult = async (info: StructuredInfo) => {
     if (user) {
-      try {
-        const docRef = doc(db, "grading_info", info.id);
-        await deleteDoc(docRef);
+      const token = await user.getIdTokenResult();
 
-        await fetch("/api/cloudinary/delete-image", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input_image: info.input_image,
-            yolo_images: info.yolo_images,
-            results: info.results.map((result) => result.cropped_images),
-          }),
-        });
-      } catch (error) {
-        console.error(error);
+      if (token.claims.admin) {
+        try {
+          const docRef = doc(db, "grading_info", info.id);
+          await deleteDoc(docRef);
+
+          await fetch("/api/cloudinary/delete-image", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              input_image: info.input_image,
+              yolo_images: info.yolo_images,
+              results: info.results.map((result) => result.cropped_images),
+            }),
+          });
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   };
@@ -130,23 +134,35 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
 
   // Fetch Data from database
   useEffect(() => {
-    if (user) {
-      const gradingInfoRef = collection(db, "grading_info");
-      const q = query(gradingInfoRef, orderBy("timestamp", "desc"));
+    const fetchUsersData = async () => {
+      if (user) {
+        const token = await user.getIdTokenResult();
 
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const grading_info = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        if (token.claims.admin) {
+          try {
+            const gradingInfoRef = collection(db, "grading_info");
+            const q = query(gradingInfoRef, orderBy("timestamp", "desc"));
 
-        setGradingInfo(grading_info as StructuredInfo[]);
-        setLoadingInfo(false);
-      });
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+              const grading_info = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+              }));
 
-      // Clean up function
-      return () => unsubscribe();
-    }
+              setGradingInfo(grading_info as StructuredInfo[]);
+              setLoadingInfo(false);
+            });
+            
+            // Clean up function
+            return () => unsubscribe();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+    };
+
+    fetchUsersData();
   }, [user]);
 
   // Restrict access

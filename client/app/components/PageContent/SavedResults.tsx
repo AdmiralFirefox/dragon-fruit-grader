@@ -139,25 +139,29 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   // Fetch Data from database
   useEffect(() => {
     if (user) {
-      const gradingInfoRef = collection(db, "grading_info");
-      const q = query(
-        gradingInfoRef,
-        orderBy("timestamp", "desc"),
-        where("owner_id", "==", user!.uid)
-      );
+      try {
+        const gradingInfoRef = collection(db, "grading_info");
+        const q = query(
+          gradingInfoRef,
+          orderBy("timestamp", "desc"),
+          where("owner_id", "==", user!.uid)
+        );
 
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        const grading_info = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          const grading_info = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-        setGradingInfo(grading_info as StructuredInfo[]);
-        setLoadingInfo(false);
-      });
+          setGradingInfo(grading_info as StructuredInfo[]);
+          setLoadingInfo(false);
+        });
 
-      // Clean up function
-      return () => unsubscribe();
+        // Clean up function
+        return () => unsubscribe();
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, [user]);
 
