@@ -41,7 +41,10 @@ def object_detection(upload_folder, results_folder, cropped_image_folder, upload
             upload_input_result = uploader.upload(input_image_file_path,
                                             public_id=input_public_id,
                                             folder="dragon-fruit-grader",
-                                            resource_type="image")
+                                            resource_type="image",
+                                            transformation=[
+                                                {"quality": "auto:eco"}
+                                            ])
             upload_image_url.append(upload_input_result["url"])
 
             # Upload detected image to cloudinary
@@ -49,7 +52,10 @@ def object_detection(upload_folder, results_folder, cropped_image_folder, upload
             upload_detected_result = uploader.upload(filename,
                                             public_id=detected_public_id,
                                             folder="dragon-fruit-grader",
-                                            resource_type="image")
+                                            resource_type="image",
+                                            transformation=[
+                                                {"quality": "auto:eco"}
+                                            ])
             result_image_url.append(upload_detected_result["url"])
         else:
             print(f"No detections in image {uploaded_filenames[i]}, skipping save and upload.")
@@ -85,7 +91,10 @@ def object_detection(upload_folder, results_folder, cropped_image_folder, upload
             upload_cropped_result = uploader.upload(filename,
                                             public_id=cropped_public_id,
                                             folder="dragon-fruit-grader",
-                                            resource_type="image")
+                                            resource_type="image",
+                                            transformation=[
+                                                {"quality": "auto:eco"}
+                                            ])
             cropped_image_url.append(upload_cropped_result["url"])
 
             cropped_images_full_path.append(filename)
