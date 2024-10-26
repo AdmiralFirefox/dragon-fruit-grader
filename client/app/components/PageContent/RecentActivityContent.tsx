@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useContext, FormEvent } from "react";
 import { AuthContext } from "@/context/AuthContext";
+import { useAuthState } from "@/hooks/useAuthState";
 import { db } from "@/firebase/firebase";
 import {
   collection,
@@ -36,6 +37,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
   const [searchResults, setSearchResults] = useState("");
   const [loadingInfo, setLoadingInfo] = useState(true);
 
+  const { initializing } = useAuthState();
   const {
     infoModal,
     openModal: openModalInfo,
@@ -162,6 +164,29 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
 
     fetchUsersData();
   }, [user]);
+
+  // Restrict access
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!initializing) {
+        if (user) {
+          const token = await user.getIdTokenResult();
+
+          if (!token.claims.admin) {
+            router.push("/"); // Redirect if not admin
+          } else {
+            setLoadingInfo(true); // Continue loading admin content
+          }
+        } else {
+          router.push("/"); // Redirect if not authenticated
+        }
+      }
+    };
+
+    checkAdmin();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initializing, user]);
 
   return (
     <main>

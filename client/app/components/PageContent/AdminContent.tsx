@@ -5,6 +5,7 @@ import { useState, useEffect, useContext, FormEvent } from "react";
 import { AuthContext } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
+import { useAuthState } from "@/hooks/useAuthState";
 import {
   AdminContentProps,
   UserInfo,
@@ -39,6 +40,7 @@ const AdminContent = ({
   );
   const [loadingDelete, setLoadingDelete] = useState<LoadingAdminFunctions>({});
 
+  const { initializing } = useAuthState();
   const imageSize = 53;
 
   const user = useContext(AuthContext);
@@ -290,6 +292,29 @@ const AdminContent = ({
 
     fetchUsers();
   }, [user]);
+
+  // Restrict access
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!initializing) {
+        if (user) {
+          const token = await user.getIdTokenResult();
+
+          if (!token.claims.admin) {
+            router.push("/"); // Redirect if not admin
+          } else {
+            setLoadingUsers(true); // Continue loading admin content
+          }
+        } else {
+          router.push("/"); // Redirect if not authenticated
+        }
+      }
+    };
+
+    checkAdmin();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initializing, user]);
 
   return (
     <main>
