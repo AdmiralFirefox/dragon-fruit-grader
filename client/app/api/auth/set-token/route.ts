@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
   cookies().set("idToken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "strict",
     path: "/",
   });
