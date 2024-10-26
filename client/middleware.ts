@@ -10,11 +10,14 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(`${request.nextUrl.origin}/api/auth/verify-token`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
+    const response = await fetch(
+      `${request.nextUrl.origin}/api/auth/verify-token`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      }
+    );
 
     const { isValid, isAdmin } = await response.json();
 
@@ -35,7 +38,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set("Cache-Control", "no-store");
+
+  return response;
 }
 
 // Apply middleware to specific routes
