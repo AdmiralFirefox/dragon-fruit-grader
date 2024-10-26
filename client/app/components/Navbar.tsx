@@ -58,7 +58,10 @@ const Navbar = () => {
           ) : (
             <>
               {isAdmin ? (
-                <Link href="/admin?page=1" className={styles["admin-link"]}>
+                <Link
+                  href="/admin/manage_users?page=1"
+                  className={styles["admin-link"]}
+                >
                   Admin
                 </Link>
               ) : null}

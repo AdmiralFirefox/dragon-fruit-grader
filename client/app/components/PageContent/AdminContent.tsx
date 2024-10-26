@@ -87,7 +87,7 @@ const AdminContent = ({
   const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchUser(searchInput);
-    router.push("/admin?page=1");
+    router.push("/admin/manage_users?page=1");
   };
 
   // Copy User ID
@@ -260,11 +260,11 @@ const AdminContent = ({
     const isValidNumber = !isNaN(page) && Number.isInteger(page);
 
     if (!isValidNumber) {
-      router.push(`/admin?page=1`);
+      router.push(`/admin/manage_users?page=1`);
     } else if (page > totalPages && totalPages > 0) {
-      router.push(`/admin?page=1`);
+      router.push(`/admin/manage_users?page=1`);
     } else if (page < 1) {
-      router.push(`/admin?page=1`);
+      router.push(`/admin/manage_users?page=1`);
     }
   }, [page, totalPages, router]);
 
@@ -450,7 +450,7 @@ const AdminContent = ({
 
           {users_data.length <= 0 || users_data.length <= 9 ? null : (
             <PaginationControls
-              routeName="admin"
+              routeName="admin/manage_users"
               contentsPerPage={contents_per_page}
               hasNextPage={end < users_data!.length}
               hasPrevPage={start > 0}
