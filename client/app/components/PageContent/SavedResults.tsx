@@ -165,15 +165,6 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
     }
   }, [user]);
 
-  // Redirect unauthorized users
-  useEffect(() => {
-    if (!initializing && !user) {
-      router.push("/");
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, initializing]);
-
   if (initializing) {
     return <LoadingUser />;
   }
