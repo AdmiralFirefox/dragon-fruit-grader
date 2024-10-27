@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useScrollLock } from "@/hooks/useScrollLock";
+import { FirebaseError } from "@firebase/util";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
 import { toast, Bounce } from "react-toastify";
@@ -52,20 +53,35 @@ const useSignInModal = () => {
         transition: Bounce,
       });
     } catch (err) {
-      console.log(err);
-      closeModal();
-
-      toast.error((err as Error).message || "An unknown error occurred", {
-        position: "top-center",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      if ((err as FirebaseError).code === "auth/user-disabled") {
+        console.log(err);
+        closeModal();
+        toast.error("Your account has been disabled", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else {
+        console.log(err);
+        closeModal();
+        toast.error((err as Error).message || "An unknown error occurred", {
+          position: "top-center",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
     }
   };
 
