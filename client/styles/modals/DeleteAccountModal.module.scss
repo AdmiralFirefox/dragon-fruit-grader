@@ -1,0 +1,80 @@
+@use "../themeprovider/themeprovider" as theme;
+
+.backdrop {
+  background: theme.$black-color-transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+}
+
+.modal {
+  position: fixed;
+  width: 100%;
+  left: 50%;
+  z-index: 4;
+  overflow-y: auto;
+  width: min(85%, 28em);
+  background: theme.$white-color;
+  padding: 2em;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .message {
+    color: theme.$black-color;
+    font-family: var(--monserrat-medium);
+    margin-top: 0.5em;
+    width: min(25em, 100%);
+    font-size: 1.3rem;
+    text-align: center;
+    line-height: 1.3em;
+  }
+
+  .button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    margin-top: 1.5em;
+
+    button {
+      border: none;
+      border-radius: 10px;
+      font-family: var(--monserrat-medium);
+      padding: 0.7em 1em;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: theme.$white-color;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+
+      &:first-of-type {
+        background: theme.$orange-color;
+
+        &:hover {
+          background: theme.$orange-color-hover;
+        }
+      }
+
+      &:last-of-type {
+        background: theme.$pink-color;
+
+        &:hover {
+          background: theme.$pink-color-hover;
+        }
+      }
+    }
+
+    .loading-button {
+      border: none;
+      border-radius: 10px;
+      background: theme.$gray-color !important;
+      padding: 0.7em 1.3em;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: not-allowed;
+    }
+  }
+}

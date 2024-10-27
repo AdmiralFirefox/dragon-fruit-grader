@@ -29,6 +29,8 @@ import SpinnerLoader from "../Loaders/SpinnerLoader";
 import { imageInHttps } from "@/utils/imageInHttps";
 import Empty from "../States/Empty";
 import { toast, Bounce } from "react-toastify";
+import { useDeleteAccountModal } from "@/hooks/useDeleteAccountModal";
+import DeleteAccountModal from "../Modals/DeleteAccountModal";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -40,6 +42,13 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   const [loadingInfo, setLoadingInfo] = useState(true);
 
   const { initializing } = useAuthState();
+  const {
+    deleteAccountModal,
+    deleteLoading,
+    handleDeleteAccount,
+    openDeleteAccountModal,
+    closeDeleteAccountModal,
+  } = useDeleteAccountModal();
   const {
     infoModal,
     openModal: openModalInfo,
@@ -192,8 +201,17 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
         <div className={styles["user-info"]}>
           <h1>{user?.displayName}</h1>
           <p>{user?.email}</p>
-          <button onClick={signOutAccount}>Sign Out</button>
+          <div className={styles["button-wrapper"]}>
+            <button onClick={signOutAccount}>Sign Out</button>
+            <button onClick={openDeleteAccountModal}>Delete Account</button>
+          </div>
         </div>
+        <DeleteAccountModal
+          deleteAccountModal={deleteAccountModal}
+          deleteLoading={deleteLoading}
+          handleDeleteAccount={handleDeleteAccount}
+          closeDeleteAccountModal={closeDeleteAccountModal}
+        />
       </div>
 
       <div className={styles["saved-results-title"]}>
