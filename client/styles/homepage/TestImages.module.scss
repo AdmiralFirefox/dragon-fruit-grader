@@ -28,11 +28,8 @@
       height: 100%;
       object-fit: cover;
       border-radius: 10px;
+      pointer-events: none;
       user-select: none;
-      -drag: none;
-      -moz-user-select: none;
-      -webkit-user-drag: none;
-      -webkit-user-select: none;
     }
 
     &:hover {
