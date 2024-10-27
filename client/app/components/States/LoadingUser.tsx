@@ -17,6 +17,7 @@ const LoadingUser = () => {
 
       <div className={styles["saved-results-title"]}>
         <h1>Saved Results</h1>
+        <div className={styles["border"]}></div>
       </div>
 
       <SpinnerLoader />

@@ -44,8 +44,16 @@
 
   h1 {
     font-size: clamp(2.3rem, 3.5vw, 2.7rem);
-    font-family: var(--koho-bold);
+    font-family: var(--monserrat-bold);
     text-align: center;
+    color: theme.$black-color;
+  }
+
+  .border {
+    width: 0;
+    height: 0.4em;
+    background: theme.$pink-color;
+    margin: 0.3em auto 0em auto;
   }
 }
 

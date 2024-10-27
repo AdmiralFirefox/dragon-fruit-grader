@@ -198,6 +198,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
 
       <div className={styles["saved-results-title"]}>
         <h1>Saved Results</h1>
+        <div className={styles["border"]}></div>
       </div>
 
       {gradingInfo.length === 0 && loadingInfo ? (

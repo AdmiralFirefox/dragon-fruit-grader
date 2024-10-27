@@ -61,13 +61,22 @@
 
   h1 {
     font-size: clamp(2.3rem, 3.5vw, 2.7rem);
-    font-family: var(--koho-bold);
+    font-family: var(--monserrat-bold);
     text-align: center;
+    color: theme.$black-color;
+  }
+
+  .border {
+    width: 0;
+    height: 0.4em;
+    background: theme.$pink-color;
+    margin: 0.3em auto 0em auto;
+    animation: expandBorder 1s ease forwards;
   }
 }
 
 .result-wrapper {
-  margin-top: 3em;
+  margin-top: 3.5em;
   margin-bottom: 2.5em;
   width: 100%;
   display: flex;
@@ -234,5 +243,14 @@
         }
       }
     }
+  }
+}
+
+@keyframes expandBorder {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: min(19.5em, 100%);
   }
 }
