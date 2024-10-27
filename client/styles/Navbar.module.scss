@@ -42,7 +42,7 @@
 
     .scale-up-loader {
       width: 1.8em;
-      aspect-ratio: 0.7;
+      aspect-ratio: 0.59;
       --c: no-repeat linear-gradient(#f7fff9 0 0);
       background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
       animation: scale-up-animation 1s infinite linear alternate;
