@@ -4,12 +4,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1em;
   background: theme.$light-peach-color;
-  margin-top: 1.7em;
-  padding: 0em 1.5em;
-  height: 31em;
+  padding: 7.3em 1.5em 5em 1.5em;
+  gap: 1em;
 
   .user-photo {
     div {
@@ -25,16 +22,28 @@
     gap: 0.8em;
     width: min(15em, 100%);
 
-    div:first-child {
+    .user-info-skeleton1 {
       @include theme.loading-skeleton(5px, min(15em, 100%), 2em);
     }
 
-    div:nth-of-type(2) {
+    .user-info-skeleton2 {
       @include theme.loading-skeleton(5px, min(12em, 100%), 1.5em);
     }
 
-    div:last-child {
-      @include theme.loading-skeleton(10px, min(6.2em, 100%), 2.4em);
+    .button-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: min(15em, 100%);
+      gap: 0.5em;
+
+      .button-wrapper-skeleton1 {
+        @include theme.loading-skeleton(10px, min(6.2em, 100%), 2.4em);
+      }
+
+      .button-wrapper-skeleton2 {
+        @include theme.loading-skeleton(10px, min(8.3em, 100%), 2.4em);
+      }
     }
   }
 }
@@ -60,11 +69,15 @@
 @media (min-width: theme.$media-query-small-value) {
   .user {
     flex-direction: row;
+    justify-content: center;
     gap: 1.5em;
-    height: 20em;
 
     .user-info {
       align-items: flex-start;
+
+      .button-wrapper {
+        justify-content: flex-start;
+      }
     }
   }
 }

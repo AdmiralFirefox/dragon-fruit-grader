@@ -9,9 +9,12 @@ const LoadingUser = () => {
           <div></div>
         </div>
         <div className={styles["user-info"]}>
-          <div></div>
-          <div></div>
-          <div></div>
+          <div className={styles["user-info-skeleton1"]}></div>
+          <div className={styles["user-info-skeleton2"]}></div>
+          <div className={styles["button-wrapper"]}>
+            <div className={styles["button-wrapper-skeleton1"]}></div>
+            <div className={styles["button-wrapper-skeleton2"]}></div>
+          </div>
         </div>
       </div>
 
