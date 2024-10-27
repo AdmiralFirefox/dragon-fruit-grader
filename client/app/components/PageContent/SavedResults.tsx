@@ -31,6 +31,7 @@ import Empty from "../States/Empty";
 import { toast, Bounce } from "react-toastify";
 import { useDeleteAccountModal } from "@/hooks/useDeleteAccountModal";
 import DeleteAccountModal from "../Modals/DeleteAccountModal";
+import { useAdminStatus } from "@/hooks/useAdminStatus";
 import styles from "@/styles/saveresults/SaveResults.module.scss";
 
 interface SavedResultsProps {
@@ -42,6 +43,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
   const [loadingInfo, setLoadingInfo] = useState(true);
 
   const { initializing } = useAuthState();
+  const { isAdmin } = useAdminStatus();
   const {
     deleteAccountModal,
     deleteLoading,
@@ -203,7 +205,9 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
           <p>{user?.email}</p>
           <div className={styles["button-wrapper"]}>
             <button onClick={signOutAccount}>Sign Out</button>
-            <button onClick={openDeleteAccountModal}>Delete Account</button>
+            {isAdmin ? null : (
+              <button onClick={openDeleteAccountModal}>Delete Account</button>
+            )}
           </div>
         </div>
         <DeleteAccountModal
