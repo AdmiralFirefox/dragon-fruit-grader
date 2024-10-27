@@ -8,7 +8,9 @@ interface TestImagesProps {
 const TestImages = ({ setSampleImage }: TestImagesProps) => {
   return (
     <>
-      <p className={styles["sample-images-title"]}>Try our system by clicking one of the images below:</p>
+      <p className={styles["sample-images-title"]}>
+        Try our system by clicking one of the images below:
+      </p>
 
       <ul className={styles["sample-images-container"]}>
         <li
@@ -20,6 +22,7 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
+            onDragStart={(e) => e.preventDefault()}
           />
         </li>
         <li
@@ -31,6 +34,7 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
+            onDragStart={(e) => e.preventDefault()}
           />
         </li>
         <li
@@ -42,6 +46,7 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
+            onDragStart={(e) => e.preventDefault()}
           />
         </li>
         <li
@@ -53,6 +58,7 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
+            onDragStart={(e) => e.preventDefault()}
           />
         </li>
         <li
@@ -64,6 +70,7 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
+            onDragStart={(e) => e.preventDefault()}
           />
         </li>
       </ul>

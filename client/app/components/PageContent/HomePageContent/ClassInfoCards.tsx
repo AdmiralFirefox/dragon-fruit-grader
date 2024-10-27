@@ -21,7 +21,13 @@ const ClassCard = ({
   return (
     <div className={styles["card-content"]}>
       <div className={styles["image-wrapper"]}>
-        <Image src={imgSrc} alt="dragon fruit images" width={300} height={30} />
+        <Image
+          src={imgSrc}
+          alt="dragon fruit images"
+          width={300}
+          height={30}
+          onDragStart={(e) => e.preventDefault()}
+        />
       </div>
       <p>{fruitClass}</p>
       <p>{fruitDescription}</p>
