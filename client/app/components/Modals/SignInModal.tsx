@@ -71,6 +71,10 @@ const SignInModal = ({
               <p>Sign In</p>
               <GoogleIcon width="2.5em" height="2.5em" />
             </button>
+            <p className={styles["disclaimer"]}>
+              Disclaimer: We only use your information for sign-in. No
+              additional data is collected or stored.
+            </p>
           </motion.div>
         ) : null}
       </AnimatePresence>

@@ -233,6 +233,14 @@ const HomeContent = () => {
           </div>
 
           <TestImages setSampleImage={setSampleImage} />
+
+          <div className={styles["disclaimer"]}>
+            <p>
+              Disclaimer: We prioritize privacy and use uploaded images solely
+              for analysis. No sensitive or personal information is collected,
+              stored, or accessed beyond what is necessary.
+            </p>
+          </div>
         </>
       ) : null}
 

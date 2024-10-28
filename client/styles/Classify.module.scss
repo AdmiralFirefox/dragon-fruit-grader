@@ -20,6 +20,19 @@
   margin-top: 3em;
 }
 
+.disclaimer {
+  width: min(40em, 83%);
+  margin: 1.8em auto 4em auto;
+
+  p {
+    text-align: center;
+    font-family: var(--monserrat-medium);
+    color: theme.$darker-gray-color;
+    line-height: 1.4em;
+    font-size: 1rem;
+  }
+}
+
 .classify-button {
   display: flex;
   justify-content: center;
