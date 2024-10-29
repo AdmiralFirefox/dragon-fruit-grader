@@ -51,10 +51,10 @@ const TestImages = ({ setSampleImage }: TestImagesProps) => {
         </li>
         <li
           className={styles["sample-image-wrapper"]}
-          onClick={() => setSampleImage("/sample-images/dragon_fruit_4.jpeg")}
+          onClick={() => setSampleImage("/sample-images/dragon_fruit_4.jpg")}
         >
           <Image
-            src="/sample-images/dragon_fruit_4.jpeg"
+            src="/sample-images/dragon_fruit_4.jpg"
             alt="Sample Dragon Fruit Image"
             width={100}
             height={100}
