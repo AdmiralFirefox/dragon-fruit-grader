@@ -50,6 +50,7 @@ const Results = ({
                       width={300}
                       height={300}
                       unoptimized
+                      onDragStart={(e) => e.preventDefault()}
                     />
                   </div>
                 </div>
@@ -63,6 +64,7 @@ const Results = ({
                       width={300}
                       height={300}
                       unoptimized
+                      onDragStart={(e) => e.preventDefault()}
                     />
                   </div>
                 </div>
@@ -81,6 +83,7 @@ const Results = ({
                             width={250}
                             height={250}
                             unoptimized
+                            onDragStart={(e) => e.preventDefault()}
                           />
                         </div>
 

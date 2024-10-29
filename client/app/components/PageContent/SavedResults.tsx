@@ -198,6 +198,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
             alt="User Profile"
             width={85}
             height={85}
+            onDragStart={(e) => e.preventDefault()}
           />
         </div>
         <div className={styles["user-info"]}>
@@ -240,6 +241,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                         width={300}
                         height={300}
                         unoptimized
+                        onDragStart={(e) => e.preventDefault()}
                       />
                     </div>
                   </div>
@@ -253,6 +255,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                         width={300}
                         height={300}
                         unoptimized
+                        onDragStart={(e) => e.preventDefault()}
                       />
                     </div>
                   </div>
@@ -273,6 +276,7 @@ const SavedResults = ({ searchParams }: SavedResultsProps) => {
                               width={250}
                               height={250}
                               unoptimized
+                              onDragStart={(e) => e.preventDefault()}
                             />
                           </div>
 

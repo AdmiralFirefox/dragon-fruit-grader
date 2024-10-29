@@ -152,7 +152,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
               setGradingInfo(grading_info as StructuredInfo[]);
               setLoadingInfo(false);
             });
-            
+
             // Clean up function
             return () => unsubscribe();
           } catch (err) {
@@ -217,6 +217,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                       alt="User Photo"
                       width={50}
                       height={50}
+                      onDragStart={(e) => e.preventDefault()}
                     />
                   </div>
                   <div>
@@ -235,6 +236,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                         width={300}
                         height={300}
                         unoptimized
+                        onDragStart={(e) => e.preventDefault()}
                       />
                     </div>
                   </div>
@@ -248,6 +250,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                         width={300}
                         height={300}
                         unoptimized
+                        onDragStart={(e) => e.preventDefault()}
                       />
                     </div>
                   </div>
@@ -268,6 +271,7 @@ const RecentActivityContent = ({ searchParams }: RecentActivityProps) => {
                               width={250}
                               height={250}
                               unoptimized
+                              onDragStart={(e) => e.preventDefault()}
                             />
                           </div>
 

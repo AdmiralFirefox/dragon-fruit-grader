@@ -361,6 +361,7 @@ const AdminContent = ({
                           alt="User Photo"
                           width={imageSize}
                           height={imageSize}
+                          onDragStart={(e) => e.preventDefault()}
                         />
                       </td>
                       <td>
@@ -391,6 +392,7 @@ const AdminContent = ({
                           alt="User Photo"
                           width={imageSize}
                           height={imageSize}
+                          onDragStart={(e) => e.preventDefault()}
                         />
                       </td>
                       <td>
