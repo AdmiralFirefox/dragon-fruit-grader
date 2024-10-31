@@ -72,8 +72,9 @@ const SignInModal = ({
               <GoogleIcon width="2.5em" height="2.5em" />
             </button>
             <p className={styles["disclaimer"]}>
-              Disclaimer: We only use your information for sign-in. No
-              additional data is collected or stored.
+              Disclaimer: We respect your privacy. No sensitive data is
+              collected. Saved results may be reviewed by the admin solely to
+              monitor and improve our system.
             </p>
           </motion.div>
         ) : null}
