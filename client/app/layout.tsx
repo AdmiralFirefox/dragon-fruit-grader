@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
-  title: "Dragon Fruit Grader",
+  title: "Dragon Fruit Classifier",
   description:
     "Grade dragon fruits into different classes and know what products you can make with each classes.",
 };

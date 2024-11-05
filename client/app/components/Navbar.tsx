@@ -31,7 +31,7 @@ const Navbar = () => {
               height={100}
             />
           </div>
-          <h1>Dragon Fruit Grader</h1>
+          <h1>Dragon Fruit Classifier</h1>
         </Link>
 
         <div className={styles["page-links"]}>
