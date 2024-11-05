@@ -16,6 +16,8 @@ $hero-height: 33em;
     padding: 0em 1.5em;
 
     .hero-logo {
+      width: min(19em, 100%);
+
       img {
         width: 100%;
         height: 100%;
@@ -99,6 +101,12 @@ $hero-height: 33em;
 
     .content {
       flex-direction: row;
+      gap: 3em;
+      padding: 0em 2.8em;
+
+      .hero-logo {
+        width: min(27em, 100%);
+      }
 
       .hero-info {
         text-align: left;

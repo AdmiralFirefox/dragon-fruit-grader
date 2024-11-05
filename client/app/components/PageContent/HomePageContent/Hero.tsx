@@ -26,8 +26,8 @@ const Hero = ({ scrollToClassInfo, scrollToClassify }: HeroProps) => {
           <Image
             src="/logos/hero-logo.png"
             alt="Hero Logo"
-            width={600}
-            height={600}
+            width={450}
+            height={450}
             priority
             onDragStart={(e) => e.preventDefault()}
           />
