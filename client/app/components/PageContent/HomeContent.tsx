@@ -246,7 +246,20 @@ const HomeContent = () => {
 
       {mutation.isPending && <Loading />}
       {mutation.isError && (
-        <Error message="Something went wrong. Please try again later." />
+        <>
+          <div className={styles["classify-button"]}>
+            <button
+              onClick={() => {
+                setInputMode(true);
+                mutation.reset();
+                clear_session_mutation.mutate(sessionId);
+              }}
+            >
+              Classify Another Set
+            </button>
+          </div>
+          <Error message="Something went wrong. Please try again later." />
+        </>
       )}
       {mutation.isSuccess && mutation.data !== undefined && (
         <>
