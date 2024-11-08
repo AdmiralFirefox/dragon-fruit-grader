@@ -87,7 +87,7 @@
   justify-content: center;
 
   .result-container {
-    border: 10px solid theme.$pink-color;
+    border: 7px solid theme.$pink-color;
     border-radius: 20px;
     width: min(45em, 90%);
     padding: 2em;
@@ -211,6 +211,7 @@
         font-size: 1.1rem;
         font-family: var(--monserrat-medium);
         text-align: center;
+        line-height: 1.65em;
       }
     }
   }
@@ -238,6 +239,8 @@
 
   .result-wrapper {
     .result-container {
+      border: 10px solid theme.$pink-color;
+
       .first-section {
         flex-direction: row;
 
